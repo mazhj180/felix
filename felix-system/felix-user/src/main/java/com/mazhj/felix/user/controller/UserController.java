@@ -1,8 +1,11 @@
 package com.mazhj.felix.user.controller;
 
+import com.mazhj.common.core.utils.Convert;
 import com.mazhj.common.web.controller.BaseController;
 import com.mazhj.common.web.request.Params;
 import com.mazhj.common.web.response.AjaxResult;
+import com.mazhj.common.web.response.Message;
+import com.mazhj.felix.user.pojo.model.User;
 import com.mazhj.felix.user.pojo.param.UserParam;
 import com.mazhj.felix.user.pojo.vo.LoginVO;
 import com.mazhj.felix.user.service.UserService;
@@ -34,6 +37,8 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     public AjaxResult register(@RequestBody UserParam userParam){
-        return success();
+        User user = Convert.to(userParam, User.class);
+        Message message = this.userService.register(user);
+        return success().buildMsg(message.getMessage());
     }
 }

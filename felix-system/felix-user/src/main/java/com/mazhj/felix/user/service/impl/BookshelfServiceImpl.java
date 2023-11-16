@@ -31,6 +31,7 @@ public class BookshelfServiceImpl implements BookshelfService {
     @Override
     public List<Bookshelf> getBookshelfList(String userId) {
         List<Bookshelf> bookshelves = this.bookshelfMapper.selectListByUserId(userId);
+
         return null;
     }
 

@@ -48,7 +48,7 @@ public class AuthFilter implements GlobalFilter {
             Claims claims = JwtUtil.validateToken(token);
             ServerHttpRequest request = exchange.getRequest()
                     .mutate().headers( httpHeaders -> {
-                        httpHeaders.set("userId",claims.getLoginName());
+                        httpHeaders.set("userId",claims.getUserId());
                     }).build();
 
             exchange.mutate().request(request).build();

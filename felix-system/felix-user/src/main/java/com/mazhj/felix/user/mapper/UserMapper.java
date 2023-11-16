@@ -53,5 +53,5 @@ public interface UserMapper {
                 where user_id = #{userId,jdbcType=VARCHAR}
                 
             """)
-    User selectByLoginName(String userId);
+    User selectByUserId(String userId);
 }

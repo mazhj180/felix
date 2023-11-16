@@ -4,6 +4,7 @@ import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.utils.Convert;
 import com.mazhj.common.core.utils.JwtUtil;
 import com.mazhj.common.pojo.claims.Claims;
+import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.mapper.UserMapper;
 import com.mazhj.felix.user.pojo.model.User;
 import com.mazhj.felix.user.pojo.vo.LoginVO;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginVO login(String userId, String password) {
         try {
-            User user = this.userMapper.selectByLoginName(userId);
+            User user = this.userMapper.selectByUserId(userId);
             if (user == null){
                 throw new BusinessException("用户不存在");
             }
@@ -42,5 +43,18 @@ public class UserServiceImpl implements UserService {
         } catch (JOSEException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Message register(User user) {
+        User user1 = this.userMapper.selectByUserId(user.getUserId());
+        if (user1 != null){
+            throw new BusinessException("用户已存在");
+        }
+        String password = user.getUserPwd();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        user.setUserPwd(password);
+        this.userMapper.insert(user);
+        return Message.builder().message("注册成功").build();
     }
 }
