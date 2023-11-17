@@ -86,21 +86,6 @@ public interface BookshelfMapper {
      * @param bookshelf 书架图书信息
      * @return 跟新的元组数
      */
-    @Update("<script>" +
-            "   update user_bookshelf" +
-            "   <set>" +
-            "       <if test=\"bookId != null\">" +
-            "           book_id = #{bookId,jdbcType=VARCHAR}," +
-            "       </if>" +
-            "       <if test=\"lastChapterId != null\">" +
-            "           last_chapter_id = #{lastChapterId,jdbcType=INTEGER}," +
-            "       </if>" +
-            "       <if test=\"lastReadTime != null\">" +
-            "           last_read_time = #{lastReadTime,jdbcType=BIGINT}," +
-            "       </if>" +
-            "   </set>" +
-            "   where user_id = #{userId,jdbcType=INTEGER} and book_id = #{bookId}" +
-            "</script>")
     @Update("""
                 <script>
                     update bookshelf

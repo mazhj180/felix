@@ -1,22 +1,18 @@
-package com.mazhj.felix.book.pojo.model;
+package com.mazhj.felix.book.pojo.model.vo;
 
-import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Stack;
 
 /**
  * @author mazhj
  */
 @Data
-public class Book implements Serializable {
+public class BookVO implements Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /** 数据库自增id*/
-    private Integer id;
 
     /** 图书id*/
     private String bookId;
@@ -47,5 +43,4 @@ public class Book implements Serializable {
 
     /** 字数*/
     private Integer wordCount;
-
 }

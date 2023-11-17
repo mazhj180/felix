@@ -3,6 +3,7 @@ package com.mazhj.felix.user.service;
 import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.pojo.model.Bookshelf;
 import com.mazhj.felix.user.pojo.param.BookshelfParam;
+import com.mazhj.felix.user.pojo.vo.BookshelfVO;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface BookshelfService {
      * @param userId 用户id
      * @return 封装后的用户书架图书列表
      */
-    List<Bookshelf> getBookshelfList(String userId);
+    List<BookshelfVO> getBookshelfList(String userId);
 
     /**
      * 同步书架信息

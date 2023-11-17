@@ -14,7 +14,9 @@ public class BookshelfParam implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer userId;
+    /** 用户id*/
+    private String userId;
+
     /**
      * 同步类型：
      * 1.新增  2.更新  3.删除
