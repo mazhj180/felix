@@ -16,6 +16,11 @@ public interface UserService {
      */
     LoginVO login(String userId, String password);
 
+    /**
+     * 注册用户
+     * @param user 用户信息
+     * @return 消息（成功或失败）
+     */
     Message register(User user);
 
 }

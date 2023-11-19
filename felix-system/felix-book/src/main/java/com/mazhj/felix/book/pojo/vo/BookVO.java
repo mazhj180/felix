@@ -1,4 +1,4 @@
-package com.mazhj.felix.book.pojo.model.vo;
+package com.mazhj.felix.book.pojo.vo;
 
 import lombok.Data;
 

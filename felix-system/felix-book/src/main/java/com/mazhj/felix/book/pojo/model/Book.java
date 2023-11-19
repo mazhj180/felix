@@ -48,4 +48,7 @@ public class Book implements Serializable {
     /** 字数*/
     private Integer wordCount;
 
+    /** 点赞数*/
+    private Integer supportCount;
+
 }

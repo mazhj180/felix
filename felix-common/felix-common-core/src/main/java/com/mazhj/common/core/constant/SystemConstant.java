@@ -9,4 +9,5 @@ public class SystemConstant {
     public static final String[] JSON_WHITELIST_STR = { "org.springframework", "com.mazhj" };
 
     public static final String JWT_SECRET = "mazhj";
+
 }
