@@ -1,5 +1,6 @@
 package com.mazhj.felix.book.service.impl;
 
+import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.book.mapper.BookMapper;
 import com.mazhj.felix.book.pojo.model.Book;
@@ -26,8 +27,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookInfoByBookId(String bookId) {
-        //todo redis
-        this.bookMapper.selectOneByBookId(bookId);
-        return null;
+        String key = KeyBuilder.Book.getBookDetailKey(bookId);
+        Book book = this.redisService.get(key);
+        if (book == null){
+            book = this.bookMapper.selectOneByBookId(bookId);
+            this.redisService.set(key,book);
+        }
+        return book;
     }
 }
