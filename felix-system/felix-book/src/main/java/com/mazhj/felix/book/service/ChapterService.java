@@ -24,7 +24,7 @@ public interface ChapterService {
      * @param chapterCode 章节code
      * @return 图书章节的内容
      */
-    Chapter getChapterContextByIdAndCode(String bookId,Integer chapterCode);
+    Chapter getChapterContentByIdAndCode(String bookId,Integer chapterCode);
 
     /**
      * 获取章节内容
