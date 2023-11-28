@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author mazhj
  */
@@ -25,6 +27,12 @@ public class BookController extends BaseController {
     public BookDTO getBookInfo(String bookId){
         Book book = this.bookService.getBookInfoByBookId(bookId);
         return Convert.to(book, BookDTO.class);
+    }
+
+    @GetMapping("/feign/get-book-all")
+    public List<BookDTO> getBookList(){
+        List<Book> books = this.bookService.getAllBook();
+        return Convert.to(books,BookDTO.class);
     }
 
 }

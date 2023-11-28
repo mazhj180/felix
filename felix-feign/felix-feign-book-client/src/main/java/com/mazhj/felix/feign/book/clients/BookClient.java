@@ -4,6 +4,8 @@ import com.mazhj.common.pojo.dto.BookDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 /**
  * @author mazhj
  */
@@ -17,5 +19,12 @@ public interface BookClient {
      */
     @GetMapping("/book/feign/get-book")
     BookDTO getBookByBookId(String bookId);
+
+    /**
+     * 远程接口调用；获取全部图书
+     * @return 图书列表
+     */
+    @GetMapping("/book/feign/get-book-all")
+    List<BookDTO> getBookList();
 
 }

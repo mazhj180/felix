@@ -7,6 +7,8 @@ import com.mazhj.felix.book.pojo.model.Book;
 import com.mazhj.felix.book.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author mazhj
  */
@@ -34,5 +36,10 @@ public class BookServiceImpl implements BookService {
             this.redisService.set(key,book);
         }
         return book;
+    }
+
+    @Override
+    public List<Book> getAllBook() {
+        return this.bookMapper.select();
     }
 }

@@ -1,5 +1,7 @@
 package com.mazhj.felix.user.controller;
 
+import com.mazhj.common.core.utils.Convert;
+import com.mazhj.common.pojo.dto.BookshelfDTO;
 import com.mazhj.common.web.controller.BaseController;
 import com.mazhj.common.web.response.AjaxResult;
 import com.mazhj.common.web.response.Message;
@@ -36,6 +38,12 @@ public class BookshelfController extends BaseController {
     public AjaxResult sync(BookshelfParam bookshelfParam){
         Message message = this.bookshelfService.syncBookshelfInfo(bookshelfParam);
         return success().buildMsg(message.getMessage());
+    }
+
+    @GetMapping("/feign/get-bookshelf-books")
+    public List<BookshelfDTO> getBookshelfList(String userId){
+        List<BookshelfVO> vos = this.bookshelfService.getBookshelfList(userId);
+        return Convert.to(vos,BookshelfDTO.class);
     }
 
 

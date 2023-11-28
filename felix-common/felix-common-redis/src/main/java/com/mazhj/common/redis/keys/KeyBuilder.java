@@ -2,6 +2,9 @@ package com.mazhj.common.redis.keys;
 
 import com.mazhj.common.core.enums.ServiceModel;
 
+/**
+ * @author mazhj
+ */
 public final class KeyBuilder {
 
     public static class User{
@@ -31,12 +34,16 @@ public final class KeyBuilder {
     public static class Homepage{
         private static final String prefix = ServiceModel.HOMEPAGE.str();
 
-        public static final String getRanksKey(){
+        public static String getRanksKey(){
             return prefix + "rank:key";
         }
 
-        public static final String getPossibleLikeKey(){
+        public static String getPossibleLikeKey(){
             return prefix + "possible-like:key";
+        }
+
+        public static String getReasonKey(){
+            return prefix + "guess-you-reason";
         }
     }
 
