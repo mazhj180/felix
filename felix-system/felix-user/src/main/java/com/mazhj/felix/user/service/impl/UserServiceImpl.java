@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService {
                 throw new BusinessException("密码错误");
             }
             String token = JwtUtil.generateToken(new Claims().setUserId(userId));
-
             return Convert.to(user,LoginVO.class).setToken(token);
         } catch (JOSEException e) {
             throw new RuntimeException(e);

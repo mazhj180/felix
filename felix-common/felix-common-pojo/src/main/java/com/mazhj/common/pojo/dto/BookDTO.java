@@ -23,7 +23,7 @@ public class BookDTO implements Serializable {
     /**
      * 分类
      */
-    private Integer dicCategory;
+    private Integer category;
 
     /**
      * 频道id:0全部,1男生,2女生,3出版物
