@@ -33,6 +33,10 @@
             <groupId>com.mazhj</groupId>
             <artifactId>felix-feign-user-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.mazhj</groupId>
+            <artifactId>felix-feign-search-client</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

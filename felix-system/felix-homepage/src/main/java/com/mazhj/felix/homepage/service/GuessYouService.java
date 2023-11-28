@@ -1,6 +1,6 @@
 package com.mazhj.felix.homepage.service;
 
-import com.mazhj.felix.homepage.pojo.model.Book;
+import com.mazhj.common.pojo.dto.BookDTO;
 import com.mazhj.felix.homepage.pojo.param.Reason;
 
 import java.util.List;
@@ -16,6 +16,6 @@ public interface GuessYouService {
      * @param reason 用户搜索记录
      * @return 图书列表
      */
-    List<Book> getPossibleLikes(String userId, Reason reason);
+    List<BookDTO> getPossibleLikes(String userId, Reason reason);
 
 }
