@@ -36,4 +36,16 @@ public class SearchController extends BaseController {
         List<Book> bookList = this.searchService.searchBooksByName(name);
         return success(Convert.to(bookList, BookDTO.class));
     }
+    //todo 内部借口 隔离外部请求
+    @GetMapping("/feign/get-books/keyword")
+    public List<BookDTO> getBooksByKeywordFeign(String keyword){
+        List<Book> bookList = this.searchService.searchBooksByKeyword(keyword);
+        return Convert.to(bookList, BookDTO.class);
+    }
+    //todo 内部借口 隔离外部请求
+    @GetMapping("/feign/get-books/name")
+    public List<BookDTO> getBooksByNameFeign(String name){
+        List<Book> bookList = this.searchService.searchBooksByName(name);
+        return Convert.to(bookList, BookDTO.class);
+    }
 }
