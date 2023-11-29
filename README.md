@@ -1,35 +1,39 @@
-# reading_springcloud
+# Felix-您的数字阅读伴侣
 
 ### 项目简介
-
-一款图书阅读类app。
+Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的图书阅读应用。在这个数字化时代，Felix旨在重新定义移动阅读，将传统的阅读习惯与现代技术完美结合。
 
 ### 技术选型
-| 框架或工具   | 名称                  |
-| ---- |---------------------|
-|  web层框架    | springboot          |
-|  持久层框架| mybatis             |
-|  配置中心、注册中心 | nacos               |
-|  网关| springcloud-gateway |
-| 全文搜索引擎| Elasticsearch       |
-| 远程调用框架| fegin               |
-|缓存| redis               |
-|数据库| mysql               |
+| 框架或工具     | 名称                  |
+|-----------|---------------------|
+| web层框架    | springboot          |
+| 持久层框架     | mybatis             |
+| 配置中心、注册中心 | nacos               |
+| 网关        | springcloud-gateway |
+| 全文搜索引擎    | Elasticsearch       |
+| 远程调用框架    | feign               |
+| 缓存        | redis               |
+| 数据库       | mysql               |
+| 网络编程框架    | netty               |
 
+### 系统公共模块
+| No  | 工程模块          | 说明                        | 子模块                                                            |
+|-----|---------------|---------------------------|----------------------------------------------------------------|
+| 1   | felix-common  | 公共模块，存放通用的POJO、工具类、配置文件等。 | core、pojo、quartz、redis、web                                     |
+| 2   | felix-gateway | 服务网关、权限验证                 |                                                                |
+| 3   | felix-system  | 系统服务模块，包含体业务模块            | felix-book、felix-user、felix-homepage、felix-search、felix-search |
+| 4   | felix-feign   | Feign客户端，提供微服务的公用客户端      | book-client、user-client、search-client                          |
 
+### 系统服务模块（felix-system）
 
-### 服务模块
+| No  | 具体的服务          | 说明                  | 使用的feign客户端                           |
+|-----|----------------|---------------------|---------------------------------------|
+| 1   | felix-book     | 图书中心，提供图书基础数据接口     |                                       |
+| 2   | felix-user     | 账户中心，提供账户授权、用户服务等接口 | book-client                           |
+| 3   | felix-homepage | 精品页中心，提供App精品页接口    | book-client、user-client、search-client |
+| 4   | felix-forum    | 话题论坛                | book-client、user-client、search-client |
+| 5   | felix-search   | 全文分词搜索              |                                       |
 
-| No   | 工程模块                 | 说明                    | 依赖                                          |
-| ---- |----------------------|-----------------------|---------------------------------------------|
-| 1    | reading-common       | 公共模块，存放通用的POJO、工具类等文件。 | -                                           |
-| 2    | reading-gateway      | 服务网关、权限验证             | -                                           |
-| 3    | reading-book         | 图书中心，提供图书基础数据接口       | reading-common                              |
-| 4    | reading-account      | 账户中心，提供账户授权、用户服务等接口   | reading-common、reading-book                 |
-| 5    | reading-homepage     | 精品页中心，提供App精品页接口      | reading-common、reading-book、reading-account |
-| 6    | reading-forum        | 话题论坛                  | reading-common、reading-book、reading-account|
-| 6    | reading-es           | elasticsearch 搜索      | reading-common                              |
-| 6    | reading-feign-client | Feign客户端，提供微服务的公用客户端  | reading-common                              |
 ### 系统后端架构图
 ![img.png](design/diagram.png)
 
