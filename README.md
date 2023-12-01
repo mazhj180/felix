@@ -1,5 +1,5 @@
 
-<p style="text-align: center">
+<p align="center" style="text-align: center">
 	<img alt="logo" src="./design/logo.png" height="100px" width="100px">
 </p>
 <h3 align="center" style="margin: 30px 0 30px; font-weight: bold;">Felix-您的数字阅读伴侣</h3>
