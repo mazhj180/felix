@@ -1,4 +1,8 @@
-# Felix-您的数字阅读伴侣
+
+<p style="text-align: center">
+	<img alt="logo" src="./design/logo.png" height="100px" width="100px">
+</p>
+<h3 align="center" style="margin: 30px 0 30px; font-weight: bold;">Felix-您的数字阅读伴侣</h3>
 
 ## 项目简介
 Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的图书阅读应用。在这个数字化时代，Felix旨在重新定义移动阅读，将传统的阅读习惯与现代技术完美结合。
@@ -17,6 +21,32 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 | 缓存        | redis               |
 | 数据库       | mysql               |
 | 网络编程框架    | netty               |
+
+---
+
+## 项目模块层级图
+```text
+com.mazhj.felix
+├── felix-ui                // 前端框架 [80]
+├── felix-gateway           // 网关模块 [8080]
+├── felix-feign             // 服务调用客户端接口
+│       └── felix-feign-user-client                   // user服务
+│       └── felix-feign-book-client                   // book服务
+│       └── felix-feign-search-client                 // search服务
+├── felix-common            // 通用模块
+│       └── felix-common-core                         // 核心模块
+│       └── felix-common-pojo                         // 数据传输实体
+│       └── felix-common-quartz                       // 定时任务支持
+│       └── felix-common-redis                        // 缓存服务
+│       └── felix-common-web                          // web模块
+├── felix-system            // 系统业务模块
+│       └── felix-user                                // 用户服务 [9201]
+│       └── felix-book                                // 图书服务 [9202]
+│       └── felix-homepage                            // 主页服务 [9203]
+│       └── felix-search                              // 搜索服务 [9300]
+│       └── felix-forum                               // 论坛服务 [9301]
+├── pom.xml                 // 公共依赖
+```
 
 ---
 
@@ -53,8 +83,8 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
     - `params:` *{userId , password}*
 - `BookshelfController`用户书架的信息展示、同步书架信息
 
-### 图书模块 - felix-book
-- `BookController`获取图书信息、查看图书详情
+### 图书模块 - felix-book 
+- `BookController`获取图书信息、查看图书详情 
 - `ChapterController`查看章节信息、阅读章节
 #### 重要业务 - （阅读章节）
 业务场景：用户点击一本图书后会看到相应的章节信息，即可以阅读章节内容
@@ -74,10 +104,20 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 链表节点结构：
 ```json
 {
-  "id": "",
-  "name": "",
-  "pre": {},
-  "next": {}
+  "bookId": "",
+  "chapterCode": "",
+  "pre": {
+    "bookId": "",
+    "chapterCode": "",
+    "pre": {},
+    "next": {}
+  },
+  "next": {
+    "bookId": "",
+    "chapterCode": "",
+    "pre": {},
+    "next": {}
+  }
 }
 ```
 ### 主页模块 - felix-homepage
@@ -93,7 +133,32 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 
 #### 重点业务 - （猜你喜欢）
 业务场景：在主页会展示猜你喜欢图书列表；
+使用打分机制，首先会从缓存中拿到用户可能喜欢这本书的理由作为打分的一部分因素，
+```text
+//获取用户提供的理由，以此为根据打分
+//用户提供的理由包括：浏览记录、搜索记录
 
-### 论坛模块 - felix-forum
+//理由结构体
+public class Reason {
+    /** 搜索记录*/
+    private List<String> searchRecord;
+    /** 最近浏览图书的id*/
+    private List<String> lookRecent;
+}
+```
+然后再根据用户书架图书同种类别的多少进行类别打分。
+<br>
+最后根据分数取排名考前的图书推荐给用户。
 
 ### 搜索模块 - felix-search
+> 依赖的通用模块 : felix-common-core、felix-common-pojo、felix-common-web
+
+#### 提供接口:
+- `SearchController:`根据关键词搜索图书、根据名字搜索图书
+  - `getBooksByKeyword:`_关键词搜索图书(外部)_
+    - `uri:`*/search/get-books/keyword*
+    - `method:`*GET*
+    - `param:` *{}*
+    - `return:`*{}*
+### 论坛模块 - felix-forum
+todo
