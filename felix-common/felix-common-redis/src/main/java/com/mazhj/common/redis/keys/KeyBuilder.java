@@ -29,6 +29,10 @@ public final class KeyBuilder {
         public static String getChapterNodeKey(String bookId){
             return String.format(prefix + "chapter-node:key-%s",bookId);
         }
+
+        public static String getBookCategoriesKey(String bookId){
+            return String.format(prefix + "book-categories:key-%s",bookId);
+        }
     }
 
     public static class Homepage{
