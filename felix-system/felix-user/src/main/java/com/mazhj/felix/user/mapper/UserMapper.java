@@ -47,11 +47,10 @@ public interface UserMapper {
      */
     @ResultMap("baseResultMap")
     @Select("""
-                select id,user_id,user_pwd,nick_name,phone_number,
+                select id,user_id,user_pwd,nick_name,phone_number,email,
                        head_img_url,create_time,update_time
                 from user
-                where user_id = #{userId,jdbcType=VARCHAR}
-                
+                where user_id = #{userId}
             """)
     User selectByUserId(String userId);
 }

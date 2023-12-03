@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @author mazhj
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.mazhj.common","com.mazhj.felix.user"})
 @EnableFeignClients(clients = {BookClient.class})
 public class UserApplication {
     public static void main(String[] args) {
