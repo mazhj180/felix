@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author mazhj
@@ -25,6 +26,9 @@ public class BookVO implements Serializable {
 
     /** 图书名称*/
     private String bookName;
+
+    /** 图书分类*/
+    private List<String> categories;
 
     /** 图书评分*/
     private Byte score;

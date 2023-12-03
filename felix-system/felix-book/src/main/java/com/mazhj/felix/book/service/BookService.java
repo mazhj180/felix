@@ -1,6 +1,8 @@
 package com.mazhj.felix.book.service;
 
 import com.mazhj.felix.book.pojo.model.Book;
+import com.mazhj.felix.book.pojo.model.BookCategory;
+import com.mazhj.felix.book.pojo.model.Category;
 
 import java.util.List;
 
@@ -21,5 +23,12 @@ public interface BookService {
      * @return 图书列表
      */
     List<Book> getAllBook();
+
+    /**
+     * 获取图书分类信息
+     * @param bookId 图书id
+     * @return 分类信息
+     */
+    List<BookCategory> getCategoriesByBookId(String bookId);
 
 }

@@ -4,6 +4,7 @@ import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.book.mapper.BookMapper;
 import com.mazhj.felix.book.pojo.model.Book;
+import com.mazhj.felix.book.pojo.model.BookCategory;
 import com.mazhj.felix.book.service.BookService;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAllBook() {
         return this.bookMapper.select();
+    }
+
+    @Override
+    public List<BookCategory> getCategoriesByBookId(String bookId) {
+        String key = KeyBuilder.Book.getBookCategoriesKey(bookId);
+        List<BookCategory> categories = this.redisService.get(key);
+        if (!categories.isEmpty()){
+            return categories;
+        }
+        categories = this.bookMapper.selectCategoriesByBookId(bookId);
+        this.redisService.set(key,categories);
+        return categories;
     }
 }

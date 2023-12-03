@@ -17,15 +17,14 @@ public class BookshelfParam implements Serializable {
     /** 用户id*/
     private String userId;
 
+    /** 图书id */
+    private String bookId;
+
     /**
      * 同步类型：
      * 1.新增  2.更新  3.删除
      */
     private Integer syncType;
 
-    /** 图书id */
-    private String bookId;
 
-    /** 最后章节ID */
-    private Integer lastChapterId;
 }

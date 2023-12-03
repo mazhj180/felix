@@ -15,5 +15,5 @@ public class BookCategory {
     private String booId;
 
     /** 类别id*/
-    private String categoryId;
+    private com.mazhj.common.pojo.enums.BookCategory category;
 }

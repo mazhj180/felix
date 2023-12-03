@@ -1,6 +1,8 @@
 package com.mazhj.felix.book.mapper;
 
+import com.mazhj.felix.book.common.BookCategoryTypeHandler;
 import com.mazhj.felix.book.pojo.model.Book;
+import com.mazhj.felix.book.pojo.model.BookCategory;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
@@ -60,6 +62,21 @@ public interface BookMapper {
     )
     List<Book> selectManyByBookName(String bookName);
 
-
+    /**
+     * 获取图书的分类
+     * @param bookId 图书id
+     * @return 图书分类信息
+     */
+    @Results({
+            @Result(property = "id", column = "id", javaType = Long.class),
+            @Result(property = "bookId",column = "book_id",javaType = String.class),
+            @Result(property = "category", column = "categoryId", typeHandler = BookCategoryTypeHandler.class)
+    })
+    @Select(
+            """
+                select * from book_category_relation where book_id = #{bookId}
+            """
+    )
+    List<BookCategory> selectCategoriesByBookId(String bookId);
 
 }
