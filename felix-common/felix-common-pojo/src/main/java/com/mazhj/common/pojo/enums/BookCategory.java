@@ -1,4 +1,4 @@
-package com.mazhj.common.core.enums;
+package com.mazhj.common.pojo.enums;
 
 /**
  * @author mazhj
