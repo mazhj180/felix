@@ -15,7 +15,7 @@ public class Chapter implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 主键id*/
-    private Integer id;
+    private Long id;
 
     /** 图书id*/
     private String bookId;
