@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author mazhj
@@ -14,20 +15,13 @@ public class UserDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
-
     /**
-     * 唯一id
+     * 唯一id 登录名
      */
-    private String uuid;
+    private String userId;
 
     /**
-     * 登录名
-     */
-    private String loginName;
-
-    /**
-     * 中文名
+     * 昵称
      */
     private String nickName;
 
@@ -37,7 +31,22 @@ public class UserDTO implements Serializable {
     private String phoneNumber;
 
     /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
      * 头像
      */
     private String headImgUrl;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 }

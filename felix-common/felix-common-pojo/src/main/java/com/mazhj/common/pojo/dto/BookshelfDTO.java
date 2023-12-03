@@ -1,9 +1,11 @@
 package com.mazhj.common.pojo.dto;
 
+import com.mazhj.common.pojo.enums.BookCategory;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author mazhj
@@ -14,33 +16,21 @@ public class BookshelfDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    /** 用户id*/
+    private String userId;
 
-    /**
-     * 用户
-     */
-    private Integer userId;
-
-    /**
-     * 图书id
-     */
+    /** 图书id*/
     private String bookId;
 
+    /** 图书名称*/
     private String bookName;
 
+    /** 作者名称*/
     private String authorName;
 
+    /** 封面图片地址*/
     private String imgUrl;
 
-    /**
-     * 图书最后章节id
-     */
-    private Integer lastChapterId;
-
-    /**
-     * 最后阅读时间
-     */
-    private Long lastReadTime;
-
-    private Integer category;
+    /** 图书种类*/
+    private List<BookCategory> categories;
 }
