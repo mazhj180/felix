@@ -16,7 +16,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 数据库自增id*/
-    private Integer id;
+    private Long id;
 
     /** 唯一id 也是用户登录名*/
     private String userId;
@@ -27,8 +27,11 @@ public class User implements Serializable {
     /** 昵称*/
     private String nickName;
 
-    /**联系电话*/
+    /** 联系电话*/
     private String phoneNumber;
+
+    /** 用户邮箱*/
+    private String email;
 
     /** 头像地址*/
     private String headImgUrl;
