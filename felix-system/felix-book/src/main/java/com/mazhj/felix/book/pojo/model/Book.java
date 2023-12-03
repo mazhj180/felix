@@ -16,7 +16,7 @@ public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 数据库自增id*/
-    private Integer id;
+    private Long id;
 
     /** 图书id*/
     private String bookId;
