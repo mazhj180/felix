@@ -1,0 +1,16 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: felix-user
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 14117d1d-e7f1-4f96-afca-15ef3500f623
+        file-extension: yaml
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 14117d1d-e7f1-4f96-afca-15ef3500f623

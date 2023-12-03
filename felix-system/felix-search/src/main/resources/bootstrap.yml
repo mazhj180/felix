@@ -1,16 +1,16 @@
+server:
+  port: 7004
 spring:
   application:
-    name: search-service
+    name: felix-search
   profiles:
     active: dev
   cloud:
     nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
-        username: nacos
-        password: nacos
       config:
         server-addr: 127.0.0.1:8848
-        username: nacos
-        password: nacos
+        namespace: 14117d1d-e7f1-4f96-afca-15ef3500f623
         file-extension: yaml
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 14117d1d-e7f1-4f96-afca-15ef3500f623
