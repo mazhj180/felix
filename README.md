@@ -40,11 +40,11 @@ com.mazhj.felix
 │       └── felix-common-redis                        // 缓存服务
 │       └── felix-common-web                          // web模块
 ├── felix-system            // 系统业务模块
-│       └── felix-user                                // 用户服务 [9201]
-│       └── felix-book                                // 图书服务 [9202]
-│       └── felix-homepage                            // 主页服务 [9203]
-│       └── felix-search                              // 搜索服务 [9300]
-│       └── felix-forum                               // 论坛服务 [9301]
+│       └── felix-user                                // 用户服务 [7001]
+│       └── felix-book                                // 图书服务 [7002]
+│       └── felix-homepage                            // 主页服务 [7003]
+│       └── felix-search                              // 搜索服务 [7004]
+│       └── felix-forum                               // 论坛服务 [7005]
 ├── pom.xml                 // 公共依赖
 ```
 
