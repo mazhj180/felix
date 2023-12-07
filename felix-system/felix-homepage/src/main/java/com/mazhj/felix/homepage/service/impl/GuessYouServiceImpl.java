@@ -2,6 +2,7 @@ package com.mazhj.felix.homepage.service.impl;
 
 import com.mazhj.common.pojo.dto.BookDTO;
 import com.mazhj.common.pojo.dto.BookshelfDTO;
+import com.mazhj.common.pojo.enums.BookCategory;
 import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.feign.book.clients.BookClient;
@@ -82,20 +83,28 @@ public class GuessYouServiceImpl implements GuessYouService {
                 //获取用户书架中图书信息。以此为根据打分
                 String userId = entry.getKey();
                 List<BookshelfDTO> bookshelf = this.userClient.getBookshelf(userId);
-
-                Map<Integer, Long> collect = bookshelf.stream()
+                Map<String, Long> collect = bookshelf.stream()
                         .collect(Collectors
-                                .groupingBy(BookshelfDTO::getCategory, Collectors.counting()));
+                                .groupingBy(BookshelfDTO::getAuthorName, Collectors.counting()));
 
-                for (Map.Entry<Integer, Long> c : collect.entrySet()) {
+                for (Map.Entry<String, Long> c : collect.entrySet()) {
                     books.forEach(book -> {
-                        if (book.getCategory().equals(c.getKey())){
+                        if (book.getAuthorName().equals(c.getKey())){
                             scoreMap.put(book.getBookId(), c.getValue().intValue());
                         }else {
                             scoreMap.put(book.getBookId(),0);
                         }
                     });
                 }
+                Map<BookCategory,List<BookshelfDTO>> categoryBuckets = this.generateCategoryBuckets(bookshelf);
+                categoryBuckets.forEach((k,v) -> {
+                    for (BookDTO book : books) {
+                        if(book.getCategories().stream().anyMatch(bookCategory -> bookCategory.equals(k))){
+                            Integer score = scoreMap.get(book.getBookId());
+                            scoreMap.put(book.getBookId(),score);
+                        }
+                    }
+                });
                 //获取用户提供的理由，以此为根据打分
                 Reason reason = entry.getValue();
                 List<String> sr = reason.getSearchRecord();
@@ -115,7 +124,7 @@ public class GuessYouServiceImpl implements GuessYouService {
                     lr.forEach(look -> {
                         BookDTO book = this.bookClient.getBookByBookId(look);
                         for (BookDTO dto : books) {
-                            if (dto.getCategory().equals(book.getCategory())){
+                            if (dto.getAuthorName().equals(book.getAuthorName())){
                                 Integer score = scoreMap.get(dto.getBookId());
                                 scoreMap.put(dto.getBookId(),score + 1);
                             }
@@ -150,6 +159,20 @@ public class GuessYouServiceImpl implements GuessYouService {
                 }
                 this.redisService.setHashVal(listKey,userId,bookIds);
             }
+        }
+
+        private Map<BookCategory,List<BookshelfDTO>> generateCategoryBuckets(List<BookshelfDTO> bookshelf){
+            Map<BookCategory,List<BookshelfDTO>> categoryMap = new HashMap<>();
+            for (BookCategory category : BookCategory.values()) {
+                categoryMap.put(category,new ArrayList<>());
+            }
+
+            for (BookshelfDTO dto : bookshelf) {
+                for (BookCategory category : dto.getCategories()) {
+                    categoryMap.get(category).add(dto);
+                }
+            }
+            return categoryMap;
         }
     }
 }
