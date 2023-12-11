@@ -73,92 +73,82 @@ public class GuessYouServiceImpl implements GuessYouService {
         @Invoke
         public void guessYou(){
             String reasonKey = KeyBuilder.Homepage.getReasonKey();
-            String listKey = KeyBuilder.Homepage.getPossibleLikeKey();
+            String likeKey = KeyBuilder.Homepage.getPossibleLikeKey();
             Map<String, Reason> reasonMap = this.redisService.getHashEntries(reasonKey);
             List<BookDTO> books = this.bookClient.getBookList();
 
             for (Map.Entry<String, Reason> entry : reasonMap.entrySet()) {
-                //不同用户下，每本书获得的分数。
-                HashMap<String, Integer> scoreMap = new HashMap<>();
-                //获取用户书架中图书信息。以此为根据打分
                 String userId = entry.getKey();
                 List<BookshelfDTO> bookshelf = this.userClient.getBookshelf(userId);
-                Map<String, Long> collect = bookshelf.stream()
-                        .collect(Collectors
-                                .groupingBy(BookshelfDTO::getAuthorName, Collectors.counting()));
+                //构建评委链
+                Judge bookshelfJudge = new BookshelfJudge(bookshelf);
+                Judge reasonJudge = new ReasonJudge(searchClient, bookClient);
+                bookshelfJudge.addJudge(reasonJudge);
 
-                for (Map.Entry<String, Long> c : collect.entrySet()) {
-                    books.forEach(book -> {
-                        if (book.getAuthorName().equals(c.getKey())){
-                            scoreMap.put(book.getBookId(), c.getValue().intValue());
-                        }else {
-                            scoreMap.put(book.getBookId(),0);
-                        }
-                    });
-                }
-                Map<BookCategory,List<BookshelfDTO>> categoryBuckets = this.generateCategoryBuckets(bookshelf);
-                categoryBuckets.forEach((k,v) -> {
-                    for (BookDTO book : books) {
-                        if(book.getCategories().stream().anyMatch(bookCategory -> bookCategory.equals(k))){
-                            Integer score = scoreMap.get(book.getBookId());
-                            scoreMap.put(book.getBookId(),score);
-                        }
-                    }
-                });
-                //获取用户提供的理由，以此为根据打分
-                Reason reason = entry.getValue();
-                List<String> sr = reason.getSearchRecord();
-                if (!sr.isEmpty()) {
-                    sr.forEach(record -> {
-                        List<BookDTO> bsn = this.searchClient.searchBooksByName(record);
-                        List<BookDTO> bsk = this.searchClient.searchBooksByKeyword(record);
-
-                        for (BookDTO dto : Stream.concat(bsn.stream(),bsk.stream()).toList()) {
-                            Integer score = scoreMap.get(dto.getBookId());
-                            scoreMap.put(dto.getBookId(),score + 1);
-                        }
-                    });
-                }
-                List<String> lr = reason.getLookRecent();
-                if (!lr.isEmpty()) {
-                    lr.forEach(look -> {
-                        BookDTO book = this.bookClient.getBookByBookId(look);
-                        for (BookDTO dto : books) {
-                            if (dto.getAuthorName().equals(book.getAuthorName())){
-                                Integer score = scoreMap.get(dto.getBookId());
-                                scoreMap.put(dto.getBookId(),score + 1);
-                            }
-                        }
-                    });
-                }
+                //评委们开始打分
+                bookshelfJudge.scoring(entry,books);
 
                 //根据每本书评分获取前10
-                int rank = 10;
-                List<Map.Entry<String, Integer>> entryList = new ArrayList<>(scoreMap.entrySet()
-                        .stream().toList());
-                for (int i = 0; i < rank; i++) {
-                    int maxIndex = i;
-                    Map.Entry<String, Integer> maxEntry = entryList.get(i);
-                    Map.Entry<String,Integer> tempEntry;
-                    for (int j = i + 1; j < entryList.size() - 1; j++) {
-                        if (entryList.get(j).getValue() > maxEntry.getValue()){
-                            maxEntry = entryList.get(j);
-                            maxIndex = j;
-                        }
-                    }
-                    if (maxIndex != i){
-                        tempEntry = entryList.get(maxIndex);
-                        entryList.set(maxIndex,entryList.get(i));
-                        entryList.set(i,tempEntry);
-                    }
-                }
-
-                List<String> bookIds = new ArrayList<>();
-                for (int i = 0; i < rank; i++) {
-                    bookIds.add(entryList.get(i).getKey());
-                }
-                this.redisService.setHashVal(listKey,userId,bookIds);
+                List<String> bookIds = ranking(reasonJudge.scoreMap, 10);
+                this.redisService.setHashVal(likeKey,userId,bookIds);
             }
+        }
+
+
+        private List<String> ranking(Map<String, Integer> scoreMap,int rank){
+            List<Map.Entry<String, Integer>> entryList = new ArrayList<>(scoreMap.entrySet()
+                    .stream().toList());
+            for (int i = 0; i < rank; i++) {
+                int maxIndex = i;
+                Map.Entry<String, Integer> maxEntry = entryList.get(i);
+                Map.Entry<String,Integer> tempEntry;
+                for (int j = i + 1; j < entryList.size() - 1; j++) {
+                    if (entryList.get(j).getValue() > maxEntry.getValue()){
+                        maxEntry = entryList.get(j);
+                        maxIndex = j;
+                    }
+                }
+                if (maxIndex != i){
+                    tempEntry = entryList.get(maxIndex);
+                    entryList.set(maxIndex,entryList.get(i));
+                    entryList.set(i,tempEntry);
+                }
+            }
+
+            List<String> bookIds = new ArrayList<>();
+            for (int i = 0; i < rank; i++) {
+                bookIds.add(entryList.get(i).getKey());
+            }
+            return bookIds;
+        }
+    }
+
+    private static abstract class Judge{
+
+        protected Judge judge;
+
+        protected Map<String,Integer> scoreMap = new HashMap<>();
+
+
+        public void addJudge(Judge judge){
+            this.judge = judge;
+        }
+
+        /**
+         * 评分逻辑
+         * @param books 全部图书
+         * @param reasonEntry 用户理由
+         */
+        public abstract void scoring(Map.Entry<String, Reason> reasonEntry,List<BookDTO> books);
+
+    }
+
+    private static class BookshelfJudge extends Judge {
+
+        private final List<BookshelfDTO> bookshelf;
+
+        public BookshelfJudge(List<BookshelfDTO> bookshelf) {
+            this.bookshelf = bookshelf;
         }
 
         private Map<BookCategory,List<BookshelfDTO>> generateCategoryBuckets(List<BookshelfDTO> bookshelf){
@@ -173,6 +163,74 @@ public class GuessYouServiceImpl implements GuessYouService {
                 }
             }
             return categoryMap;
+        }
+
+        @Override
+        public void scoring(Map.Entry<String, Reason> reasonEntry, List<BookDTO> books) {
+            Map<String, Long> collect = bookshelf.stream()
+                    .collect(Collectors
+                            .groupingBy(BookshelfDTO::getAuthorName, Collectors.counting()));
+
+            for (Map.Entry<String, Long> c : collect.entrySet()) {
+                books.forEach(book -> {
+                    if (book.getAuthorName().equals(c.getKey())){
+                        super.scoreMap.put(book.getBookId(), c.getValue().intValue());
+                    }else {
+                        super.scoreMap.put(book.getBookId(),0);
+                    }
+                });
+            }
+            Map<BookCategory,List<BookshelfDTO>> categoryBuckets = this.generateCategoryBuckets(bookshelf);
+            categoryBuckets.forEach((k,v) -> {
+                for (BookDTO book : books) {
+                    if(book.getCategories().stream().anyMatch(bookCategory -> bookCategory.equals(k))){
+                        Integer score = super.scoreMap.get(book.getBookId());
+                        super.scoreMap.put(book.getBookId(),score);
+                    }
+                }
+            });
+            judge.scoring(reasonEntry,books);
+        }
+    }
+
+    private static class ReasonJudge extends Judge {
+
+        private final SearchClient searchClient;
+
+        private final BookClient bookClient;
+
+        public ReasonJudge(SearchClient searchClient,BookClient bookClient) {
+            this.searchClient = searchClient;
+            this.bookClient = bookClient;
+        }
+
+        @Override
+        public void scoring(Map.Entry<String, Reason> reasonEntry, List<BookDTO> books) {
+            Reason reason = reasonEntry.getValue();
+            List<String> sr = reason.getSearchRecord();
+            if (!sr.isEmpty()) {
+                sr.forEach(record -> {
+                    List<BookDTO> bsn = this.searchClient.searchBooksByName(record);
+                    List<BookDTO> bsk = this.searchClient.searchBooksByKeyword(record);
+
+                    for (BookDTO dto : Stream.concat(bsn.stream(),bsk.stream()).toList()) {
+                        Integer score = super.scoreMap.get(dto.getBookId());
+                        super.scoreMap.put(dto.getBookId(),score + 1);
+                    }
+                });
+            }
+            List<String> lr = reason.getLookRecent();
+            if (!lr.isEmpty()) {
+                lr.forEach(look -> {
+                    BookDTO book = this.bookClient.getBookByBookId(look);
+                    for (BookDTO dto : books) {
+                        if (dto.getAuthorName().equals(book.getAuthorName())){
+                            Integer score = super.scoreMap.get(dto.getBookId());
+                            super.scoreMap.put(dto.getBookId(),score + 1);
+                        }
+                    }
+                });
+            }
         }
     }
 }
