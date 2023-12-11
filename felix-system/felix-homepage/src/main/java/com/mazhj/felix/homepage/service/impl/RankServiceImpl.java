@@ -1,6 +1,7 @@
 package com.mazhj.felix.homepage.service.impl;
 
 import com.mazhj.common.pojo.dto.BookDTO;
+import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.feign.book.clients.BookClient;
 import com.mazhj.felix.homepage.service.RankService;
@@ -25,7 +26,7 @@ public class RankServiceImpl implements RankService {
 
     @Override
     public List<BookDTO> getHotRankings() {
-
+        String key = KeyBuilder.Homepage.getHotRankingsKey();
         return null;
     }
 

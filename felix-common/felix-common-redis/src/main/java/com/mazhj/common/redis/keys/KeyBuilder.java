@@ -38,8 +38,12 @@ public final class KeyBuilder {
     public static class Homepage{
         private static final String prefix = ServiceModel.HOMEPAGE.str();
 
-        public static String getRanksKey(){
-            return prefix + "rank:key";
+        public static String getHotRankingsKey(){
+            return prefix + "hot-rankings:key";
+        }
+
+        public static String getLikeRankingsKey(){
+            return prefix + "like-rankings:key";
         }
 
         public static String getPossibleLikeKey(){
