@@ -1,4 +1,4 @@
-package com.mazhj.felix.forum.websocket;
+package com.mazhj.felix.forum.websocket.handler;
 
 /**
  * @author mazhj
