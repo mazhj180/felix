@@ -1,5 +1,6 @@
 package com.mazhj.felix.forum.websocket.handler;
 
+import com.mazhj.felix.forum.service.ChannelService;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -13,7 +14,11 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
+    private final ChannelService msgService;
 
+    public UltimateHandler(ChannelService msgService) {
+        this.msgService = msgService;
+    }
 
     private void shutOff(ChannelHandlerContext ctx){
         //todo 业务逻辑

@@ -6,6 +6,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.mazhj.common.core.utils.SpringUtil;
+import com.mazhj.felix.forum.websocket.handler.HttpHeaderHandler;
 import com.mazhj.felix.forum.websocket.handler.UltimateHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -89,6 +90,7 @@ public class NettyServer implements ApplicationRunner {
                         pipeline.addLast(new HttpServerCodec());
                         pipeline.addLast(new ChunkedWriteHandler());
                         pipeline.addLast(new HttpObjectAggregator(1024*100,false));
+                        pipeline.addLast(new HttpHeaderHandler());
                         //将http请求升级到ws
                         pipeline.addLast(new WebSocketServerProtocolHandler("/"));
                         //自定义终极处理器,处理用户请求信息
