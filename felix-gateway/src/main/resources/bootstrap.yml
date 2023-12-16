@@ -14,3 +14,6 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         namespace: 14117d1d-e7f1-4f96-afca-15ef3500f623
+    gateway:
+      white-list:
+        - aaaa
