@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.exception.SystemException;
 import com.mazhj.common.web.response.AjaxResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -20,6 +21,7 @@ import java.nio.charset.StandardCharsets;
  * 网关统一异常处理器
  * @author mazhj
  */
+@Slf4j
 @Order(-2)
 @Component
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
@@ -33,6 +35,10 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         } else if (ex instanceof BusinessException) {
             ajaxResult = AjaxResult.Builder.unAuthorized();
             httpStatus = HttpStatus.UNAUTHORIZED;
+        } else if (ex instanceof Exception) {
+            ajaxResult = AjaxResult.Builder.error();
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            log.error("网关服务内部异常 {}",ex.getMessage(),ex);
         }
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);

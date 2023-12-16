@@ -8,17 +8,21 @@ import com.mazhj.common.core.utils.SpringUtil;
 import com.mazhj.common.pojo.claims.Claims;
 import com.mazhj.felix.gateway.config.properties.GatewayConfigProperties;
 import com.nimbusds.jose.JOSEException;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -29,13 +33,13 @@ import java.util.regex.Pattern;
 @EnableConfigurationProperties(value = {GatewayConfigProperties.class})
 public class AuthFilter implements GlobalFilter {
 
-    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/index/\\S*","/book/\\S*"};
+    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/index[^\\s]*","/book/[^\\s]*"};
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
         try {
-            String requestPath = exchange.getRequest().getPath().toString();
+            ServerHttpRequest request = exchange.getRequest();
+            String requestPath = request.getPath().toString();
             List<String> whiteList = SpringUtil.getBean(GatewayConfigProperties.class).getWhiteList();
             boolean isAccess = whiteList.stream().anyMatch(path -> path.equals(requestPath));
 
@@ -44,20 +48,38 @@ public class AuthFilter implements GlobalFilter {
                     return chain.filter(exchange);
                 }
             }
-            String token = exchange.getRequest().getHeaders().getFirst("Authentication");
-            Claims claims = JwtUtil.validateToken(token);
-            ServerHttpRequest request = exchange.getRequest()
-                    .mutate().headers( httpHeaders -> {
-                        httpHeaders.set("userId",claims.getUserId());
-                    }).build();
+            String token = Optional.ofNullable(
+                    request.getHeaders()
+                            .getFirst("Authentication")
+                    ).orElse(request.getQueryParams().getFirst("token"));
+            Claims claims = validate(token);
+            request = request.mutate().headers(httpHeaders -> {
+                httpHeaders.set("userId",claims.getUserId());
+            }).build();
 
+            if (isWebSocketUpgradeRequest(request)){
+                MultiValueMap<String, String> queryParams = request.getQueryParams();
+                queryParams.remove("token");
+                request.getHeaders().addAll(queryParams);
+            }
             exchange.mutate().request(request).build();
-
             return chain.filter(exchange);
         } catch (ParseException | JOSEException e) {
             throw new SystemException(e.getMessage());
         } catch (AuthException e) {
             throw new BusinessException(e.getMessage());
         }
+    }
+
+    private Claims validate(String token) throws AuthException, ParseException, JOSEException {
+        return JwtUtil.validateToken(token);
+    }
+
+    private boolean isWebSocketUpgradeRequest(ServerHttpRequest request) {
+        String upgrade = request.getHeaders().getUpgrade();
+        if (upgrade == null || upgrade.isEmpty()){
+            return false;
+        }
+        return upgrade.equalsIgnoreCase("websocket");
     }
 }
