@@ -48,9 +48,27 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void off(Channel channel) {
+    public void out(Channel channel) {
         String userId = channel.attr(ChannelKeys.USER_ID).get();
+        if (channel.hasAttr(ChannelKeys.TOPIC_ID)) {
+            topicContainer.remove(channel.attr(ChannelKeys.TOPIC_ID).get(),userId);
+        }
+        if (channel.hasAttr(ChannelKeys.GROUP_ID)) {
+//            channelContainer.del(channel.attr(ChannelKeys.GROUP_ID).get());
+        }
         channelContainer.del(userId);
+    }
+
+    @Override
+    public void join(Channel channel) {
+        String userId = channel.attr(ChannelKeys.USER_ID).get();
+        channelContainer.put(userId,channel);
+        if (channel.hasAttr(ChannelKeys.TOPIC_ID)) {
+            topicContainer.add(channel.attr(ChannelKeys.TOPIC_ID).get(),userId);
+        }
+        if (channel.hasAttr(ChannelKeys.GROUP_ID)) {
+//            channelContainer.del(channel.attr(ChannelKeys.GROUP_ID).get());
+        }
     }
 
     private void topic(MsgBody msgBody,String scopeId){

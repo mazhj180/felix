@@ -25,9 +25,15 @@ public interface ChannelService {
     void broadcast(MsgBody msgBody, MsgScope scope, String scopeId);
 
     /**
-     * 关闭连接
-     * @param channel
+     * 将连接从容器中移除
+     * @param channel 连接
      */
-    void off(Channel channel);
+    void out(Channel channel);
+
+    /**
+     * 添加连接到容器中
+     * @param channel 连接
+     */
+    void join(Channel channel);
 
 }

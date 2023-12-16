@@ -37,4 +37,12 @@ public class CaffeineTopicContainer implements CacheContainer<String, List<Strin
     public void del(String key) {
         CONTAINER.invalidate(key);
     }
+
+    public void remove(String topicId,String userId) {
+        get(topicId).removeIf(val -> val.equals(userId));
+    }
+
+    public void add(String topicId,String userId) {
+        get(topicId).add(userId);
+    }
 }
