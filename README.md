@@ -1,6 +1,6 @@
 
 <p align="center" style="text-align: center">
-	<img alt="logo" src="./design/logo.png" height="100px" width="100px">
+	<img alt="logo" src="./design/logo2.png" height="100px" width="220px">
 </p>
 <h3 align="center" style="margin: 30px 0 30px; font-weight: bold;">Felix-您的数字阅读伴侣</h3>
 
@@ -9,18 +9,41 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 
 ---
 
+## UI 设计
+
+
+---
+
 ## 技术选型
-| 框架或工具     | 名称                  |
-|-----------|---------------------|
-| web层框架    | springboot          |
-| 持久层框架     | mybatis             |
-| 配置中心、注册中心 | nacos               |
-| 网关        | springcloud-gateway |
-| 全文搜索引擎    | Elasticsearch       |
-| 远程调用框架    | feign               |
-| 缓存        | redis               |
-| 数据库       | mysql               |
-| 网络编程框架    | netty               |
+<div style="display: flex; ">
+  <div style="justify-content: flex-start; flex-grow: 0; margin-right: 100px">
+
+| 框架或工具        | 名称                   | 
+|--------------|----------------------|
+| web层框架       | springboot           |
+| 持久层框架        | mybatis              |
+| 配置中心、注册中心    | nacos                |
+| 网关           | spring cloud-gateway |
+| 全文搜索引擎       | elasticsearch        |
+| 远程调用框架       | feign                |
+| 缓存           | redis                |
+| 数据库          | mysql                |
+| 网络编程框架       | netty                | 
+  </div>
+  <div style="justify-content: flex-end; flex-grow: 1">
+    <p> Spring Boot - https://spring.io/projects/spring-boot </p>
+    <p> MyBatis - http://www.mybatis.org/mybatis-3/zh/index.html </p>
+    <p> Nacos - https://nacos.io/zh-cn/ </p>
+    <p> Spring Cloud Gateway - https://spring.io/projects/spring-cloud-gateway </p>
+    <p> Elasticsearch - https://www.elastic.co/elasticsearch/ </p>
+    <p> OpenFeign - https://github.com/OpenFeign/feign </p>
+    <p> Redis - https://redis.io/ </p>
+    <p> MySQL - https://www.mysql.com/ </p>
+    <p> Netty - https://netty.io/ </p>
+  </div>
+</div>
+
+
 
 ---
 
