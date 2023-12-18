@@ -10,6 +10,10 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 ---
 
 ## UI 设计
+<div style="display: flex; background-color: aliceblue; height: 690px">
+  <img src="design/ui_login.PNG" height="660px" width="300px" style="justify-content: space-between; margin: 15px 15px">
+  <img src="design/ui_index.PNG" height="660px" width="300px" style="justify-content: space-between; margin: 15px 15px">
+</div>
 
 
 ---
