@@ -36,7 +36,6 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
                 shutOff(ctx);
             }
         }else if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete){
-            System.out.println("握手success");
             channelService.join(ctx.channel());
         }
 

@@ -3,6 +3,7 @@ package com.mazhj.felix.forum.service;
 import com.mazhj.felix.forum.common.enums.MsgScope;
 import com.mazhj.felix.forum.pojo.MsgBody;
 import io.netty.channel.Channel;
+import org.springframework.context.ApplicationEvent;
 
 /**
  * @author mazhj
@@ -35,5 +36,11 @@ public interface ChannelService {
      * @param channel 连接
      */
     void join(Channel channel);
+
+    /**
+     *
+     * @param event
+     */
+    void read(ApplicationEvent event);
 
 }

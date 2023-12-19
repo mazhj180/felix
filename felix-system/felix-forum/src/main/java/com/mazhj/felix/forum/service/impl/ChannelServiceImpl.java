@@ -9,6 +9,7 @@ import com.mazhj.felix.forum.websocket.container.CaffeineChannelContainer;
 import com.mazhj.felix.forum.websocket.container.CaffeineTopicContainer;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,6 +70,11 @@ public class ChannelServiceImpl implements ChannelService {
         if (channel.hasAttr(ChannelKeys.GROUP_ID)) {
 //            channelContainer.del(channel.attr(ChannelKeys.GROUP_ID).get());
         }
+    }
+
+    @Override
+    public void read(ApplicationEvent event) {
+
     }
 
     private void topic(MsgBody msgBody,String scopeId){
