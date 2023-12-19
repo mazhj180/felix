@@ -11,7 +11,7 @@ import java.util.Date;
 public class Topic {
 
     /** 数据库主键*/
-    private Integer id;
+    private Long id;
 
     /** 主题唯一id*/
     private String topicId;
@@ -19,17 +19,18 @@ public class Topic {
     /** 主题名称*/
     private String topicName;
 
+
     /** 简介*/
     private String introduction;
 
     /** 评论条数*/
-    private Integer remarkCount;
+    private Long remarkCount;
 
     /** 封面图片*/
     private String imgUri;
 
     /** 拥有者id*/
-    private String ownerId;
+    private String creator;
 
     /** 创建时间*/
     private Date createTime;

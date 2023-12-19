@@ -147,3 +147,50 @@ create table if not exists felix_search.search_record
 
 create index idx_create_date
     on felix_search.search_record (create_date);
+
+------  forum
+
+drop table if exists `topic`;
+create table `topic`(
+    `id` int unsigned auto_increment comment '数据库主键',
+    `topic_id` varchar(32) not null comment '话题id',
+    `topic_name` varchar(255) not null comment '话题名称',
+    `category` varchar(32) not null comment '话题分类',
+    `remark_count` int unsigned not null comment '评论条数',
+    `img_uri` varchar(255) not null comment '封面图片uri',
+    `creator` varchar(32) not null comment '创建者',
+    `create_time` timestamp default current_timestamp comment '创建时间',
+    primary key (`id`),
+    unique key `idx_topic_id` (`topic_id`)
+)engine = InnoDB default charset =utf8mb4 comment '话题信息表';
+
+drop table if exists `topic_category`;
+create table `topic_category`(
+    `id` int unsigned auto_increment comment '数据库自增id',
+    `category_id` varchar(64) not null comment '类别id',
+    `name` varchar(32) not null comment '类别名称',
+    primary key (`id`),
+    unique key idx_category_id (`category_id`)
+)engine = InnoDB default charset =utf8mb4 comment '话题类别表';
+
+drop table if exists `topic_category_relation`;
+create table `topic_category_relation`(
+    `id` int unsigned auto_increment comment '数据库自增id',
+    `topic_id` varchar(32) not null comment '话题id',
+    `category_id` varchar(64) not null comment '类别id',
+    primary key (`id`),
+    unique key `idx_topic_category_id` (`topic_id`,`category_id`)
+)engine = InnoDB default charset =utf8mb4 comment '话题类别映射关系表';
+
+drop table if exists `topic_remark`;
+create table `topic_remark`(
+    `id` int unsigned auto_increment comment '数据库主键',
+    `remark_id` varchar(32) not null comment '评论id',
+    `topic_id` varchar(32) not null comment '所属话题id',
+    `user_id` varchar(32) not null comment '用户id',
+    `nick_name` varchar(32) collate utf8mb4_unicode_ci  not null comment '用户评论时昵称',
+    `head_img` varchar(255) not null comment '用户头像',
+    `content` text collate utf8mb4_unicode_ci comment '评论内容',
+    `healthy_content` text collate utf8mb4_unicode_ci comment '脱敏内容',
+    `support_count` int unsigned default 0 comment '点赞数'
+);
