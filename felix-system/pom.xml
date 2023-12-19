@@ -31,12 +31,6 @@
         <dependency>
             <groupId>com.mazhj</groupId>
             <artifactId>felix-common-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github.pagehelper</groupId>
-                    <artifactId>pagehelper-spring-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
