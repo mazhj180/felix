@@ -1,6 +1,6 @@
 package com.mazhj.felix.forum.websocket.handler;
 
-import com.mazhj.felix.forum.common.Constant.ChannelKeys;
+import com.mazhj.felix.forum.common.constant.ChannelKeys;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

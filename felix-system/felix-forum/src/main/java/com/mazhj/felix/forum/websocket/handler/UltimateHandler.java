@@ -3,6 +3,7 @@ package com.mazhj.felix.forum.websocket.handler;
 import com.alibaba.fastjson2.JSON;
 import com.mazhj.felix.forum.pojo.MsgBody;
 import com.mazhj.felix.forum.service.ChannelService;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,6 +46,8 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
 //        MsgBody msgBody = JSON.to(MsgBody.class, textWebSocketFrame.text());
         System.out.println(textWebSocketFrame.text());
+        Channel channel = channelHandlerContext.channel();
+
     }
 
     @Override

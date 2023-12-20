@@ -1,7 +1,7 @@
 package com.mazhj.felix.forum.service.impl;
 
 import com.alibaba.fastjson2.JSON;
-import com.mazhj.felix.forum.common.Constant.ChannelKeys;
+import com.mazhj.felix.forum.common.constant.ChannelKeys;
 import com.mazhj.felix.forum.common.enums.MsgScope;
 import com.mazhj.felix.forum.pojo.MsgBody;
 import com.mazhj.felix.forum.service.ChannelService;
