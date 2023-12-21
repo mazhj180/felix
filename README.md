@@ -68,10 +68,20 @@ com.mazhj.felix
 | 3   | felix-system  | 系统服务模块，包含体业务模块       | felix-book、felix-user、felix-homepage、felix-search、felix-search |
 | 4   | felix-feign   | Feign客户端，提供微服务的公用客户端 | book-client、user-client、search-client                          |
 
-## 系统后端架构图
-![img.png](design/diagram.png)
+## 系统架构图
+<img src="design/diagram2.png" height="600" width="900" alt="架构图">
 
 ---
+
+## 网关服务模块（felix-gateway）
+> `felix-gateway`是felix系统的请求入口,对外提供鉴权、限流等操作。
+> 使用 Spring Cloud Gateway响应式网关技术，内部使用JWT完成对所有
+> 用户请求的鉴定；使用 Hystrix、Redis基于令牌桶算法完成限流操作。
+
+### 网关处理请求流程图
+
+
+
 
 ## 系统服务模块（felix-system）
 
@@ -85,12 +95,8 @@ com.mazhj.felix
 --------------------------------------------------------------------------------------------
 ### 用户模块 - felix-user
 > 依赖的通用模块：felix-common-core、felix-common-web、felix-common-pojo
-#### 提供接口：
+#### 提供服务：
 - `UserController`提供用户登录、注册功能接口
-  - `login:`
-    - `uri:` */user/login*
-    - `method:` *GET*
-    - `params:` *{userId , password}*
 - `BookshelfController`用户书架的信息展示、同步书架信息
 
 ### 图书模块 - felix-book 
