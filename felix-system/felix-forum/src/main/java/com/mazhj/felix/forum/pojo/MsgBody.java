@@ -10,7 +10,7 @@ import lombok.Data;
 public class MsgBody {
 
     /** 1:topic 2:group 3:group 4:private*/
-    private Integer msgScope;
+    private MsgScope msgScope;
 
     private Integer msgType;
 
