@@ -18,15 +18,27 @@ public interface TopicRemarkMapper {
      */
     @Select("""
                 select * from topic_remark
-                where root_remark_id = null and topic_id = #{topicId}
+                where topic_id = #{topicId} and root_remark_id is null
+                order by support desc , create_time
             """)
     List<TopicRemark> selectRootRemarks(String topicId);
 
     @Select("""
+            <script>
                 select * from topic_remark
-                where root_remark_id = #{rootRemarkId} and topic_id = #{topicId}
+                where topic_id = #{topicId} and root_remark_id = #{rootRemarkId}
+                order by create_time, support desc
+                <if test='limits != null'>
+                    limit = #{limits}
+                </if>
+            </script>
             """)
-    List<TopicRemark> selectChildRemarks(String topicId,String rootRemarkId);
+    List<TopicRemark> selectChildRemarks(String topicId, String rootRemarkId, Integer limits);
 
+    @Select("""
+                select * from topic_remark
+                where remark_id = #{remarkId} and topic_id = #{topicId}
+            """)
+    List<TopicRemark> selectRemarksById(String topicId,String remarkId);
 
 }

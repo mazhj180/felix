@@ -1,4 +1,4 @@
-package com.mazhj.felix.forum.pojo.model;
+package com.mazhj.felix.forum.pojo.vo;
 
 import lombok.Data;
 
@@ -8,12 +8,7 @@ import java.util.Date;
  * @author mazhj
  */
 @Data
-public class TopicRemark {
-
-    /**
-     * 数据库主键。
-     */
-    private Long id;
+public class TopicRemarkVO {
 
     /**
      * 评论ID。
@@ -51,11 +46,6 @@ public class TopicRemark {
     private String headImg;
 
     /**
-     * 评论内容。
-     */
-    private String content;
-
-    /**
      * 脱敏内容。
      */
     private String healthyContent;
@@ -63,7 +53,7 @@ public class TopicRemark {
     /**
      * 评论的点赞数。
      */
-    private Long supportCount;
+    private Integer supportCount;
 
     /** 评论时间*/
     private Date createTime;
