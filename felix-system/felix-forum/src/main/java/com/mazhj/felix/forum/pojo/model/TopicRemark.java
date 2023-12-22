@@ -11,29 +11,24 @@ import java.util.Date;
 public class TopicRemark {
 
     /**
-     * 数据库主键。
-     */
-    private Long id;
-
-    /**
      * 评论ID。
      */
-    private String remarkId;
+    private Long remarkId;
 
     /**
      * 根评论的ID。如果这是根评论，则为null。
      */
-    private String rootRemarkId;
+    private Long rootRemarkId;
 
     /**
      * 回复的评论ID。如果这是根评论，则为null。
      */
-    private String replyRemarkId;
+    private Long replyRemarkId;
 
     /**
      * 所属话题ID。
      */
-    private String topicId;
+    private Long topicId;
 
     /**
      * 用户ID。
@@ -65,7 +60,9 @@ public class TopicRemark {
      */
     private Long supportCount;
 
-    /** 评论时间*/
+    /**
+     * 评论时间
+     */
     private Date createTime;
 
 }

@@ -10,15 +10,11 @@ import java.util.Date;
 @Data
 public class Topic {
 
-    /** 数据库主键*/
-    private Long id;
-
     /** 主题唯一id*/
-    private String topicId;
+    private Long topicId;
 
     /** 主题名称*/
     private String topicName;
-
 
     /** 简介*/
     private String introduction;
