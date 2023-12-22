@@ -19,6 +19,15 @@
     <dependencies>
         <dependency>
             <groupId>com.mazhj</groupId>
+            <artifactId>felix-common-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mazhj</groupId>
+            <artifactId>felix-common-pojo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mazhj</groupId>
             <artifactId>felix-common-quartz</artifactId>
         </dependency>
         <dependency>
@@ -36,6 +45,21 @@
         <dependency>
             <groupId>com.mazhj</groupId>
             <artifactId>felix-feign-search-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
         <dependency>
