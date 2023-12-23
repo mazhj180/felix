@@ -12,13 +12,17 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2Res
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +32,11 @@ import java.util.regex.Pattern;
 /**
  * @author mazhj
  */
-@Order(-1)
 @Component
 @EnableConfigurationProperties(value = {GatewayConfigProperties.class})
-public class AuthFilter implements GlobalFilter {
+public class AuthFilter implements GlobalFilter, Ordered {
 
-    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/index[^\\s]*","/book/[^\\s]*"};
+    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/user/login","/index/[^\\s]*","/book/[^\\s]*"};
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -58,9 +61,15 @@ public class AuthFilter implements GlobalFilter {
             }).build();
 
             if (isWebSocketUpgradeRequest(request)){
-                MultiValueMap<String, String> queryParams = request.getQueryParams();
+                MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>(request.getQueryParams());
                 queryParams.remove("token");
-                request.getHeaders().addAll(queryParams);
+                URI originalUri = request.getURI();
+                URI newUri = URI.create(originalUri.getScheme() + "://" + originalUri.getAuthority() + originalUri.getPath());
+                System.out.println(newUri);
+                request = request.mutate()
+                        .uri(newUri)
+                        .headers(httpHeaders -> httpHeaders.addAll(queryParams))
+                        .build();
             }
             exchange.mutate().request(request).build();
             return chain.filter(exchange);
@@ -81,5 +90,10 @@ public class AuthFilter implements GlobalFilter {
             return false;
         }
         return upgrade.equalsIgnoreCase("websocket");
+    }
+
+    @Override
+    public int getOrder() {
+        return -100;
     }
 }

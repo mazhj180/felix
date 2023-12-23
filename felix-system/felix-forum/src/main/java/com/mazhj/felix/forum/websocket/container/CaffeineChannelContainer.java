@@ -2,7 +2,7 @@ package com.mazhj.felix.forum.websocket.container;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.mazhj.felix.forum.common.config.CaffeineCacheProperties;
+import com.mazhj.felix.forum.common.config.properties.CaffeineCacheProperties;
 import io.netty.channel.Channel;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;

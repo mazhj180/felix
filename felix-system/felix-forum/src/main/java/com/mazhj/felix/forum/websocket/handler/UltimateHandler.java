@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.mazhj.felix.forum.common.constant.ChannelKeys;
 import com.mazhj.felix.forum.common.event.*;
 import com.mazhj.felix.forum.pojo.MsgBody;
+import com.mazhj.felix.forum.pojo.PushEventInfo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -41,15 +42,29 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
-        MsgBody msgBody = JSON.to(MsgBody.class, textWebSocketFrame.text());
-        AbstractMsgPushEvent event = switch (msgBody.getMsgScope()) {
-            case TOPIC, REMARK -> new TopicMsgPushEvent(this,msgBody);
-            case PRIVATE -> new PrivateMsgPushEvent(this,msgBody);
-            case GROUP -> new GroupMsgPushEvent(this,msgBody);
-        };
-        applicationEventPublisher.publishEvent(event);
+        PushEventInfo eventInfo = new PushEventInfo();
         Channel channel = channelHandlerContext.channel();
-
+        String sender = channel.attr(ChannelKeys.USER_ID).get();
+        MsgBody msgBody = JSON.to(MsgBody.class, textWebSocketFrame.text());
+        eventInfo.setMsgBody(msgBody);
+        eventInfo.setSender(sender);
+        switch (msgBody.getMsgScope()) {
+            case TOPIC -> {
+                String topicId = channel.attr(ChannelKeys.TOPIC_ID).get();
+                eventInfo.setReceiver(topicId);
+                applicationEventPublisher.publishEvent(new TopicMsgPushEvent(this,eventInfo));
+            }
+            case PRIVATE -> {
+                String userId = channel.attr(ChannelKeys.RECEIVER_ID).get();
+                eventInfo.setReceiver(userId);
+                applicationEventPublisher.publishEvent(new PrivateMsgPushEvent(this,eventInfo));
+            }
+            case GROUP -> {
+                String groupId = channel.attr(ChannelKeys.GROUP_ID).get();
+                eventInfo.setReceiver(groupId);
+                applicationEventPublisher.publishEvent(new GroupMsgPushEvent(this,eventInfo));
+            }
+        }
     }
 
     @Override

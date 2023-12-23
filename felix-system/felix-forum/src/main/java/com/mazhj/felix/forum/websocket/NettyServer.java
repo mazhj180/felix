@@ -45,7 +45,7 @@ public class NettyServer implements ApplicationRunner {
 
     private final static String SERVICE_NAME = "netty-service";
 
-    private final static int SERVER_PORT = 7001;
+    private final static int SERVER_PORT = 8001;
 
     private NamingService namingService;
 

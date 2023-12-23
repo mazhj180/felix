@@ -37,7 +37,8 @@ public class UserServiceImpl implements UserService {
             if (!password.equals(user.getUserPwd())){
                 throw new BusinessException("密码错误");
             }
-            String token = JwtUtil.generateToken(new Claims().setUserId(userId));
+            long oneDay = 3600 * 24 * 1000;
+            String token = JwtUtil.generateToken(new Claims().setUserId(userId).setExp(System.currentTimeMillis()+oneDay));
             return Convert.to(user,LoginVO.class).setToken(token);
         } catch (JOSEException e) {
             throw new RuntimeException(e);

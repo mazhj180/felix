@@ -15,6 +15,10 @@ public class HttpHeaderHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest request){
+            String uri = request.uri();
+            if (uri.contains("?")){
+                request.setUri(uri.substring(0,uri.indexOf("?")));
+            }
             Channel channel = ctx.channel();
             HttpHeaders headers = request.headers();
             if (headers.contains("userId")){
@@ -28,6 +32,10 @@ public class HttpHeaderHandler extends ChannelInboundHandlerAdapter {
             if (headers.contains("groupId")){
                 String groupId = headers.getAsString("groupId");
                 channel.attr(ChannelKeys.GROUP_ID).set(groupId);
+            }
+            if (headers.contains("receiverId")){
+                String receiverId = headers.getAsString("receiverId");
+                channel.attr(ChannelKeys.RECEIVER_ID).set(receiverId);
             }
             ctx.pipeline().remove(this);
             ctx.fireChannelRead(request);

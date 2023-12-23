@@ -5,6 +5,7 @@ import com.mazhj.felix.forum.common.event.OnlineEvent;
 import com.mazhj.felix.forum.service.ChannelService;
 import io.netty.channel.Channel;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,15 +21,17 @@ public class UserStateListener {
         this.channelService = channelService;
     }
 
+    @Async(value = "magPushThreadPool")
     @EventListener(classes = OfflineEvent.class)
     public void offline(OfflineEvent event){
         Channel channel = event.getChannel();
-        this.channelService.join(channel);
+        this.channelService.out(channel);
     }
 
+    @Async(value = "magPushThreadPool")
     @EventListener(classes = OnlineEvent.class)
     public void online(OnlineEvent event){
-        this.channelService.out(event.getChannel());
+        this.channelService.join(event.getChannel());
     }
 
 }

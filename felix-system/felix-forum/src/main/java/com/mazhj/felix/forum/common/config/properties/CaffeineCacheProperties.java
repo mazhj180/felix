@@ -1,4 +1,4 @@
-package com.mazhj.felix.forum.common.config;
+package com.mazhj.felix.forum.common.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
