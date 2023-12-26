@@ -9,15 +9,6 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 
 ---
 
-## UI 设计
-<div style="display: flex; background-color: aliceblue; height: 690px">
-  <img src="design/ui_login.PNG" height="660px" width="300px" style="justify-content: space-between; margin: 15px 15px">
-  <img src="design/ui_index.PNG" height="660px" width="300px" style="justify-content: space-between; margin: 15px 15px">
-</div>
-
-
----
-
 ## 技术选型
 
 <p> Spring Boot - https://spring.io/projects/spring-boot </p>
@@ -69,13 +60,13 @@ com.mazhj.felix
 | 4   | felix-feign   | Feign客户端，提供微服务的公用客户端 | book-client、user-client、search-client                          |
 
 ## 系统架构图
-<img src="design/diagram2.png" height="600" width="900" alt="架构图">
+<img src="design/diagram3.png" height="600" width="900" alt="架构图">
 
 ---
 
 ## 网关服务模块（felix-gateway）
 > `felix-gateway`是felix系统的请求入口,对外提供鉴权、限流等操作。
-> 使用 Spring Cloud Gateway响应式网关技术，内部使用JWT完成对所有
+> 使用 Spring Cloud Gateway响应式网关技术，内部使用 JWT完成对所有
 > 用户请求的鉴定；使用 Hystrix、Redis基于令牌桶算法完成限流操作。
 
 ### 网关处理请求流程图
@@ -94,10 +85,14 @@ com.mazhj.felix
 | 5   | felix-search   | 全文分词搜索              |                                       |
 --------------------------------------------------------------------------------------------
 ### 用户模块 - felix-user
-> 依赖的通用模块：felix-common-core、felix-common-web、felix-common-pojo
-#### 提供服务：
-- `UserController`提供用户登录、注册功能接口
-- `BookshelfController`用户书架的信息展示、同步书架信息
+> `felix-user` 用户模块负责处理账户相关的操作，完成用户认证，使用 JWT签发token，
+> 提供用户对个人账户信息的操作。</br>
+
+> 依赖的通用模块：
+> - felix-common-core
+> - felix-common-web
+> - felix-common-pojo
+
 
 ### 图书模块 - felix-book 
 - `BookController`获取图书信息、查看图书详情 
