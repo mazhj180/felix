@@ -1,0 +1,26 @@
+spring:
+  cloud: 
+    gateway:
+      white-List: 
+        - aaaa
+      routes:
+        - id: netty-service
+          uri: lb:ws://netty-service
+          predicates:
+            - Path=/forum/**
+          filters: 
+            - StripPrefix=1 
+        - id: felix-user
+          uri: lb://felix-user
+          predicates: 
+            - Path=/user/**
+# logging:
+#   level:
+#     org:
+#       springframework:
+#         cloud:
+#           gateway: DEBUG
+#     reactor:
+#       netty:
+#         http:
+#           client: DEBUG
