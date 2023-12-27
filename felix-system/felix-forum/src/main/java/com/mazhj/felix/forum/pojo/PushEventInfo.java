@@ -15,4 +15,8 @@ public class PushEventInfo {
 
     /** 消息体*/
     private MsgBody msgBody;
+
+    /** 脱敏后消息内容*/
+    private String healthContent;
+
 }

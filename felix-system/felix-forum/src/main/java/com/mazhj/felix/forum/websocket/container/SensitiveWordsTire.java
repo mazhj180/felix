@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class SensitiveWordsTire {
 
-    private final static String REPLACE_CHAR = "**";
+    private final static String REPLACE_CHAR = "***";
 
     private final TireNode root = new TireNode();
 
@@ -71,15 +71,14 @@ public class SensitiveWordsTire {
                 left = ++right;
                 pointer = root;
             } else {
-                if (right >= words.length() - 1){
-                    break;
+                if (right < words.length() - 1){
+                    right ++;
+                }else {
+                    sb.append(words.charAt(left));
+                    right = ++left;
+                    pointer = root;
                 }
             }
-            right++;
-            if (pointer.isEnding()){
-
-            }
-
         }
         return sb.toString();
     }

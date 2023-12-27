@@ -5,6 +5,7 @@ import com.mazhj.felix.forum.common.constant.ChannelKeys;
 import com.mazhj.felix.forum.common.event.*;
 import com.mazhj.felix.forum.pojo.MsgBody;
 import com.mazhj.felix.forum.pojo.PushEventInfo;
+import com.mazhj.felix.forum.websocket.container.SensitiveWordsTire;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,8 +25,14 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UltimateHandler(ApplicationEventPublisher applicationEventPublisher) {
+    private final SensitiveWordsTire sensitiveWordsTire;
+
+    public UltimateHandler(
+            ApplicationEventPublisher applicationEventPublisher,
+            SensitiveWordsTire sensitiveWordsTire
+            ) {
         this.applicationEventPublisher = applicationEventPublisher;
+        this.sensitiveWordsTire = sensitiveWordsTire;
     }
 
     @Override
@@ -46,8 +53,11 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
         Channel channel = channelHandlerContext.channel();
         String sender = channel.attr(ChannelKeys.USER_ID).get();
         MsgBody msgBody = JSON.to(MsgBody.class, textWebSocketFrame.text());
+        String originalContent = msgBody.getContent();
+        String healthContent = sensitiveWordsTire.filter(originalContent);
         eventInfo.setMsgBody(msgBody);
         eventInfo.setSender(sender);
+        eventInfo.setHealthContent(healthContent);
         switch (msgBody.getMsgScope()) {
             case TOPIC -> {
                 String topicId = channel.attr(ChannelKeys.TOPIC_ID).get();

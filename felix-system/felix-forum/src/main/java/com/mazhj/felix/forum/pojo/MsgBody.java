@@ -2,6 +2,7 @@ package com.mazhj.felix.forum.pojo;
 
 import com.mazhj.felix.forum.common.enums.MsgScope;
 import lombok.Data;
+import net.minidev.json.JSONObject;
 
 /**
  * @author mzj18
