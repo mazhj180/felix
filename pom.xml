@@ -34,6 +34,8 @@
         <netty-all.version>4.1.76.Final</netty-all.version>
         <fastjson2.version>2.0.39</fastjson2.version>
         <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
+        <poi-ooxml.version>4.0.1</poi-ooxml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
         <felix-common-core.version>1.0-SNAPSHOT</felix-common-core.version>
         <felix-common-quartz.version>1.0-SNAPSHOT</felix-common-quartz.version>
         <felix-common-pojo.version>1.0-SNAPSHOT</felix-common-pojo.version>
@@ -151,7 +153,13 @@
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
-                <version>2.0</version>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi-ooxml.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
