@@ -38,6 +38,14 @@ public class WSMsgInfo extends HashMap<String,Object> {
         return (T) super.get(MSG_BODY);
     }
 
+    public Long getReceiverForLong(){
+        return (Long) super.get(RECEIVER);
+    }
+
+    public String getReceiverForStr(){
+        return (String) super.get(RECEIVER);
+    }
+
     public String jsonMsgBody(){
         return JSON.toJSONString(super.get(MSG_BODY));
     }

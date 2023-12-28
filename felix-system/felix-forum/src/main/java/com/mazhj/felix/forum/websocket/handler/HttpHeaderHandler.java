@@ -25,18 +25,6 @@ public class HttpHeaderHandler extends ChannelInboundHandlerAdapter {
                 String userId = headers.getAsString("userId");
                 channel.attr(ChannelKeys.USER_ID).set(userId);
             }
-            if (headers.contains("topicId")){
-                String topicId = headers.getAsString("topicId");
-                channel.attr(ChannelKeys.TOPIC_ID).set(topicId);
-            }
-            if (headers.contains("groupId")){
-                String groupId = headers.getAsString("groupId");
-                channel.attr(ChannelKeys.GROUP_ID).set(groupId);
-            }
-            if (headers.contains("receiverId")){
-                String receiverId = headers.getAsString("receiverId");
-                channel.attr(ChannelKeys.RECEIVER_ID).set(receiverId);
-            }
             ctx.pipeline().remove(this);
             ctx.fireChannelRead(request);
         }else {

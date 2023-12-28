@@ -1,12 +1,8 @@
 package com.mazhj.felix.forum.common.event.listener;
 
 import com.alibaba.fastjson2.JSON;
-import com.mazhj.felix.forum.common.constant.MsgBodyConstant;
-import com.mazhj.felix.forum.common.enums.MsgScope;
 import com.mazhj.felix.forum.common.event.AbstractMsgPushEvent;
 import com.mazhj.felix.forum.common.event.TopicMsgPushEvent;
-import com.mazhj.felix.forum.pojo.MsgBody;
-import com.mazhj.felix.forum.pojo.PushEventInfo;
 import com.mazhj.felix.forum.pojo.model.TopicRemark;
 import com.mazhj.felix.forum.pojo.ws.SenderInfo;
 import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
@@ -16,8 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author mazhj

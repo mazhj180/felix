@@ -1,6 +1,5 @@
 package com.mazhj.felix.forum.service;
 
-import com.mazhj.felix.forum.pojo.MsgBody;
 import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
 import io.netty.channel.Channel;
 import org.springframework.context.ApplicationEvent;
@@ -12,10 +11,10 @@ public interface ChannelService {
 
     /**
      * 向用户推送消息
-     * @param msgBody 消息内容
+     * @param msgInfo 消息内容
      * @param userId 用户id
      */
-    void send(MsgBody msgBody,String userId);
+    void send(WSMsgInfo msgInfo,String userId);
 
     /**
      * 广播消息

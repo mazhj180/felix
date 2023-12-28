@@ -1,9 +1,7 @@
 package com.mazhj.felix.forum.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.mazhj.felix.forum.common.constant.ChannelKeys;
 import com.mazhj.felix.forum.common.enums.MsgScope;
-import com.mazhj.felix.forum.pojo.MsgBody;
 import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
 import com.mazhj.felix.forum.service.ChannelService;
 import com.mazhj.felix.forum.websocket.container.CaffeineChannelContainer;
@@ -33,31 +31,26 @@ public class ChannelServiceImpl implements ChannelService {
 
 
     @Override
-    public void send(MsgBody msgBody, String userId) {
+    public void send(WSMsgInfo wsMsgInfo, String userId) {
         Channel channel = channelContainer.get(userId);
-        channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(msgBody)));
+        channel.writeAndFlush(new TextWebSocketFrame(wsMsgInfo.json()));
     }
 
     @Override
     public void broadcast(WSMsgInfo wsMsgInfo) {
-//        switch (wsMsgInfo.getScope()){
-//            case TOPIC -> topic(msgBody,scopeId);
-//            case REMARK -> remark();
-//            case PRIVATE -> send(msgBody,scopeId);
-//            case GROUP -> group();
-//            default -> throw new IllegalStateException("Unexpected value: " + wsMsgInfo.getScope());
-//        }
+        String receiver = wsMsgInfo.getReceiverForStr();
+        MsgScope scope = wsMsgInfo.getScope();
+        switch (scope){
+            case TOPIC, PRIVATE -> send(wsMsgInfo,receiver);
+            case REMARK -> remark();
+            case GROUP -> group();
+            default -> throw new IllegalStateException("Unexpected value: " + scope);
+        }
     }
 
     @Override
     public void out(Channel channel) {
         String userId = channel.attr(ChannelKeys.USER_ID).get();
-        if (channel.hasAttr(ChannelKeys.TOPIC_ID)) {
-            topicContainer.remove(channel.attr(ChannelKeys.TOPIC_ID).get(),userId);
-        }
-        if (channel.hasAttr(ChannelKeys.GROUP_ID)) {
-//            channelContainer.del(channel.attr(ChannelKeys.GROUP_ID).get());
-        }
         channelContainer.del(userId);
     }
 
@@ -65,21 +58,11 @@ public class ChannelServiceImpl implements ChannelService {
     public void join(Channel channel) {
         String userId = channel.attr(ChannelKeys.USER_ID).get();
         channelContainer.put(userId,channel);
-        if (channel.hasAttr(ChannelKeys.TOPIC_ID)) {
-            topicContainer.add(channel.attr(ChannelKeys.TOPIC_ID).get(),userId);
-        }
-        if (channel.hasAttr(ChannelKeys.GROUP_ID)) {
-//            channelContainer.del(channel.attr(ChannelKeys.GROUP_ID).get());
-        }
     }
 
     @Override
     public void read(ApplicationEvent event) {
 
-    }
-
-    private void topic(MsgBody msgBody,String scopeId){
-        topicContainer.get(scopeId).forEach(userId -> send(msgBody,userId));
     }
 
     private void remark(){}

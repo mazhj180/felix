@@ -40,7 +40,7 @@ public interface TopicRemarkMapper {
                 select * from topic_remark
                 where remark_id = #{remarkId} and topic_id = #{topicId}
             """)
-    List<TopicRemark> selectRemarksById(Long topicId,Long remarkId);
+    TopicRemark selectRemarksById(Long topicId,Long remarkId);
 
     @Insert("""
                 insert into topic_remark (

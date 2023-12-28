@@ -4,10 +4,12 @@ import com.mazhj.felix.forum.common.constant.MsgBodyConstant;
 import com.mazhj.felix.forum.common.enums.MsgScope;
 import com.mazhj.felix.forum.common.event.PrivateMsgPushEvent;
 import com.mazhj.felix.forum.common.event.TopicMsgPushEvent;
+import com.mazhj.felix.forum.pojo.model.TopicRemark;
 import com.mazhj.felix.forum.pojo.param.PrivateParam;
 import com.mazhj.felix.forum.pojo.param.TopicRemarkParam;
 import com.mazhj.felix.forum.pojo.ws.SenderInfo;
 import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
+import com.mazhj.felix.forum.service.TopicRemarkService;
 import com.mazhj.felix.forum.websocket.container.SensitiveWordsTire;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +30,16 @@ public class MessageController {
 
    private final SensitiveWordsTire sensitiveWordsTire;
 
+   private final TopicRemarkService topicRemarkService;
+
     public MessageController(
             ApplicationEventPublisher publisher,
-            SensitiveWordsTire sensitiveWordsTire) {
+            SensitiveWordsTire sensitiveWordsTire,
+            TopicRemarkService topicRemarkService
+            ) {
         this.publisher = publisher;
         this.sensitiveWordsTire = sensitiveWordsTire;
+        this.topicRemarkService = topicRemarkService;
     }
 
     @PostMapping("/topic")
@@ -47,8 +54,9 @@ public class MessageController {
            put(MsgBodyConstant.REPLY,topicRemarkParam.getReplyRemarkId());
            put(MsgBodyConstant.HEALTH_CONTENT,healthContent);
         }};
-        Long receiver = topicRemarkParam.getTopicId();
-        WSMsgInfo wsMsgInfo = new WSMsgInfo(MsgScope.TOPIC, sender, msgBody,receiver);
+        Long replyRemarkId = topicRemarkParam.getReplyRemarkId();
+        TopicRemark remarksById = this.topicRemarkService.getRemarksById(topicRemarkParam.getTopicId(), replyRemarkId);
+        WSMsgInfo wsMsgInfo = new WSMsgInfo(MsgScope.TOPIC, sender, msgBody,remarksById.getUserId());
         publisher.publishEvent(new TopicMsgPushEvent(this, wsMsgInfo));
     }
 
@@ -61,6 +69,11 @@ public class MessageController {
         String receiver = privateParam.getReceiver();
         WSMsgInfo wsMsgInfo = new WSMsgInfo(MsgScope.PRIVATE, sender, healthyContent, receiver);
         publisher.publishEvent(new PrivateMsgPushEvent(this,wsMsgInfo));
+    }
+
+    @PostMapping("/group")
+    public void msgForGroup(){
+
     }
 
 }

@@ -53,6 +53,12 @@ public class TopicRemarkServiceImpl implements TopicRemarkService {
     }
 
     @Override
+    public TopicRemark getRemarksById(Long topicId, Long remarkId) {
+        return this.topicRemarkMapper.selectRemarksById(topicId,remarkId);
+
+    }
+
+    @Override
     public void saveRemark(TopicRemark topicRemark) {
         if (0 >= this.topicRemarkMapper.insertRemark(topicRemark)){
             throw new BusinessException("数据插入失败");

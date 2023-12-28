@@ -1,12 +1,10 @@
 package com.mazhj.felix.forum.websocket.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.mazhj.felix.forum.common.constant.ChannelKeys;
-import com.mazhj.felix.forum.common.event.*;
-import com.mazhj.felix.forum.pojo.MsgBody;
-import com.mazhj.felix.forum.pojo.PushEventInfo;
+import com.mazhj.felix.forum.common.event.OfflineEvent;
+import com.mazhj.felix.forum.common.event.OnlineEvent;
+import com.mazhj.felix.forum.pojo.ws.MsgBody;
 import com.mazhj.felix.forum.websocket.container.SensitiveWordsTire;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -49,32 +47,9 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
-        PushEventInfo eventInfo = new PushEventInfo();
-        Channel channel = channelHandlerContext.channel();
-        String sender = channel.attr(ChannelKeys.USER_ID).get();
-        MsgBody msgBody = JSON.to(MsgBody.class, textWebSocketFrame.text());
-        String originalContent = msgBody.getContent();
-        String healthContent = sensitiveWordsTire.filter(originalContent);
-        eventInfo.setMsgBody(msgBody);
-        eventInfo.setSender(sender);
-        eventInfo.setHealthContent(healthContent);
-        switch (msgBody.getMsgScope()) {
-            case TOPIC -> {
-                String topicId = channel.attr(ChannelKeys.TOPIC_ID).get();
-                eventInfo.setReceiver(topicId);
-                applicationEventPublisher.publishEvent(new TopicMsgPushEvent(this,eventInfo));
-            }
-            case PRIVATE -> {
-                String userId = channel.attr(ChannelKeys.RECEIVER_ID).get();
-                eventInfo.setReceiver(userId);
-                applicationEventPublisher.publishEvent(new PrivateMsgPushEvent(this,eventInfo));
-            }
-            case GROUP -> {
-                String groupId = channel.attr(ChannelKeys.GROUP_ID).get();
-                eventInfo.setReceiver(groupId);
-                applicationEventPublisher.publishEvent(new GroupMsgPushEvent(this,eventInfo));
-            }
-        }
+        String msg = textWebSocketFrame.text();
+        MsgBody msgBody = JSON.parseObject(msg).to(MsgBody.class);
+        log.debug(msgBody.toString());
     }
 
     @Override

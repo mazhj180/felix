@@ -27,6 +27,14 @@ public interface TopicRemarkService {
     List<TopicRemarkVO> getChildRemarks(Long topicId, Long rootRemarkId);
 
     /**
+     * 获取单挑评论
+     * @param topicId 话题id
+     * @param remarkId 评论id
+     * @return 评论信息
+     */
+    TopicRemark getRemarksById(Long topicId ,Long remarkId);
+
+    /**
      * 保存评论
      * @param topicRemark 评论
      */
