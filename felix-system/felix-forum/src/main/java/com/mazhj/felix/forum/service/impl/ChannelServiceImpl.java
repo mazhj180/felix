@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.mazhj.felix.forum.common.constant.ChannelKeys;
 import com.mazhj.felix.forum.common.enums.MsgScope;
 import com.mazhj.felix.forum.pojo.MsgBody;
+import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
 import com.mazhj.felix.forum.service.ChannelService;
 import com.mazhj.felix.forum.websocket.container.CaffeineChannelContainer;
 import com.mazhj.felix.forum.websocket.container.CaffeineTopicContainer;
@@ -38,14 +39,14 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void broadcast(MsgBody msgBody, MsgScope scope, String scopeId) {
-        switch (scope){
-            case TOPIC -> topic(msgBody,scopeId);
-            case REMARK -> remark();
-            case PRIVATE -> send(msgBody,scopeId);
-            case GROUP -> group();
-            default -> throw new IllegalStateException("Unexpected value: " + scope);
-        }
+    public void broadcast(WSMsgInfo wsMsgInfo) {
+//        switch (wsMsgInfo.getScope()){
+//            case TOPIC -> topic(msgBody,scopeId);
+//            case REMARK -> remark();
+//            case PRIVATE -> send(msgBody,scopeId);
+//            case GROUP -> group();
+//            default -> throw new IllegalStateException("Unexpected value: " + wsMsgInfo.getScope());
+//        }
     }
 
     @Override

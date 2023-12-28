@@ -26,6 +26,11 @@ public interface TopicRemarkService {
      */
     List<TopicRemarkVO> getChildRemarks(Long topicId, Long rootRemarkId);
 
+    /**
+     * 保存评论
+     * @param topicRemark 评论
+     */
     void saveRemark(TopicRemark topicRemark);
+
 
 }

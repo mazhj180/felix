@@ -1,7 +1,6 @@
 package com.mazhj.felix.forum.common.event;
 
-import com.mazhj.felix.forum.pojo.MsgBody;
-import com.mazhj.felix.forum.pojo.PushEventInfo;
+import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
@@ -11,9 +10,9 @@ import org.springframework.context.ApplicationEvent;
 @Getter
 public abstract class AbstractMsgPushEvent extends ApplicationEvent {
 
-    protected final PushEventInfo content;
+    protected final WSMsgInfo content;
 
-    protected AbstractMsgPushEvent(Object source, PushEventInfo content) {
+    protected AbstractMsgPushEvent(Object source, WSMsgInfo content) {
         super(source);
         this.content = content;
     }

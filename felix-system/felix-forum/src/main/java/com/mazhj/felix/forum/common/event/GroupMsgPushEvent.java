@@ -1,14 +1,13 @@
 package com.mazhj.felix.forum.common.event;
 
-import com.mazhj.felix.forum.pojo.MsgBody;
-import com.mazhj.felix.forum.pojo.PushEventInfo;
+import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
 
 /**
  * @author mazhj
  */
 public class GroupMsgPushEvent extends AbstractMsgPushEvent {
 
-    public GroupMsgPushEvent(Object source, PushEventInfo content) {
+    public GroupMsgPushEvent(Object source, WSMsgInfo content) {
         super(source,content);
 
     }
