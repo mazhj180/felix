@@ -41,7 +41,7 @@ public class MsgPushListener {
         this.topicRemarkService.saveRemark(topicRemark);
     }
 
-    @Async(value = "magPushThreadPool")
+    @Async(value = "msgPushThreadPool")
     @EventListener(classes = AbstractMsgPushEvent.class)
     public void pushMsg(AbstractMsgPushEvent event){
         WSMsgInfo wsMsgInfo = event.getContent();

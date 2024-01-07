@@ -21,14 +21,14 @@ public class UserStateListener {
         this.channelService = channelService;
     }
 
-    @Async(value = "magPushThreadPool")
+    @Async(value = "msgPushThreadPool")
     @EventListener(classes = OfflineEvent.class)
     public void offline(OfflineEvent event){
         Channel channel = event.getChannel();
         this.channelService.out(channel);
     }
 
-    @Async(value = "magPushThreadPool")
+    @Async(value = "msgPushThreadPool")
     @EventListener(classes = OnlineEvent.class)
     public void online(OnlineEvent event){
         this.channelService.join(event.getChannel());

@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -20,6 +21,10 @@ public class PoiExcelDefinition {
     private final Map<Sheet,List<Row>> rowMap = new HashMap<>();
 
     private final Map<Row,List<Cell>> cellMap = new HashMap<>();
+
+    public PoiExcelDefinition(InputStream inputStream){
+
+    }
 
     public PoiExcelDefinition(File excel) throws IOException, ExcelParseException {
         String[] suffix = {".xlsx",".xls"};

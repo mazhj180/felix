@@ -13,6 +13,7 @@ import com.mazhj.felix.forum.service.TopicRemarkService;
 import com.mazhj.felix.forum.websocket.container.SensitiveWordsTire;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,7 +44,7 @@ public class MessageController {
     }
 
     @PostMapping("/topic")
-    public void msgFormTopic(TopicRemarkParam topicRemarkParam){
+    public void msgFormTopic(@RequestBody TopicRemarkParam topicRemarkParam){
         String healthContent = this.sensitiveWordsTire.filter(topicRemarkParam.getContent());
         SenderInfo sender = new SenderInfo().setUserId(topicRemarkParam.getUserId())
                 .setNickName(topicRemarkParam.getNickName())
@@ -61,7 +62,7 @@ public class MessageController {
     }
 
     @PostMapping("/private")
-    public void msgForPrivate(PrivateParam privateParam){
+    public void msgForPrivate(@RequestBody PrivateParam privateParam){
         String healthyContent = this.sensitiveWordsTire.filter(privateParam.getContent()) ;
         SenderInfo sender = new SenderInfo().setUserId(privateParam.getUserId())
                 .setNickName(privateParam.getNickName())
