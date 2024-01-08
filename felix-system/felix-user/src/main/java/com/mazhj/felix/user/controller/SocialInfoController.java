@@ -1,4 +1,4 @@
-package com.mazhj.felix.forum.controller;
+package com.mazhj.felix.user.controller;
 
 import com.mazhj.common.web.controller.BaseController;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,4 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class SocialInfoController extends BaseController {
+
+
 }
