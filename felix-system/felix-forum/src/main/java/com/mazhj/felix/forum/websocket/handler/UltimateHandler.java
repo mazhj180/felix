@@ -23,14 +23,11 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final SensitiveWordsTire sensitiveWordsTire;
 
     public UltimateHandler(
-            ApplicationEventPublisher applicationEventPublisher,
-            SensitiveWordsTire sensitiveWordsTire
+            ApplicationEventPublisher applicationEventPublisher
             ) {
         this.applicationEventPublisher = applicationEventPublisher;
-        this.sensitiveWordsTire = sensitiveWordsTire;
     }
 
     @Override
