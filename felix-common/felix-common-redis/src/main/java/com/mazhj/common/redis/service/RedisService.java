@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.redis.core.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -68,6 +65,14 @@ public class RedisService {
 
     public <T> List<T> getHashVals(final String key, final Collection<Object> hashkeys){
         return redisTemplate.opsForHash().multiGet(key,hashkeys);
+    }
+
+    public Set<String> rangeVal(final String key,final Long start, final Long end){
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    }
+
+    public void incrementScore(final String key, final String hotWord ,final Double delta){
+        redisTemplate.opsForZSet().incrementScore(key,hotWord,delta);
     }
 
 

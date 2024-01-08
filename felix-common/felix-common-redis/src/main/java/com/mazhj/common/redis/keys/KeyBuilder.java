@@ -63,4 +63,12 @@ public final class KeyBuilder {
         }
     }
 
+    public static class Search{
+        private static final String PREFIX = ServiceModel.SEARCH.str();
+
+        public static String getHotWordKey(){
+            return PREFIX + "hot-word:key";
+        }
+    }
+
 }
