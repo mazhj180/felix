@@ -27,4 +27,12 @@ public interface BookClient {
     @GetMapping("/book/feign/get-book-all")
     List<BookDTO> getBookList();
 
+    /**
+     * 批量获取图书信息
+     * @param bookIds id集合
+     * @return 图书信息
+     */
+    @GetMapping("/book/feign/get-book-batch")
+    List<BookDTO> getBookBatch(String[] bookIds);
+
 }

@@ -8,6 +8,7 @@ import com.mazhj.felix.homepage.service.RankService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author mazhj
@@ -27,11 +28,30 @@ public class RankServiceImpl implements RankService {
     @Override
     public List<BookDTO> getHotRankings() {
         String key = KeyBuilder.Homepage.getHotRankingsKey();
-        return null;
+        Set<String> hotRanking = this.redisService.rangeVal(key, 0L, 9L);
+        return this.bookClient.getBookBatch(hotRanking.toArray(new String[0]));
     }
 
     @Override
     public List<BookDTO> getLikeRankings() {
-        return null;
+        int rank = 10;
+        List<BookDTO> books = this.bookClient.getBookList();
+        for (int i = 0; i < rank; i++) {
+            BookDTO temp;
+            BookDTO mostLike = books.get(i);
+            int maxIdx = i;
+            for (int j = i + 1; j < books.size(); j++) {
+                if (books.get(j).getSupportCount() > mostLike.getSupportCount()){
+                    mostLike = books.get(j);
+                    maxIdx = j;
+                }
+            }
+            if (maxIdx != i){
+                temp = books.get(maxIdx);
+                books.set(maxIdx,books.get(i));
+                books.set(i,temp);
+            }
+        }
+        return books;
     }
 }

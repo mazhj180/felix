@@ -99,4 +99,17 @@ public class RedisService {
     }
 
 
+    public void addForZSet(String key, String value, double score) {
+        redisTemplate.opsForZSet().add(key, value, score);
+    }
+
+    public Double incrScore(String key, String value, double score) {
+        return redisTemplate.opsForZSet().incrementScore(key, value, score);
+    }
+
+    public Double score(String key, String value) {
+        return redisTemplate.opsForZSet().score(key, value);
+    }
+
+
 }

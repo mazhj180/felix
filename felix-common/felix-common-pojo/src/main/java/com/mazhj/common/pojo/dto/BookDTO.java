@@ -72,6 +72,9 @@ public class BookDTO implements Serializable {
      */
     private Integer wordCount;
 
+    /** 点赞数*/
+    private Integer supportCount;
+
     /**
      * 创建时间
      */

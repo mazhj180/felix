@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author mazhj
+ */
 @RestController
 @RequestMapping("/book/category")
 public class CategoryController extends BaseController {

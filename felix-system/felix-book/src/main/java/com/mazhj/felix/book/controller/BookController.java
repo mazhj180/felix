@@ -59,4 +59,10 @@ public class BookController extends BaseController {
         return bookDTOS;
     }
 
+    @GetMapping("/feign/get-books-batch")
+    public List<BookDTO> getBatchBooks(String[] bookIds){
+        List<Book> books = this.bookService.getBookInfoBatch(bookIds);
+        return Convert.to(books, BookDTO.class);
+    }
+
 }

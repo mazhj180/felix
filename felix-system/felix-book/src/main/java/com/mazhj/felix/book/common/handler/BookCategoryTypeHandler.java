@@ -1,4 +1,4 @@
-package com.mazhj.felix.book.common;
+package com.mazhj.felix.book.common.handler;
 
 import com.mazhj.common.pojo.enums.BookCategory;
 import org.apache.ibatis.type.BaseTypeHandler;

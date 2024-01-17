@@ -41,9 +41,10 @@
         <felix-common-pojo.version>1.0-SNAPSHOT</felix-common-pojo.version>
         <felix-common-redis.version>1.0-SNAPSHOT</felix-common-redis.version>
         <felix-common-web.version>1.0-SNAPSHOT</felix-common-web.version>
-        <felix-feigin-user.version>1.0-SNAPSHOT</felix-feigin-user.version>
-        <felix-feigin-book.version>1.0-SNAPSHOT</felix-feigin-book.version>
-        <felix-feigin-search.version>1.0-SNAPSHOT</felix-feigin-search.version>
+        <felix-feign-user.version>1.0-SNAPSHOT</felix-feign-user.version>
+        <felix-feign-book.version>1.0-SNAPSHOT</felix-feign-book.version>
+        <felix-feign-search.version>1.0-SNAPSHOT</felix-feign-search.version>
+        <felix-feign-homepage.version>1.0-SNAPSHOT</felix-feign-homepage.version>
     </properties>
 
     <dependencyManagement>
@@ -99,19 +100,25 @@
             <dependency>
                 <groupId>com.mazhj</groupId>
                 <artifactId>felix-feign-user-client</artifactId>
-                <version>${felix-feigin-user.version}</version>
+                <version>${felix-feign-user.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mazhj</groupId>
                 <artifactId>felix-feign-book-client</artifactId>
-                <version>${felix-feigin-book.version}</version>
+                <version>${felix-feign-book.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mazhj</groupId>
                 <artifactId>felix-feign-search-client</artifactId>
-                <version>${felix-feigin-search.version}</version>
+                <version>${felix-feign-search.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mazhj</groupId>
+                <artifactId>felix-feign-homepage-client</artifactId>
+                <version>${felix-feign-homepage.version}</version>
             </dependency>
 
             <dependency>

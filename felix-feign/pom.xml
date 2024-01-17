@@ -16,6 +16,7 @@
         <module>felix-feign-user-client</module>
         <module>felix-feign-book-client</module>
         <module>felix-feign-search-client</module>
+        <module>felix-feign-homepage-client</module>
     </modules>
 
     <properties>

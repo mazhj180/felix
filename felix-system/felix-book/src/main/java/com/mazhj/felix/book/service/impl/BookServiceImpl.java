@@ -45,6 +45,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> getBookInfoBatch(String[] bookIds) {
+        return this.bookMapper.selectBatchByBookId(bookIds);
+    }
+
+    @Override
     public List<BookCategory> getCategoriesByBookId(String bookId) {
         String key = KeyBuilder.Book.getBookCategoriesKey(bookId);
         List<BookCategory> categories = this.redisService.get(key);

@@ -25,6 +25,13 @@ public interface BookService {
     List<Book> getAllBook();
 
     /**
+     * 批量获取图书
+     * @param bookIds 图书ids
+     * @return 图书们
+     */
+    List<Book> getBookInfoBatch(String[] bookIds);
+
+    /**
      * 获取图书分类信息
      * @param bookId 图书id
      * @return 分类信息

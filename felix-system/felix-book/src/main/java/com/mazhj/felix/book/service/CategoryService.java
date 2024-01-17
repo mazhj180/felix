@@ -16,6 +16,10 @@ public interface CategoryService {
      */
     Category getByCategoryId(String categoryId);
 
+    /**
+     * 返回所有分类信息
+     * @return 所有分类信息
+     */
     List<Category> getAllCategories();
 
 }
