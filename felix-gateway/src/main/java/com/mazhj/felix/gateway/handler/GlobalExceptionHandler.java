@@ -11,6 +11,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -26,7 +27,8 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
+    @NonNull
+    public Mono<Void> handle(@NonNull ServerWebExchange exchange,@NonNull Throwable ex) {
         HttpStatus httpStatus = null;
         AjaxResult ajaxResult = null;
         if (ex instanceof SystemException){

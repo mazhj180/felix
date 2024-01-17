@@ -5,7 +5,6 @@ import com.mazhj.felix.forum.common.enums.MsgScope;
 import com.mazhj.felix.forum.pojo.ws.WSMsgInfo;
 import com.mazhj.felix.forum.service.ChannelService;
 import com.mazhj.felix.forum.websocket.container.CaffeineChannelContainer;
-import com.mazhj.felix.forum.websocket.container.CaffeineTopicContainer;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.context.ApplicationEvent;
@@ -19,14 +18,11 @@ public class ChannelServiceImpl implements ChannelService {
 
     private final CaffeineChannelContainer channelContainer;
 
-    private final CaffeineTopicContainer topicContainer;
 
     public ChannelServiceImpl(
-            CaffeineChannelContainer channelContainer,
-            CaffeineTopicContainer topicContainer
+            CaffeineChannelContainer channelContainer
     ) {
         this.channelContainer = channelContainer;
-        this.topicContainer = topicContainer;
     }
 
 

@@ -8,13 +8,10 @@ import com.mazhj.common.core.utils.SpringUtil;
 import com.mazhj.common.pojo.claims.Claims;
 import com.mazhj.felix.gateway.config.properties.GatewayConfigProperties;
 import com.nimbusds.jose.JOSEException;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,7 +22,6 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -56,9 +52,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
                             .getFirst("Authentication")
                     ).orElse(request.getQueryParams().getFirst("token"));
             Claims claims = validate(token);
-            request = request.mutate().headers(httpHeaders -> {
-                httpHeaders.set("userId",claims.getUserId());
-            }).build();
+            request = request.mutate().headers(httpHeaders -> httpHeaders.set("userId",claims.getUserId())).build();
 
             if (isWebSocketUpgradeRequest(request)){
                 MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>(request.getQueryParams());
@@ -89,7 +83,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (upgrade == null || upgrade.isEmpty()){
             return false;
         }
-        return upgrade.equalsIgnoreCase("websocket");
+        return "websocket".equalsIgnoreCase(upgrade);
     }
 
     @Override

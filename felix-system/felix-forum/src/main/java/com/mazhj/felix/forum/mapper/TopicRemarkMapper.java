@@ -14,8 +14,9 @@ import java.util.List;
 public interface TopicRemarkMapper {
 
     /**
-     * @param topicId
-     * @return
+     * 查询所有根评论
+     * @param topicId 话题id
+     * @return 所有根评论
      */
     @Select("""
                 select * from topic_remark
@@ -23,6 +24,18 @@ public interface TopicRemarkMapper {
                 order by support desc , create_time
             """)
     List<TopicRemark> selectRootRemarks(Long topicId);
+
+    @Select("""
+                select tr.* from topic_remark tr
+                where topic_id = #{topicId} and
+                    remark_id = (
+                        select remark_id from topic_remark tr1
+                        where root_remark_id = tr.remark_id and reply_remark_id = tr.remark_id
+                        order by support desc , create_time
+                        limit 3
+                    )
+            """)
+    List<TopicRemark> selectRootRemarksWith3Child(Long topicId);
 
     @Select("""
             <script>

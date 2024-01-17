@@ -34,8 +34,8 @@ public class WSMsgInfo extends HashMap<String,Object> {
         return (MsgScope) super.get(SCOPE);
     }
 
-    public <T> T getMsgBody(){
-        return (T) super.get(MSG_BODY);
+    public <T> T getMsgBody(Class<T> clazz){
+        return clazz.cast(super.get(MSG_BODY));
     }
 
     public Long getReceiverForLong(){
