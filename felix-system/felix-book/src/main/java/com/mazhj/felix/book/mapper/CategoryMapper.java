@@ -21,7 +21,7 @@ public interface CategoryMapper {
 
     @Select(
             """
-                select * from category
+                select id,category_id,name from category
             """
     )
     List<Category> select();

@@ -12,7 +12,7 @@ public class BookCategory {
     private Long id;
 
     /** 图书id*/
-    private String booId;
+    private String bookId;
 
     /** 类别id*/
     private com.mazhj.common.pojo.enums.BookCategory category;
