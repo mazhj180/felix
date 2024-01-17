@@ -2,6 +2,7 @@ package com.mazhj.felix.forum.service.impl;
 
 import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.utils.Convert;
+import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.forum.mapper.TopicRemarkMapper;
 import com.mazhj.felix.forum.pojo.bo.TopicRemarkBO;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author mazhj
@@ -34,6 +36,11 @@ public class TopicRemarkServiceImpl implements TopicRemarkService {
 
     @Override
     public List<TopicRemarkBO> getRootRemarksWith3Child(Long topicId) {
+        String key = KeyBuilder.Forum.getTopicRemarkKey(topicId.toString());
+        if (this.redisService.hasKey(key)){
+            this.redisService.expire(key,3600, TimeUnit.SECONDS);
+            return this.redisService.get(key);
+        }
         List<TopicRemark> rootRemarks = this.topicRemarkMapper.selectRootRemarks(topicId);
         List<TopicRemarkBO> bos = new ArrayList<>();
         for (TopicRemark rootRemark : rootRemarks) {
@@ -43,6 +50,7 @@ public class TopicRemarkServiceImpl implements TopicRemarkService {
             bo.setChildRemark(Convert.to(childRemarks,TopicRemarkVO.class));
             bos.add(bo);
         }
+        this.redisService.set(key,bos,3600);
         return bos;
     }
 
