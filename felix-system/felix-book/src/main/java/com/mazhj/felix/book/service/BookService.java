@@ -32,6 +32,13 @@ public interface BookService {
     List<Book> getBookInfoBatch(String[] bookIds);
 
     /**
+     * 按评分排名获取图书
+     * @param limit 限制条数
+     * @return 图书列表
+     */
+    List<Book> getBookSortedScore(Integer limit);
+
+    /**
      * 获取图书分类信息
      * @param bookId 图书id
      * @return 分类信息

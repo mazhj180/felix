@@ -59,10 +59,34 @@ public class BookController extends BaseController {
         return bookDTOS;
     }
 
-    @GetMapping("/feign/get-books-batch")
+    @GetMapping("/feign/get-book-batch")
     public List<BookDTO> getBatchBooks(String[] bookIds){
         List<Book> books = this.bookService.getBookInfoBatch(bookIds);
-        return Convert.to(books, BookDTO.class);
+        List<BookDTO> bookDTOS = Convert.to(books, BookDTO.class);
+        for (int i = 0; i < books.size(); i++) {
+            List<BookCategory> categories = this.bookService.getCategoriesByBookId(books.get(i).getBookId());
+            AtomicReference<List<com.mazhj.common.pojo.enums.BookCategory>> enums = new AtomicReference<>(new ArrayList<>());
+            categories.forEach(category -> {
+                enums.get().add(category.getCategory());
+            });
+            bookDTOS.get(i).setCategories(enums.get());
+        }
+        return bookDTOS;
+    }
+
+    @GetMapping("/feign/get-book-ss")
+    public List<BookDTO> getBookSortedScore(Integer limit){
+        List<Book> books = this.bookService.getBookSortedScore(limit);
+        List<BookDTO> bookDTOS = Convert.to(books, BookDTO.class);
+        for (int i = 0; i < books.size(); i++) {
+            List<BookCategory> categories = this.bookService.getCategoriesByBookId(books.get(i).getBookId());
+            AtomicReference<List<com.mazhj.common.pojo.enums.BookCategory>> enums = new AtomicReference<>(new ArrayList<>());
+            categories.forEach(category -> {
+                enums.get().add(category.getCategory());
+            });
+            bookDTOS.get(i).setCategories(enums.get());
+        }
+        return bookDTOS;
     }
 
 }

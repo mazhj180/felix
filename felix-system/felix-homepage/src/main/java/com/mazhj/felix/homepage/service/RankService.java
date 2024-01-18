@@ -21,4 +21,10 @@ public interface RankService {
      */
     List<BookDTO> getLikeRankings();
 
+    /**
+     * 获取评分榜
+     * @return 评分榜列表
+     */
+    List<BookDTO> getScoreRankings();
+
 }

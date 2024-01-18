@@ -35,6 +35,7 @@ public class RankController extends BaseController {
         List<BookDTO> books = switch (type){
             case "hot" -> this.rankService.getHotRankings();
             case "like" -> this.rankService.getLikeRankings();
+            case "score" -> this.rankService.getScoreRankings();
             default -> throw new BusinessException("请求错误");
         };
         return success(books);

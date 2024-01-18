@@ -77,6 +77,21 @@ public interface BookMapper {
     List<Book> selectBatchByBookId(String[] bookIds);
 
     /**
+     * 根据score排名获取图书
+     * @param limit 限制条数
+     * @return 图书列表
+     */
+    @ResultMap("baseResultMap")
+    @Select(
+            """
+                select * from book
+                order by score DESC
+                limit #{limit}
+            """
+    )
+    List<Book> selectBookSortedScore(Integer limit);
+
+    /**
      * 获取图书的分类
      * @param bookId 图书id
      * @return 图书分类信息

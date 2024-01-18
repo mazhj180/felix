@@ -54,4 +54,9 @@ public class RankServiceImpl implements RankService {
         }
         return books;
     }
+
+    @Override
+    public List<BookDTO> getScoreRankings() {
+        return this.bookClient.getBookSortedScore(10);
+    }
 }

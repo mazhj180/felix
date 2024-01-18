@@ -14,6 +14,7 @@ import com.mazhj.felix.quartz.anno.Invoke;
 import com.mazhj.felix.quartz.anno.QuartzTask;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,12 @@ public class GuessYouServiceImpl implements GuessYouService {
             bookDTOS = guessYouTask.redisService.getHashVal(likeKey,userId);
         }
         return bookDTOS;
+    }
+
+    @Override
+    public void collectReason(Reason reason) {
+        String reasonKey = KeyBuilder.Homepage.getReasonKey();
+
     }
 
     @QuartzTask

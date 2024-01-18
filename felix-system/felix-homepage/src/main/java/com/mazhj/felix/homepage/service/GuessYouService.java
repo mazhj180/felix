@@ -18,4 +18,10 @@ public interface GuessYouService {
      */
     List<BookDTO> getPossibleLikes(String userId, Reason reason);
 
+    /**
+     * 收集猜用户喜欢的依据
+     * @param reason 猜用户喜欢的依据
+     */
+    void collectReason(Reason reason);
+
 }
