@@ -1,20 +1,19 @@
-package com.mazhj.felix.homepage.service.impl;
+package com.mazhj.felix.user.service.impl;
 
 import com.mazhj.common.pojo.dto.BookDTO;
-import com.mazhj.common.pojo.dto.BookshelfDTO;
 import com.mazhj.common.pojo.enums.BookCategory;
 import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.feign.book.clients.BookClient;
 import com.mazhj.felix.feign.search.clients.SearchClient;
-import com.mazhj.felix.feign.user.clients.UserClient;
-import com.mazhj.felix.homepage.pojo.param.Reason;
-import com.mazhj.felix.homepage.service.GuessYouService;
 import com.mazhj.felix.quartz.anno.Invoke;
 import com.mazhj.felix.quartz.anno.QuartzTask;
+import com.mazhj.felix.user.pojo.param.Reason;
+import com.mazhj.felix.user.pojo.vo.BookshelfVO;
+import com.mazhj.felix.user.service.BookshelfService;
+import com.mazhj.felix.user.service.GuessYouService;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +37,8 @@ public class GuessYouServiceImpl implements GuessYouService {
 
     @Override
     public List<BookDTO> getPossibleLikes(String userId, Reason reason) {
-        String reasonKey = KeyBuilder.Homepage.getReasonKey();
-        String likeKey = KeyBuilder.Homepage.getPossibleLikeKey();
+        String reasonKey = KeyBuilder.User.getReasonKey();
+        String likeKey = KeyBuilder.User.getPossibleLikeKey();
         guessYouTask.redisService.setHashVal(reasonKey,userId,reason);
         List<BookDTO> bookDTOS = guessYouTask.redisService.getHashVal(likeKey,userId);
         if (bookDTOS.isEmpty()){
@@ -51,42 +50,43 @@ public class GuessYouServiceImpl implements GuessYouService {
 
     @Override
     public void collectReason(Reason reason) {
-        String reasonKey = KeyBuilder.Homepage.getReasonKey();
+        String reasonKey = KeyBuilder.User.getReasonKey();
 
     }
 
     @QuartzTask
     public static class GuessYouTask{
 
-        private final RedisService redisService;
+        private final BookshelfService bookshelfService;
 
-        private final UserClient userClient;
+        private final RedisService redisService;
 
         private final BookClient bookClient;
 
         private final SearchClient searchClient;
+
         public GuessYouTask(
+                BookshelfService bookshelfService,
                 RedisService redisService,
-                UserClient userClient,
                 BookClient bookClient,
                 SearchClient searchClient
                 ) {
+            this.bookshelfService = bookshelfService;
             this.redisService = redisService;
-            this.userClient = userClient;
             this.bookClient = bookClient;
             this.searchClient = searchClient;
         }
 
         @Invoke
         public void guessYou(){
-            String reasonKey = KeyBuilder.Homepage.getReasonKey();
-            String likeKey = KeyBuilder.Homepage.getPossibleLikeKey();
+            String reasonKey = KeyBuilder.User.getReasonKey();
+            String likeKey = KeyBuilder.User.getPossibleLikeKey();
             Map<String, Reason> reasonMap = this.redisService.getHashEntries(reasonKey);
             List<BookDTO> books = this.bookClient.getBookList();
 
             for (Map.Entry<String, Reason> entry : reasonMap.entrySet()) {
                 String userId = entry.getKey();
-                List<BookshelfDTO> bookshelf = this.userClient.getBookshelf(userId);
+                List<BookshelfVO> bookshelf = this.bookshelfService.getBookshelfList(userId);
                 //构建评委链
                 Judge bookshelfJudge = new BookshelfJudge(bookshelf);
                 Judge reasonJudge = new ReasonJudge(searchClient, bookClient);
@@ -152,21 +152,21 @@ public class GuessYouServiceImpl implements GuessYouService {
 
     private static class BookshelfJudge extends Judge {
 
-        private final List<BookshelfDTO> bookshelf;
+        private final List<BookshelfVO> bookshelf;
 
-        public BookshelfJudge(List<BookshelfDTO> bookshelf) {
+        public BookshelfJudge(List<BookshelfVO> bookshelf) {
             this.bookshelf = bookshelf;
         }
 
-        private Map<BookCategory,List<BookshelfDTO>> generateCategoryBuckets(List<BookshelfDTO> bookshelf){
-            Map<BookCategory,List<BookshelfDTO>> categoryMap = new HashMap<>();
+        private Map<BookCategory,List<BookshelfVO>> generateCategoryBuckets(List<BookshelfVO> bookshelf){
+            Map<BookCategory,List<BookshelfVO>> categoryMap = new HashMap<>();
             for (BookCategory category : BookCategory.values()) {
                 categoryMap.put(category,new ArrayList<>());
             }
 
-            for (BookshelfDTO dto : bookshelf) {
-                for (BookCategory category : dto.getCategories()) {
-                    categoryMap.get(category).add(dto);
+            for (BookshelfVO vo : bookshelf) {
+                for (BookCategory category : vo.getCategories()) {
+                    categoryMap.get(category).add(vo);
                 }
             }
             return categoryMap;
@@ -176,7 +176,7 @@ public class GuessYouServiceImpl implements GuessYouService {
         public void scoring(Map.Entry<String, Reason> reasonEntry, List<BookDTO> books) {
             Map<String, Long> collect = bookshelf.stream()
                     .collect(Collectors
-                            .groupingBy(BookshelfDTO::getAuthorName, Collectors.counting()));
+                            .groupingBy(BookshelfVO::getAuthorName, Collectors.counting()));
 
             for (Map.Entry<String, Long> c : collect.entrySet()) {
                 books.forEach(book -> {
@@ -187,7 +187,7 @@ public class GuessYouServiceImpl implements GuessYouService {
                     }
                 });
             }
-            Map<BookCategory,List<BookshelfDTO>> categoryBuckets = this.generateCategoryBuckets(bookshelf);
+            Map<BookCategory,List<BookshelfVO>> categoryBuckets = this.generateCategoryBuckets(bookshelf);
             categoryBuckets.forEach((k,v) -> {
                 for (BookDTO book : books) {
                     if(book.getCategories().stream().anyMatch(bookCategory -> bookCategory.equals(k))){

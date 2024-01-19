@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author mazhj
  */
-public final class Convert {
+public class Convert {
 
     public static <T,S> List<T> to(List<S> sources,Class<T> targetClass) {
         try {

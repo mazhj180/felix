@@ -1,9 +1,11 @@
 package com.mazhj.felix.book.pojo.vo;
 
+import com.mazhj.common.pojo.enums.BookCategory;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ public class BookVO implements Serializable {
     private String bookName;
 
     /** 图书分类*/
-    private List<String> categories;
+    private List<BookCategory> categories;
 
     /** 图书评分*/
     private Byte score;
@@ -47,4 +49,17 @@ public class BookVO implements Serializable {
 
     /** 字数*/
     private Integer wordCount;
+
+    /** 点赞数*/
+    private Integer supportCount;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 }

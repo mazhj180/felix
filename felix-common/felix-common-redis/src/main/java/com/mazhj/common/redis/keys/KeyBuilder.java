@@ -9,6 +9,14 @@ public final class KeyBuilder {
 
     public static class User{
         private static final String PREFIX = ServiceModel.USER.str();
+
+        public static String getPossibleLikeKey(){
+            return PREFIX + "possible-like:key";
+        }
+
+        public static String getReasonKey(){
+            return PREFIX + "guess-you-reason:key";
+        }
     }
 
     public static class Book{
@@ -33,10 +41,6 @@ public final class KeyBuilder {
         public static String getBookCategoriesKey(String bookId){
             return String.format(PREFIX + "book-categories:key-%s",bookId);
         }
-    }
-
-    public static class Homepage{
-        private static final String PREFIX = ServiceModel.HOMEPAGE.str();
 
         public static String getHotRankingsKey(){
             return PREFIX + "hot-rankings:key";
@@ -45,14 +49,11 @@ public final class KeyBuilder {
         public static String getLikeRankingsKey(){
             return PREFIX + "like-rankings:key";
         }
+    }
 
-        public static String getPossibleLikeKey(){
-            return PREFIX + "possible-like:key";
-        }
+    public static class Homepage{
+        private static final String PREFIX = ServiceModel.HOMEPAGE.str();
 
-        public static String getReasonKey(){
-            return PREFIX + "guess-you-reason:key";
-        }
     }
 
     public static class Forum{

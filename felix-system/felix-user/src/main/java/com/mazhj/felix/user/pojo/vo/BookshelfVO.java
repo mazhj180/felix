@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author mazhj
@@ -30,5 +31,5 @@ public class BookshelfVO implements Serializable {
     private String imgUrl;
 
     /** 图书种类*/
-    private BookCategory category;
+    private List<BookCategory> categories;
 }

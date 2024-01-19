@@ -23,12 +23,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BookController extends BaseController {
     private final BookService bookService;
 
-    private final CategoryService categoryService;
-
-    public BookController(BookService bookService,CategoryService categoryService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.categoryService = categoryService;
     }
+
 
     @GetMapping("/feign/get-book")
     public BookDTO getBookInfo(String bookId){

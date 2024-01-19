@@ -25,7 +25,10 @@ public interface BookMapper {
             @Result(column = "img_url",jdbcType = JdbcType.VARCHAR,property = "imgUrl"),
             @Result(column = "introduction",jdbcType = JdbcType.VARCHAR,property = "introduction"),
             @Result(column = "isbn",jdbcType = JdbcType.VARCHAR,property = "isbn"),
-            @Result(column = "word_count",jdbcType = JdbcType.INTEGER,property = "wordCount")
+            @Result(column = "word_count",jdbcType = JdbcType.INTEGER,property = "wordCount"),
+            @Result(column = "support_count",jdbcType = JdbcType.INTEGER,property = "supportCount"),
+            @Result(column = "create_time",jdbcType = JdbcType.TIMESTAMP,property = "createTime"),
+            @Result(column = "update_time",jdbcType = JdbcType.TIMESTAMP,property = "updateTime")
     })
     @Select(
             """

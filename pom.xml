@@ -12,6 +12,7 @@
         <module>felix-gateway</module>
         <module>felix-feign</module>
         <module>felix-system</module>
+        <module>felix-control_center</module>
     </modules>
 
     <packaging>pom</packaging>

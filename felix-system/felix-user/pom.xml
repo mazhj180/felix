@@ -29,7 +29,22 @@
 
         <dependency>
             <groupId>com.mazhj</groupId>
+            <artifactId>felix-common-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mazhj</groupId>
+            <artifactId>felix-common-quartz</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mazhj</groupId>
             <artifactId>felix-feign-book-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mazhj</groupId>
+            <artifactId>felix-feign-search-client</artifactId>
         </dependency>
 
         <dependency>
