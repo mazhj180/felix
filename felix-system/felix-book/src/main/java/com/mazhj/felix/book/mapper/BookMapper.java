@@ -95,6 +95,21 @@ public interface BookMapper {
     List<Book> selectBookSortedScore(Integer limit);
 
     /**
+     * 根据support排名获取图书
+     * @param limit 限制条数
+     * @return 图书列表
+     */
+    @ResultMap("baseResultMap")
+    @Select(
+            """
+                select * from book
+                order by support_count DESC
+                limit #{limit}
+            """
+    )
+    List<Book> selectBookSortedSupport(Integer limit);
+
+    /**
      * 获取图书的分类
      * @param bookId 图书id
      * @return 图书分类信息
@@ -102,11 +117,11 @@ public interface BookMapper {
     @Results({
             @Result(property = "id", column = "id", javaType = Long.class),
             @Result(property = "bookId",column = "book_id",javaType = String.class),
-            @Result(property = "category", column = "categoryId", typeHandler = BookCategoryTypeHandler.class)
+            @Result(property = "category", column = "category_id", javaType = com.mazhj.common.pojo.enums.BookCategory.class,typeHandler = BookCategoryTypeHandler.class)
     })
     @Select(
             """
-                select * from book_category_relation where book_id = #{bookId}
+                select id,book_id,category_id from book_category_relation where book_id = #{bookId}
             """
     )
     List<BookCategory> selectCategoriesByBookId(String bookId);

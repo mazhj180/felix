@@ -1,5 +1,7 @@
 package com.mazhj.felix.book.service.impl;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.mazhj.common.core.utils.Convert;
 import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
@@ -7,11 +9,14 @@ import com.mazhj.felix.book.mapper.BookMapper;
 import com.mazhj.felix.book.pojo.model.Book;
 import com.mazhj.felix.book.pojo.model.BookCategory;
 import com.mazhj.felix.book.pojo.vo.BookVO;
+import com.mazhj.felix.book.pojo.vo.RankVO;
 import com.mazhj.felix.book.service.RankService;
+import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -31,41 +36,32 @@ public class RankServiceImpl implements RankService {
     }
 
     @Override
-    public List<BookVO> getHotRankings() {
+    public List<RankVO> getHotRankings() {
         String key = KeyBuilder.Book.getHotRankingsKey();
-        Set<String> hotRanking = this.redisService.rangeVal(key, 0L, 9L);
-        List<Book> books = this.bookMapper.selectBatchByBookId(hotRanking.toArray(new String[0]));
-        return toBookVoList(books);
-    }
-
-    @Override
-    public List<BookVO> getLikeRankings() {
-        int rank = 10;
-        List<Book> books = this.bookMapper.select();
-        List<BookVO> vos = toBookVoList(books);
-        for (int i = 0; i < rank; i++) {
-            BookVO temp;
-            BookVO mostLike = vos.get(i);
-            int maxIdx = i;
-            for (int j = i + 1; j < vos.size(); j++) {
-                if (vos.get(j).getSupportCount() > mostLike.getSupportCount()){
-                    mostLike = vos.get(j);
-                    maxIdx = j;
-                }
+        List<RankVO> hotRank = new ArrayList<>();
+        Set<DefaultTypedTuple<JSONObject>> hotRankWithScore = this.redisService.rangeValWithScore(key, 0L, 9L);
+        for (DefaultTypedTuple<JSONObject> typedTuple : hotRankWithScore) {
+            Double hot = typedTuple.getScore();
+            RankVO vo = Objects.requireNonNull(typedTuple.getValue()).to(RankVO.class);
+            if (vo != null) {
+                vo.setHot(hot);
             }
-            if (maxIdx != i){
-                temp = vos.get(maxIdx);
-                vos.set(maxIdx,vos.get(i));
-                vos.set(i,temp);
-            }
+            hotRank.add(vo);
         }
-        return vos;
+        return hotRank;
     }
 
     @Override
-    public List<BookVO> getScoreRankings() {
+    public List<RankVO> getLikeRankings() {
+        int rank = 10;
+        List<Book> books = this.bookMapper.selectBookSortedSupport(rank);
+        return Convert.to(books, RankVO.class);
+    }
+
+    @Override
+    public List<RankVO> getScoreRankings() {
         List<Book> books = this.bookMapper.selectBookSortedScore(10);
-        return toBookVoList(books);
+        return Convert.to(books,RankVO.class);
     }
 
     private List<BookVO> toBookVoList(List<Book> books){
@@ -74,7 +70,7 @@ public class RankServiceImpl implements RankService {
             String bookId = vo.getBookId();
             String cKey = KeyBuilder.Book.getBookCategoriesKey(bookId);
             List<BookCategory> categories = this.redisService.get(cKey);
-            if (categories.isEmpty()) {
+            if (categories == null) {
                 categories = this.bookMapper.selectCategoriesByBookId(bookId);
             }
             AtomicReference<List<com.mazhj.common.pojo.enums.BookCategory>> enums = new AtomicReference<>(new ArrayList<>());

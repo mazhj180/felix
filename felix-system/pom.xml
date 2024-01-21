@@ -13,7 +13,7 @@
 
     <modules>
         <module>felix-book</module>
-        <module>felix-homepage</module>
+        <module>felix-creator_center</module>
         <module>felix-user</module>
         <module>felix-search</module>
         <module>felix-forum</module>

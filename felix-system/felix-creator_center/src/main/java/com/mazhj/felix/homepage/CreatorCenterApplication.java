@@ -12,8 +12,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication
 @EnableFeignClients(clients = {UserClient.class,BookClient.class, SearchClient.class})
-public class HomepageApplication {
+public class CreatorCenterApplication {
     public static void main(String[] args) {
-        SpringApplication.run(HomepageApplication.class,args);
+        SpringApplication.run(CreatorCenterApplication.class,args);
     }
 }

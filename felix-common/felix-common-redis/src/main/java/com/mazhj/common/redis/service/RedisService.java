@@ -67,8 +67,12 @@ public class RedisService {
         return redisTemplate.opsForHash().multiGet(key,hashkeys);
     }
 
-    public Set<String> rangeVal(final String key,final Long start, final Long end){
-        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    public <T> Set<T> rangeVal(final String key,final Long start, final Long end){
+        return redisTemplate.opsForZSet().reverseRange(key, start, end);
+    }
+
+    public <T> Set<DefaultTypedTuple<T>> rangeValWithScore(final String key,final Long start, final Long end){
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key,start,end);
     }
 
     public void incrementScore(final String key, final String hotWord ,final Double delta){

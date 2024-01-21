@@ -1,6 +1,7 @@
 package com.mazhj.common.redis.config;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONException;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.filter.Filter;
@@ -46,6 +47,13 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         }
 
         String target =new String(bytes,DEFAULT_CHARSET);
-        return JSON.parseObject(target,tClass,AUTO_TYPE_FILTER);
+        T res;
+        try {
+            res = JSON.parseObject(target,tClass,AUTO_TYPE_FILTER);
+        } catch (JSONException e) {
+            return tClass.cast(target);
+        }
+
+        return res;
     }
 }

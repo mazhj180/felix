@@ -13,6 +13,7 @@
         <module>felix-feign</module>
         <module>felix-system</module>
         <module>felix-control_center</module>
+        <module>felix-auth_center</module>
     </modules>
 
     <packaging>pom</packaging>

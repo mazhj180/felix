@@ -27,7 +27,7 @@ public class HotPotListener {
             case LOOK_THROUGH -> 2;
         };
         String key = KeyBuilder.Book.getHotRankingsKey();
-        if (!this.redisService.hasKey(key)){
+        if (!this.redisService.hasKey(key) || this.redisService.score(key,bookId) == null){
             this.redisService.addForZSet(key,bookId,0);
         }
         this.redisService.incrScore(key,bookId,hot);

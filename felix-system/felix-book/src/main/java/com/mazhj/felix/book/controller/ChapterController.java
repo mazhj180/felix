@@ -17,7 +17,7 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("/chapter")
+@RequestMapping("/book/chapter")
 public class ChapterController extends BaseController {
     private final ChapterService chapterService;
 
