@@ -34,6 +34,11 @@
 
         <dependency>
             <groupId>com.mazhj</groupId>
+            <artifactId>felix-common-auth</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mazhj</groupId>
             <artifactId>felix-feign-homepage-client</artifactId>
         </dependency>
 

@@ -53,4 +53,28 @@ public interface UserMapper {
                 where user_id = #{userId}
             """)
     User selectByUserId(String userId);
+
+    @ResultMap("baseResultMap")
+    @Select("""
+                <script>
+                    select * from user
+                    <where>
+                        <if test = 'userId != null'>
+                            user_id = #{userId}
+                        </if>
+                        <if test = 'userName != null'>
+                            nick_name = #{userName}
+                        </if>
+                    </where>
+                </script>
+            """)
+    List<User> selectUserList(String userId,String userName);
+
+    @ResultMap("baseResultMap")
+    @Update("""
+                update user
+                set state = #{state}
+                where userId = #{userId}
+            """)
+    int updateState(User user);
 }

@@ -4,6 +4,8 @@ import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.pojo.model.User;
 import com.mazhj.felix.user.pojo.vo.LoginVO;
 
+import java.util.List;
+
 /**
  * @author mazhj
  */
@@ -22,5 +24,19 @@ public interface UserService {
      * @return 消息（成功或失败）
      */
     Message register(User user);
+
+    /**
+     * 获取用户列表
+     * @param userId 用户id
+     * @param userName 用户名
+     * @return 用户列表
+     */
+    List<User> getUsers(String userId,String userName);
+
+    /**
+     * 修改用户状态
+     * @param user 用户
+     */
+    void updateState(User user);
 
 }

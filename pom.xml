@@ -43,6 +43,7 @@
         <felix-common-pojo.version>1.0-SNAPSHOT</felix-common-pojo.version>
         <felix-common-redis.version>1.0-SNAPSHOT</felix-common-redis.version>
         <felix-common-web.version>1.0-SNAPSHOT</felix-common-web.version>
+        <felix-common-auth.version>1.0-SNAPSHOT</felix-common-auth.version>
         <felix-feign-user.version>1.0-SNAPSHOT</felix-feign-user.version>
         <felix-feign-book.version>1.0-SNAPSHOT</felix-feign-book.version>
         <felix-feign-search.version>1.0-SNAPSHOT</felix-feign-search.version>
@@ -97,6 +98,12 @@
                 <groupId>com.mazhj</groupId>
                 <artifactId>felix-common-web</artifactId>
                 <version>${felix-common-web.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mazhj</groupId>
+                <artifactId>felix-common-auth</artifactId>
+                <version>${felix-common-auth.version}</version>
             </dependency>
 
             <dependency>

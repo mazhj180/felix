@@ -13,6 +13,8 @@ import com.nimbusds.jose.JOSEException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
+
 /**
  * @author mazhj
  */
@@ -56,5 +58,15 @@ public class UserServiceImpl implements UserService {
         user.setUserPwd(password);
         this.userMapper.insert(user);
         return Message.builder().message("注册成功").build();
+    }
+
+    @Override
+    public List<User> getUsers(String userId, String userName) {
+        return this.userMapper.selectUserList(userId,userName);
+    }
+
+    @Override
+    public void updateState(User user) {
+        this.userMapper.updateState(user);
     }
 }

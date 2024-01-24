@@ -1,15 +1,21 @@
 package com.mazhj.felix.book.controller;
 
+import com.mazhj.common.auth.anno.Auth;
+import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.common.core.utils.Convert;
 import com.mazhj.common.pojo.dto.BookDTO;
 import com.mazhj.common.web.controller.BaseController;
+import com.mazhj.common.web.response.AjaxResult;
 import com.mazhj.felix.book.pojo.model.Book;
 import com.mazhj.felix.book.pojo.model.BookCategory;
+import com.mazhj.felix.book.pojo.vo.BookVO;
 import com.mazhj.felix.book.service.BookService;
 import com.mazhj.felix.book.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +31,32 @@ public class BookController extends BaseController {
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @Auth(AccountLevel.ADMINISTRATORS)
+    @PostMapping("/listing")
+    public AjaxResult listing(MultipartFile file){
+
+        return null;
+    }
+
+    @Auth(AccountLevel.WRITER)
+    @PostMapping("/upload")
+    public AjaxResult upload(){
+        return null;
+    }
+
+    @GetMapping("/get/book-detail-info")
+    public AjaxResult getBookDetailInfo(String bookId){
+        Book book = this.bookService.getBookInfoByBookId(bookId);
+        BookVO vo = Convert.to(book, BookVO.class);
+        List<BookCategory> categories = this.bookService.getCategoriesByBookId(bookId);
+        List<com.mazhj.common.pojo.enums.BookCategory> enums = new ArrayList<>();
+        categories.forEach(category -> {
+            enums.add(category.getCategory());
+        });
+        vo.setCategories(enums);
+        return success(vo);
     }
 
 
