@@ -1,9 +1,7 @@
 package com.mazhj.felix.search;
 
-import com.mazhj.felix.feign.homepage.clients.HomepageClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @author mazhj
