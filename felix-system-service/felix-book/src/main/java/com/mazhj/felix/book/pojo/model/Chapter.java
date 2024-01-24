@@ -27,7 +27,7 @@ public class Chapter implements Serializable {
     private String name;
 
     /** 内容*/
-    private String content;
+    private String contentPath;
 
     /** 当前状态 （0:正常 ；1:锁章）*/
     private Byte status;

@@ -19,7 +19,7 @@ public interface ChapterMapper {
      */
     @Select(
             """
-                select * from book_chapter 
+                select * from book_chapter
                 where book_id = #{bookId} and chapter_code = #{chapterCode}
             """
     )
