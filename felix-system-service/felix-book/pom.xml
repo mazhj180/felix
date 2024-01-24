@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>felix-system</artifactId>
+        <artifactId>felix-system-service</artifactId>
         <groupId>com.mazhj</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>felix-user</artifactId>
+    <artifactId>felix-book</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -34,22 +34,12 @@
 
         <dependency>
             <groupId>com.mazhj</groupId>
-            <artifactId>felix-common-quartz</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mazhj</groupId>
             <artifactId>felix-common-auth</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.mazhj</groupId>
-            <artifactId>felix-feign-book-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mazhj</groupId>
-            <artifactId>felix-feign-search-client</artifactId>
+            <artifactId>felix-feign-homepage-client</artifactId>
         </dependency>
 
         <dependency>
@@ -77,5 +67,4 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
     </dependencies>
-
 </project>

@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>felix-system</artifactId>
+    <artifactId>felix-system-service</artifactId>
 
     <modules>
         <module>felix-book</module>
-        <module>felix-creator_center</module>
+        <module>felix-control</module>
         <module>felix-user</module>
         <module>felix-search</module>
         <module>felix-forum</module>

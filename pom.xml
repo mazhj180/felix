@@ -11,9 +11,8 @@
         <module>felix-common</module>
         <module>felix-gateway</module>
         <module>felix-feign</module>
-        <module>felix-system</module>
-        <module>felix-control_center</module>
-        <module>felix-auth_center</module>
+        <module>felix-system-service</module>
+        <module>felix-auth-center</module>
     </modules>
 
     <packaging>pom</packaging>
