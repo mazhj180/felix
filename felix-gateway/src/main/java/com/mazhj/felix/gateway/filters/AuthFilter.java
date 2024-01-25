@@ -1,14 +1,15 @@
 package com.mazhj.felix.gateway.filters;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.mazhj.common.core.exception.AuthException;
 import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.exception.SystemException;
-import com.mazhj.common.core.utils.JwtUtil;
 import com.mazhj.common.core.utils.SpringUtil;
 import com.mazhj.common.pojo.claims.Claims;
+import com.mazhj.common.web.response.AjaxResult;
 import com.mazhj.felix.gateway.config.properties.GatewayConfigProperties;
 import com.nimbusds.jose.JOSEException;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -16,6 +17,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -29,10 +31,14 @@ import java.util.regex.Pattern;
  * @author mazhj
  */
 @Component
-@EnableConfigurationProperties(value = {GatewayConfigProperties.class})
 public class AuthFilter implements GlobalFilter, Ordered {
-
     private static final String[] SYSTEM_NOT_CHECK_PATH = {"/user/login","/index/[^\\s]*","/book/[^\\s]*"};
+
+    private final WebClient webClient;
+
+    public AuthFilter(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -75,7 +81,17 @@ public class AuthFilter implements GlobalFilter, Ordered {
     }
 
     private Claims validate(String token) throws AuthException, ParseException, JOSEException {
-        return JwtUtil.validateToken(token);
+        Mono<String> mono = this.webClient.get()
+                .uri("/validate?accessToken="+token)
+                .retrieve()
+                .bodyToMono(String.class);
+        AjaxResult result = JSON.parseObject(mono.block(), AjaxResult.class);
+        assert result != null;
+        JSONObject data = result.getData();
+        if (!data.getBoolean("access")){
+            throw new AuthException(data.getString("message"));
+        }
+        return data.getObject("claims",Claims.class);
     }
 
     private boolean isWebSocketUpgradeRequest(ServerHttpRequest request) {

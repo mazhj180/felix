@@ -1,4 +1,4 @@
-package com.mazhj.felix.homepage.pojo.param;
+package com.mazhj.felix.control.pojo.param;
 
 import lombok.Data;
 

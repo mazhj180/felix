@@ -31,8 +31,8 @@ public class User {
     /** 头像地址*/
     private String headImgUrl;
 
-    /** 是否已注册为作者*/
-    private Boolean isCreator;
+    /** 账号等级*/
+    private String level;
 
     /** 创建时间*/
     private Date createTime;

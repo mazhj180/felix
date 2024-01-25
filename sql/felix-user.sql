@@ -39,3 +39,20 @@ create table `bookshelf`
 insert into bookshelf (user_id, book_id)
 values ('zhaomin', 'honglou'),
        ('zhaomin', 'daomu');
+
+drop table if exists `author`;
+create table author
+(
+    `id`            int unsigned auto_increment comment '数据库主键',
+    `author_id`     varchar(32) collate utf8mb3_unicode_ci        not null comment '作者id',
+    `identity_card` varchar(32) collate utf8mb3_unicode_ci unique not null comment '身份证号',
+    `real_name`     varchar(32) collate utf8mb3_unicode_ci        not null comment '真实名字',
+    `pseudonym`     varchar(32) collate utf8mb3_unicode_ci        not null comment '笔名',
+    `nationality`   varchar(255) collate utf8mb3_unicode_ci       not null comment '国籍',
+    `birthday`      date comment '出生日',
+    `master_works`  text collate utf8mb3_unicode_ci comment '代表作',
+    `introduction`  text collate utf8mb4_unicode_ci               not null comment '作者简介',
+    primary key (`id`),
+    unique key `idx_author_id` (`author_id`)
+)engine =InnoDB default charset =utf8mb4 collate =utf8mb4_unicode_ci row_format =dynamic comment '作者信息表';
+

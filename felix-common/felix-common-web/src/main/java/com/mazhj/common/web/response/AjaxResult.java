@@ -1,6 +1,7 @@
 package com.mazhj.common.web.response;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
 import org.springframework.http.HttpStatus;
 
@@ -16,7 +17,7 @@ public class AjaxResult extends HashMap<String,Object> {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final String DATA_TAG = "data";
+    public static final String DATA_TAG = "data";
 
     public static final String MSG_TAG = "message";
 
@@ -64,6 +65,17 @@ public class AjaxResult extends HashMap<String,Object> {
     public AjaxResult buildMsg(String msg){
         super.put(MSG_TAG,msg);
         return this;
+    }
+
+    public String getDataValForStr(String key){
+        Object o = this.get(AjaxResult.DATA_TAG);
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(o));
+        return jsonObject.getString(key);
+    }
+
+    public JSONObject getData(){
+        Object o = this.get(AjaxResult.DATA_TAG);
+        return JSON.parseObject(JSON.toJSONString(o));
     }
 
     public <T> T deserialize(Class<T> clazz){

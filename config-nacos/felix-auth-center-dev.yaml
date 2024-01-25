@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/felix_user?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: tiger
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 1
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 8
+          max-wait: -1
+      timeout: 1000
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  page-size-zero: true
+  auto-runtime-dialect: true
+  helper-dialect: mysql
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+channel-container:
+  channel:
+    initial-capacity: 1000
+    maximum-size: 10000
+  topic:
+    initial-capacity: 100
+    maximum-size: 1000

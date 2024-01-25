@@ -1,4 +1,4 @@
-package com.mazhj.felix.homepage;
+package com.mazhj.felix.control;
 
 import com.mazhj.felix.feign.book.clients.BookClient;
 import com.mazhj.felix.feign.search.clients.SearchClient;

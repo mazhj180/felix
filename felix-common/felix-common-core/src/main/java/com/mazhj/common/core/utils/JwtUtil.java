@@ -7,6 +7,7 @@ import com.mazhj.common.pojo.claims.Claims;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
+import com.nimbusds.jwt.JWT;
 
 import java.text.ParseException;
 
