@@ -109,6 +109,8 @@ public interface BookMapper {
     )
     List<Book> selectBookSortedSupport(Integer limit);
 
+    int insertBatch(List<Book> books);
+
     /**
      * 获取图书的分类
      * @param bookId 图书id

@@ -65,4 +65,9 @@ public class BookServiceImpl implements BookService {
         this.redisService.set(key,categories);
         return categories;
     }
+
+    @Override
+    public void listingBook(List<Book> books) {
+
+    }
 }

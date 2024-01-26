@@ -44,9 +44,12 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/get-user")
-    public AjaxResult getUser(@RequestParam(required = false) String userId,@RequestParam(required = false) String userName){
+    public AjaxResult getUser(@RequestParam(required = false) String userId,
+                              @RequestParam(required = false) String userName,
+                              @RequestParam(required = false) Boolean isWriter
+                              ){
         startPage();
-        List<User> users = this.userService.getUsers(userId, userName);
+        List<User> users = this.userService.getUsers(userId, userName, isWriter);
         return success(users);
     }
 

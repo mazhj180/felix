@@ -23,6 +23,7 @@ public interface UserMapper {
             @Result(column = "nick_name",jdbcType = JdbcType.VARCHAR,property = "nickName"),
             @Result(column = "phone_number",jdbcType = JdbcType.VARCHAR,property = "phoneNumber"),
             @Result(column = "head_img_url",jdbcType = JdbcType.VARCHAR,property = "headImgUrl"),
+            @Result(column = "level",jdbcType = JdbcType.VARCHAR,property = "level"),
             @Result(column = "create_time",jdbcType = JdbcType.TIMESTAMP,property = "createTime"),
             @Result(column = "update_time",jdbcType = JdbcType.TIMESTAMP,property = "updateTime")
     })
@@ -63,12 +64,15 @@ public interface UserMapper {
                             user_id = #{userId}
                         </if>
                         <if test = 'userName != null'>
-                            nick_name = #{userName}
+                            and nick_name = #{userName}
+                        </if>
+                        <if test = 'isWriter == true'>
+                            and level = writer
                         </if>
                     </where>
                 </script>
             """)
-    List<User> selectUserList(String userId,String userName);
+    List<User> selectUserList(String userId,String userName,String isWriter);
 
     @ResultMap("baseResultMap")
     @Update("""

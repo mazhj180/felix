@@ -8,7 +8,7 @@ create table `user`
     `phone_number` char(11) comment '用户手机号',
     `email`        varchar(255) comment '用户邮箱',
     `head_img_url` varchar(255) comment '用户头像',
-    `level`        varchar(32) comment '账户等级',
+    `level`        varchar(32) default 'writer' comment '账户等级',
     `create_time`  timestamp   not null default current_timestamp comment '创建时间',
     `update_time`  timestamp   not null default current_timestamp on update current_timestamp comment '更新时间',
     primary key (`id`),

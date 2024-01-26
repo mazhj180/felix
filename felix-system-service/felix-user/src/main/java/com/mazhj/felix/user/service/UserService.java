@@ -29,9 +29,10 @@ public interface UserService {
      * 获取用户列表
      * @param userId 用户id
      * @param userName 用户名
+     * @param isWriter 是否是作者
      * @return 用户列表
      */
-    List<User> getUsers(String userId,String userName);
+    List<User> getUsers(String userId,String userName,Boolean isWriter);
 
     /**
      * 修改用户状态

@@ -45,4 +45,10 @@ public interface BookService {
      */
     List<BookCategory> getCategoriesByBookId(String bookId);
 
+    /**
+     * 图书上架
+     * @param books 图书列表
+     */
+    void listingBook(List<Book> books);
+
 }
