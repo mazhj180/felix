@@ -4,14 +4,12 @@ import com.mazhj.common.core.exception.AuthException;
 import com.mazhj.common.core.utils.JwtUtil;
 import com.mazhj.common.pojo.claims.Claims;
 import com.mazhj.common.web.controller.BaseController;
+import com.mazhj.common.web.request.Params;
 import com.mazhj.common.web.response.AjaxResult;
 import com.mazhj.felix.auth.pojo.vo.AuthVO;
 import com.mazhj.felix.auth.service.AuthService;
 import com.nimbusds.jose.JOSEException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -30,12 +28,14 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping("/login")
-    public AjaxResult login(String account,String password) {
-        AuthVO vo = this.authService.login(account, password);
+    public AjaxResult login(@RequestBody Params params) {
+        String userId = params.getStringValue("userId");
+        String password = params.getStringValue("password");
+        AuthVO vo = this.authService.login(userId, password);
         return success(vo);
     }
 
-    @GetMapping("/valid/")
+    @GetMapping("/valid")
     public AjaxResult validated(String accessToken){
         try {
             Claims claims = JwtUtil.validateToken(accessToken);

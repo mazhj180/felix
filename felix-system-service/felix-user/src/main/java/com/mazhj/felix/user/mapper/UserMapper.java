@@ -36,8 +36,8 @@ public interface UserMapper {
      * @return 插入的元组数
      */
     @Insert("""
-                insert into user (user_id, user_pwd, nick_name, phone_number, head_img_url)
-                values (#{userPwd,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR})
+                insert into user (user_id, user_pwd, nick_name, phone_number, email)
+                values (#{userId},#{userPwd,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR},#{email})
             """)
     int insert(User user);
 

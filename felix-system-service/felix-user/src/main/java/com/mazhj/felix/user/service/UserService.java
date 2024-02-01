@@ -26,6 +26,13 @@ public interface UserService {
     Message register(User user);
 
     /**
+     * 用户是否已存在
+     * @param userId 用户id
+     * @return 结果
+     */
+    Boolean userIsExited(String userId);
+
+    /**
      * 获取用户列表
      * @param userId 用户id
      * @param userName 用户名

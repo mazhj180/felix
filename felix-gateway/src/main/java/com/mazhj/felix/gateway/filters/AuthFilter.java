@@ -23,8 +23,11 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.text.ParseException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 /**
@@ -32,7 +35,7 @@ import java.util.regex.Pattern;
  */
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
-    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/user/login","/index/[^\\s]*","/book/[^\\s]*"};
+    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/user/login","/index/[^\\s]*"};
 
     private final WebClient webClient;
 
@@ -77,15 +80,20 @@ public class AuthFilter implements GlobalFilter, Ordered {
             throw new SystemException(e.getMessage());
         } catch (AuthException e) {
             throw new BusinessException(e.getMessage());
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private Claims validate(String token) throws AuthException, ParseException, JOSEException {
+    private Claims validate(String token) throws AuthException, ParseException, JOSEException, ExecutionException, InterruptedException {
         Mono<String> mono = this.webClient.get()
-                .uri("/validate?accessToken="+token)
+                .uri("/valid?accessToken="+token)
                 .retrieve()
                 .bodyToMono(String.class);
-        AjaxResult result = JSON.parseObject(mono.block(), AjaxResult.class);
+        CompletableFuture<String> voidCompletableFuture = CompletableFuture.supplyAsync(mono::block);
+        AjaxResult result = JSON.parseObject(voidCompletableFuture.get(), AjaxResult.class);
         assert result != null;
         JSONObject data = result.getData();
         if (!data.getBoolean("access")){

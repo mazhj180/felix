@@ -19,7 +19,7 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController extends BaseController {
 
     private final UserService userService;
@@ -40,7 +40,13 @@ public class UserController extends BaseController {
     public AjaxResult register(@RequestBody UserParam userParam){
         User user = Convert.to(userParam, User.class);
         Message message = this.userService.register(user);
-        return success().buildMsg(message.getMessage());
+        return success("ok").buildMsg(message.getMessage());
+    }
+
+    @GetMapping("/is-exited/{userId}")
+    public AjaxResult isExited(@PathVariable String userId) {
+        Boolean res = this.userService.userIsExited(userId);
+        return success(res?"yes":"no");
     }
 
     @GetMapping("/get-user")

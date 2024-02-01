@@ -1,5 +1,5 @@
 server:
-  port: 7009
+  port: 10003
 spring:
   application:
     name: felix-user

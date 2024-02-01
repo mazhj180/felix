@@ -36,6 +36,9 @@ public class User implements Serializable {
     /** 头像地址*/
     private String headImgUrl;
 
+    /** 账户等级 默认为reader*/
+    private String level;
+
     /** 创建时间*/
     private Date createTime;
 

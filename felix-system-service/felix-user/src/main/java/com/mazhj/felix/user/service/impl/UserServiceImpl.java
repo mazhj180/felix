@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean userIsExited(String userId) {
+        User user = this.userMapper.selectByUserId(userId);
+        return user != null;
+    }
+
+    @Override
     public List<User> getUsers(String userId, String userName,Boolean isWriter) {
         isWriter = Optional.ofNullable(isWriter).orElse(false);
         return this.userMapper.selectUserList(userId,userName,isWriter.toString());
