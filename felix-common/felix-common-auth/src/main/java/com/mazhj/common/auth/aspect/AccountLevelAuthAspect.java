@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 /**
  * @author mazhj
@@ -18,7 +19,7 @@ import java.lang.reflect.Method;
 @Aspect
 public class AccountLevelAuthAspect {
 
-    private static final String POINTCUT_SIGN = "@annotation(com.mazhj.common.auth.anno.Auth)";
+    private static final String POINTCUT_SIGN = "@within(com.mazhj.common.auth.anno.Auth) || @annotation(com.mazhj.common.auth.anno.Auth)";
 
     @Pointcut(POINTCUT_SIGN)
     public void pointcut(){}
@@ -26,12 +27,14 @@ public class AccountLevelAuthAspect {
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
-        check(methodSignature.getMethod());
+        Method method = methodSignature.getMethod();
+        Class<?> clazz = method.getDeclaringClass();
+        Auth auth = Optional.ofNullable(clazz.getAnnotation(Auth.class)).orElse(method.getAnnotation(Auth.class));
+        check(auth);
         return joinPoint.proceed();
     }
 
-    private void check(Method method) throws AuthException {
-        Auth auth = method.getAnnotation(Auth.class);
+    private void check(Auth auth) throws AuthException {
         if (auth != null){
             String level = ServletUtil.getRequest().getHeader("Account-Level");
             AccountLevel accountLevel = AccountLevel.valueOf(level);

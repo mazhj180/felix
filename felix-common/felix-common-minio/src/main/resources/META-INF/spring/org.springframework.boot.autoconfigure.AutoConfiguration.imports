@@ -1,0 +1,2 @@
+com.mazhj.common.minio.config.MinioConfig
+com.mazhj.common.minio.service.MinioService

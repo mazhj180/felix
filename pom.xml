@@ -37,12 +37,14 @@
         <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
         <poi-ooxml.version>4.0.1</poi-ooxml.version>
         <snakeyaml.version>2.0</snakeyaml.version>
+        <minio.version>8.5.7</minio.version>
         <felix-common-core.version>1.0-SNAPSHOT</felix-common-core.version>
         <felix-common-quartz.version>1.0-SNAPSHOT</felix-common-quartz.version>
         <felix-common-pojo.version>1.0-SNAPSHOT</felix-common-pojo.version>
         <felix-common-redis.version>1.0-SNAPSHOT</felix-common-redis.version>
         <felix-common-web.version>1.0-SNAPSHOT</felix-common-web.version>
         <felix-common-auth.version>1.0-SNAPSHOT</felix-common-auth.version>
+        <felix-common-minio.version>1.0-SNAPSHOT</felix-common-minio.version>
         <felix-feign-user.version>1.0-SNAPSHOT</felix-feign-user.version>
         <felix-feign-book.version>1.0-SNAPSHOT</felix-feign-book.version>
         <felix-feign-search.version>1.0-SNAPSHOT</felix-feign-search.version>
@@ -175,6 +177,12 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

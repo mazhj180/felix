@@ -18,6 +18,7 @@
         <module>felix-common-redis</module>
         <module>felix-common-web</module>
         <module>felix-common-auth</module>
+        <module>felix-common-minio</module>
     </modules>
 
     <packaging>pom</packaging>
