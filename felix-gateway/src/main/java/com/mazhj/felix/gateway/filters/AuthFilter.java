@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.text.ParseException;
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -61,14 +60,19 @@ public class AuthFilter implements GlobalFilter, Ordered {
                             .getFirst("Authentication")
                     ).orElse(request.getQueryParams().getFirst("token"));
             Claims claims = validate(token);
-            request = request.mutate().headers(httpHeaders -> httpHeaders.set("userId",claims.getUserId())).build();
+            request = request
+                    .mutate()
+                    .headers(httpHeaders -> {
+                        httpHeaders.set("userId",claims.getUserId());
+                        httpHeaders.set("Account-Level",claims.getLevel());
+                    })
+                    .build();
 
             if (isWebSocketUpgradeRequest(request)){
                 MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>(request.getQueryParams());
                 queryParams.remove("token");
                 URI originalUri = request.getURI();
                 URI newUri = URI.create(originalUri.getScheme() + "://" + originalUri.getAuthority() + originalUri.getPath());
-                System.out.println(newUri);
                 request = request.mutate()
                         .uri(newUri)
                         .headers(httpHeaders -> httpHeaders.addAll(queryParams))
@@ -80,9 +84,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
             throw new SystemException(e.getMessage());
         } catch (AuthException e) {
             throw new BusinessException(e.getMessage());
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

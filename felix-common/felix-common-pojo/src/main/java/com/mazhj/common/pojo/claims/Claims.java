@@ -14,6 +14,8 @@ public class Claims {
 
     private String userId;
 
+    private String level;
+
     private Long exp;
 
 }
