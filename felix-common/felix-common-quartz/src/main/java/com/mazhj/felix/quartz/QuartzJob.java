@@ -28,6 +28,8 @@ public abstract class QuartzJob implements Job {
      * 任务执行逻辑
      * @param method 执行的方法
      * @param clazz 任务的class
+     * @throws InvocationTargetException InvocationTargetException
+     * @throws IllegalAccessException IllegalAccessException
      */
     protected abstract void execute(Method method, Class<?> clazz) throws InvocationTargetException, IllegalAccessException;
 }

@@ -6,8 +6,8 @@ import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.feign.book.clients.BookClient;
 import com.mazhj.felix.feign.search.clients.SearchClient;
-import com.mazhj.felix.quartz.anno.Invoke;
-import com.mazhj.felix.quartz.anno.QuartzTask;
+import com.mazhj.felix.quartz.anno.CronTask;
+import com.mazhj.felix.quartz.anno.Scheduled;
 import com.mazhj.felix.user.pojo.param.Reason;
 import com.mazhj.felix.user.pojo.vo.BookshelfVO;
 import com.mazhj.felix.user.service.BookshelfService;
@@ -54,7 +54,7 @@ public class GuessYouServiceImpl implements GuessYouService {
 
     }
 
-    @QuartzTask
+    @Scheduled
     public static class GuessYouTask{
 
         private final BookshelfService bookshelfService;
@@ -77,7 +77,7 @@ public class GuessYouServiceImpl implements GuessYouService {
             this.searchClient = searchClient;
         }
 
-        @Invoke
+        @CronTask(cronExpression = "0 0 0 * * ?")
         public void guessYou(){
             String reasonKey = KeyBuilder.User.getReasonKey();
             String likeKey = KeyBuilder.User.getPossibleLikeKey();
