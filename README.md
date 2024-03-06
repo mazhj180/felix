@@ -12,55 +12,60 @@ Felix，我的毕业设计项目，是一款专注于提供优质阅读体验的
 ## 技术选型
 
 <p> Spring Boot - https://spring.io/projects/spring-boot </p>
-<p> MyBatis - http://www.mybatis.org/mybatis-3/zh/index.html </p>
+<p> Spring Cloud - https://spring.io/projects/spring-cloud </p>
 <p> Nacos - https://nacos.io/zh-cn/ </p>
 <p> Spring Cloud Gateway - https://spring.io/projects/spring-cloud-gateway </p>
+<p> MyBatis - https://www.mybatis.org/mybatis-3/zh/index.html </p>
 <p> Elasticsearch - https://www.elastic.co/elasticsearch/ </p>
 <p> OpenFeign - https://github.com/OpenFeign/feign </p>
 <p> Redis - https://redis.io/ </p>
 <p> MySQL - https://www.mysql.com/ </p>
 <p> Netty - https://netty.io/ </p>
-
-
+<p> MinIo - https://min.io/</p>
+<p> Caffeine - https://github.com/ben-manes/caffeine/wiki/Home-zh-CN </p>
+<p> Nginx - https://nginx.org/en/</p>
 
 ---
 
 ## 项目模块层级图
 ```text
 com.mazhj.felix
-├── felix-ui                // 前端框架 [80]
+├── felix-auth-center       // 认证中心 [10002]
 ├── felix-gateway           // 网关模块 [8080]
 ├── felix-feign             // 服务调用客户端接口
 │       └── felix-feign-user-client                   // user服务
 │       └── felix-feign-book-client                   // book服务
 │       └── felix-feign-search-client                 // search服务
 ├── felix-common            // 通用模块
+│       └── felix-common-auth                         // 请求鉴权模块
 │       └── felix-common-core                         // 核心模块
-│       └── felix-common-pojo                         // 数据传输实体
-│       └── felix-common-quartz                       // 定时任务支持
-│       └── felix-common-redis                        // 缓存服务
-│       └── felix-common-web                          // web模块
-├── felix-system            // 系统业务模块
-│       └── felix-user                                // 用户服务 [7001]
-│       └── felix-book                                // 图书服务 [7002]
-│       └── felix-homepage                            // 主页服务 [7003]
-│       └── felix-search                              // 搜索服务 [7004]
-│       └── felix-forum                               // 论坛服务 [7005]
+│       └── felix-common-minio                        // 文件管理模块
+│       └── felix-common-pojo                         // 数据传输实体模块
+│       └── felix-common-quartz                       // 定时任务模块
+│       └── felix-common-redis                        // 缓存服务模块
+│       └── felix-common-web                          // web服务模块
+├── felix-system-service    // 系统业务模块
+│       └── felix-user                                // 用户服务 [10003]
+│       └── felix-book                                // 图书服务 [10004]
+│       └── felix-control                             // 管理服务 [10005]
+│       └── felix-search                              // 搜索服务 [10006]
+│       └── felix-forum                               // 论坛服务 [10007]
 ├── pom.xml                 // 公共依赖
 ```
 
 ---
 
-## 系统通用模块
-| No  | 工程模块          | 说明                   | 子模块                                                            |
-|-----|---------------|----------------------|----------------------------------------------------------------|
-| 1   | felix-common  | 通用模块，定义DTO、工具类、配置类等。 | core、pojo、quartz、redis、web                                     |
-| 2   | felix-gateway | 服务网关、权限验证            |                                                                |
-| 3   | felix-system  | 系统服务模块，包含体业务模块       | felix-book、felix-user、felix-homepage、felix-search、felix-search |
-| 4   | felix-feign   | Feign客户端，提供微服务的公用客户端 | book-client、user-client、search-client                          |
+## 系统模块
+| No | 工程模块                 | 说明                   | 子模块                                                           |
+|----|----------------------|----------------------|---------------------------------------------------------------|
+| 1  | felix-common         | 通用模块，定义DTO、工具类、配置类等。 | auth、core、minio、pojo、quartz、redis、web                         |
+| 2  | felix-auth-center    | 认证中心                 |                                                               |
+| 3  | felix-gateway        | 服务网关、权限验证            |                                                               |
+| 4  | felix-system-service | 系统服务模块，包含体业务模块       | felix-book、felix-user、felix-control、felix-search、felix-search |
+| 5  | felix-feign          | Feign客户端，提供微服务的公用客户端 | book-client、user-client、search-client                         |
 
 ## 系统架构图
-<img src="design/diagram3.png" height="600" width="900" alt="架构图">
+<img src="design/structure.png" height="600" width="900" alt="架构图">
 
 ---
 
@@ -70,19 +75,19 @@ com.mazhj.felix
 > 用户请求的鉴定；使用 Hystrix、Redis基于令牌桶算法完成限流操作。
 
 ### 网关处理请求流程图
-
+<img src="design/gateway.png" height="600" width="900" alt="网关流程图">
 
 
 
 ## 系统服务模块（felix-system）
 
-| No  | 具体的服务          | 说明                  | 使用的feign客户端                           |
-|-----|----------------|---------------------|---------------------------------------|
-| 1   | felix-book     | 图书中心，提供图书基础数据接口     |                                       |
-| 2   | felix-user     | 账户中心，提供账户授权、用户服务等接口 | book-client                           |
-| 3   | felix-homepage | 精品页中心，提供App精品页接口    | book-client、user-client、search-client |
-| 4   | felix-forum    | 话题论坛                | book-client、user-client、search-client |
-| 5   | felix-search   | 全文分词搜索              |                                       |
+| No  | 具体的服务         | 说明                  | 使用的feign客户端                           |
+|-----|---------------|---------------------|---------------------------------------|
+| 1   | felix-book    | 图书中心，提供图书基础数据接口     |                                       |
+| 2   | felix-user    | 账户中心，提供账户授权、用户服务等接口 | book-client                           |
+| 3   | felix-control | 用户端动态组件             | book-client、user-client、search-client |
+| 4   | felix-forum   | 话题论坛                | book-client、user-client、search-client |
+| 5   | felix-search  | 全文分词搜索              |                                       |
 --------------------------------------------------------------------------------------------
 ### 用户模块 - felix-user
 > `felix-user` 用户模块负责处理账户相关的操作，完成用户认证，使用 JWT签发token，
