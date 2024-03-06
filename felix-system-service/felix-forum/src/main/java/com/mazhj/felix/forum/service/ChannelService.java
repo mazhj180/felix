@@ -35,9 +35,10 @@ public interface ChannelService {
     void join(Channel channel);
 
     /**
-     *
-     * @param event
+     * 是否已经登录
+     * @param userId 用户id
+     * @return 登录 true ； 为登录 false；
      */
-    void read(ApplicationEvent event);
+    boolean isExited(String userId);
 
 }

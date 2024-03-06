@@ -3,6 +3,7 @@ package com.mazhj.felix.feign.book.clients;
 import com.mazhj.common.pojo.dto.BookDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface BookClient {
      * @return 图书dto
      */
     @GetMapping("/book/feign/get-book")
-    BookDTO getBookByBookId(String bookId);
+    BookDTO getBookByBookId(@RequestParam String bookId);
 
     /**
      * 远程接口调用；获取全部图书

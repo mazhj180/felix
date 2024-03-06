@@ -12,6 +12,7 @@ import com.mazhj.felix.user.pojo.param.Reason;
 import com.mazhj.felix.user.pojo.vo.BookshelfVO;
 import com.mazhj.felix.user.service.BookshelfService;
 import com.mazhj.felix.user.service.GuessYouService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class GuessYouServiceImpl implements GuessYouService {
         String likeKey = KeyBuilder.User.getPossibleLikeKey();
         guessYouTask.redisService.setHashVal(reasonKey,userId,reason);
         List<BookDTO> bookDTOS = guessYouTask.redisService.getHashVal(likeKey,userId);
-        if (bookDTOS.isEmpty()){
+        if (bookDTOS == null || bookDTOS.isEmpty()){
             guessYouTask.guessYou();
             bookDTOS = guessYouTask.redisService.getHashVal(likeKey,userId);
         }
@@ -64,6 +65,9 @@ public class GuessYouServiceImpl implements GuessYouService {
         private final BookClient bookClient;
 
         private final SearchClient searchClient;
+
+        @Value("${guess-you.count:10}")
+        private Integer rank;
 
         public GuessYouTask(
                 BookshelfService bookshelfService,
@@ -96,7 +100,7 @@ public class GuessYouServiceImpl implements GuessYouService {
                 bookshelfJudge.scoring(entry,books);
 
                 //根据每本书评分获取前10
-                List<String> bookIds = ranking(reasonJudge.scoreMap, 10);
+                List<String> bookIds = ranking(reasonJudge.scoreMap, rank);
                 this.redisService.setHashVal(likeKey,userId,bookIds);
             }
         }

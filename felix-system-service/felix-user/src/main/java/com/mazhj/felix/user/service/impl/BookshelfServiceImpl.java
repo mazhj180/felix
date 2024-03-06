@@ -41,7 +41,9 @@ public class BookshelfServiceImpl implements BookshelfService {
         for (Bookshelf bookshelf : bookshelves) {
             BookDTO bookDTO = bookClient.getBookByBookId(bookshelf.getBookId());
             if (bookDTO != null){
-                bookshelfVOS.add(Convert.to(bookDTO,BookshelfVO.class));
+                BookshelfVO bookshelfVO = Convert.to(bookDTO, BookshelfVO.class);
+                bookshelfVO.setUserId(userId);
+                bookshelfVOS.add(bookshelfVO);
             }
         }
         return bookshelfVOS;

@@ -11,7 +11,9 @@ public enum MsgScope {
     /** 用户私聊*/
     PRIVATE("private"),
     /** 群聊*/
-    GROUP("group");
+    GROUP("group"),
+    /** 所有在线用户*/
+    ONLINE_USERS("onlineUsers");
     private final String val;
 
     MsgScope(String val) {

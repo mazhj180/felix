@@ -31,6 +31,7 @@ create table `bookshelf`
     `id`      int unsigned auto_increment comment '数据库主键',
     `user_id` varchar(32) not null comment '用户id',
     `book_id` varchar(32) not null comment '图书id',
+    `create_time` timestamp default current_timestamp comment '创建时间'
     primary key (`id`),
     unique key `idx_user_book_id` (`user_id`, `book_id`)
 ) engine = InnoDB

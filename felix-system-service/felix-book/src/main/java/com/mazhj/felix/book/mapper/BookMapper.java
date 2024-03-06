@@ -116,7 +116,7 @@ public interface BookMapper {
      * @param bookId 图书id
      * @return 图书分类信息
      */
-    @Results({
+    @Results(id = "bookCategoryMap",value = {
             @Result(property = "id", column = "id", javaType = Long.class),
             @Result(property = "bookId",column = "book_id",javaType = String.class),
             @Result(property = "category", column = "category_id", javaType = com.mazhj.common.pojo.enums.BookCategory.class,typeHandler = BookCategoryTypeHandler.class)
@@ -127,5 +127,18 @@ public interface BookMapper {
             """
     )
     List<BookCategory> selectCategoriesByBookId(String bookId);
+
+    /**
+     * 根据分类获取图书
+     * @param category 分类id
+     * @return 图书id信息
+     */
+    @ResultMap("bookCategoryMap")
+    @Select(
+            """
+                select id,book_id,category_id from book_category_relation where category_id = #{category}
+            """
+    )
+    List<BookCategory> selectBookByCategory(String category);
 
 }

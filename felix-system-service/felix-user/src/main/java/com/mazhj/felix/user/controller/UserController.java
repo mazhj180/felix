@@ -49,6 +49,12 @@ public class UserController extends BaseController {
         return success(res?"yes":"no");
     }
 
+    @GetMapping("/is-writer/{userId}")
+    public AjaxResult isWriter(@PathVariable String userId) {
+        AccountLevel accountLevel = this.userService.userLevel(userId);
+        return success(accountLevel.equals(AccountLevel.WRITER)?"yes":"no");
+    }
+
     @GetMapping("/get-user")
     public AjaxResult getUser(@RequestParam(required = false) String userId,
                               @RequestParam(required = false) String userName,
@@ -59,7 +65,7 @@ public class UserController extends BaseController {
         return success(users);
     }
 
-    @Auth(AccountLevel.ADMINISTRATORS)
+    @Auth(AccountLevel.ADMINISTRATOR)
     @PostMapping("/update-state")
     public AjaxResult updateState(User user){
         this.userService.updateState(user);

@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum AccountLevel {
     /** 管理员*/
-    ADMINISTRATORS(1),
+    ADMINISTRATOR(1),
     /** 读者*/
     READER(3),
     /** 作者*/

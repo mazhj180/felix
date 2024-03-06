@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
-    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/user/login","/index/[^\\s]*"};
+    private static final String[] SYSTEM_NOT_CHECK_PATH = {"/index/[^\\s]*","/book/[^\\s]*"};
 
     private final WebClient webClient;
 

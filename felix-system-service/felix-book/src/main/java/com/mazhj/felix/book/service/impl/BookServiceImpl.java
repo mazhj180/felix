@@ -8,6 +8,7 @@ import com.mazhj.felix.book.pojo.model.BookCategory;
 import com.mazhj.felix.book.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class BookServiceImpl implements BookService {
     public List<BookCategory> getCategoriesByBookId(String bookId) {
         String key = KeyBuilder.Book.getBookCategoriesKey(bookId);
         List<BookCategory> categories = this.redisService.get(key);
-        if (!categories.isEmpty()){
+        if (categories != null &&!categories.isEmpty()){
             return categories;
         }
         categories = this.bookMapper.selectCategoriesByBookId(bookId);
@@ -69,5 +70,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public void listingBook(List<Book> books) {
 
+    }
+
+    @Override
+    public List<Book> getBookByCategory(String categoryId) {
+        List<BookCategory> bookCategories = this.bookMapper.selectBookByCategory(categoryId);
+        String[] bookIds = bookCategories.stream()
+                .map(BookCategory::getBookId)
+                .toArray(String[]::new);
+        if (bookIds.length == 0){
+            return new ArrayList<>();
+        }
+        return this.bookMapper.selectBatchByBookId(bookIds);
     }
 }

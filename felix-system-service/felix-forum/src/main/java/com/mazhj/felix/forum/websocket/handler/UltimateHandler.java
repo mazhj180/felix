@@ -46,7 +46,7 @@ public class UltimateHandler extends SimpleChannelInboundHandler<TextWebSocketFr
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
         String msg = textWebSocketFrame.text();
         MsgBody msgBody = JSON.parseObject(msg).to(MsgBody.class);
-        log.debug(msgBody.toString());
+        log.info("心跳检测 [ {} ]",msgBody.toString());
     }
 
     @Override

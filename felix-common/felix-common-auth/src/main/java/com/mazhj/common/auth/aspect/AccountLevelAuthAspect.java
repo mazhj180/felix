@@ -37,7 +37,7 @@ public class AccountLevelAuthAspect {
     private void check(Auth auth) throws AuthException {
         if (auth != null){
             String level = ServletUtil.getRequest().getHeader("Account-Level");
-            AccountLevel accountLevel = AccountLevel.valueOf(level);
+            AccountLevel accountLevel = AccountLevel.valueOf(level.toUpperCase());
             if (auth.value().getLevel() < accountLevel.getLevel()) {
                 throw new AuthException("权限不足");
             }

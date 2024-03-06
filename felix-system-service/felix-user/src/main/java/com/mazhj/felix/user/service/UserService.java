@@ -1,5 +1,6 @@
 package com.mazhj.felix.user.service;
 
+import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.pojo.model.User;
 import com.mazhj.felix.user.pojo.vo.LoginVO;
@@ -31,6 +32,13 @@ public interface UserService {
      * @return 结果
      */
     Boolean userIsExited(String userId);
+
+    /**
+     * 用户是等级
+     * @param userId 用户id
+     * @return 结果
+     */
+    AccountLevel userLevel(String userId);
 
     /**
      * 获取用户列表

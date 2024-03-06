@@ -7,6 +7,8 @@ import io.netty.channel.Channel;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ConcurrentMap;
+
 
 /**
  * @author mazhj
@@ -38,5 +40,9 @@ public class CaffeineChannelContainer implements CacheContainer<String,Channel> 
     @Override
     public void del(String key) {
         CONTAINER.invalidate(key);
+    }
+
+    public ConcurrentMap<String ,Channel> foreach() {
+        return CONTAINER.asMap();
     }
 }

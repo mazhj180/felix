@@ -1,5 +1,6 @@
 package com.mazhj.felix.user.service.impl;
 
+import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.utils.Convert;
 import com.mazhj.common.core.utils.JwtUtil;
@@ -65,6 +66,13 @@ public class UserServiceImpl implements UserService {
     public Boolean userIsExited(String userId) {
         User user = this.userMapper.selectByUserId(userId);
         return user != null;
+    }
+
+    @Override
+    public AccountLevel userLevel(String userId) {
+        User user = this.userMapper.selectByUserId(userId);
+        String level = user.getLevel();
+        return AccountLevel.valueOf(level.toUpperCase());
     }
 
     @Override

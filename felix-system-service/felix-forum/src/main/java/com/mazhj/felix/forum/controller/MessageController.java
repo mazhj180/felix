@@ -1,7 +1,10 @@
 package com.mazhj.felix.forum.controller;
 
+import com.mazhj.common.auth.anno.Auth;
+import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.felix.forum.common.constant.MsgBodyConstant;
 import com.mazhj.felix.forum.common.enums.MsgScope;
+import com.mazhj.felix.forum.common.event.AdminMsgPushEvent;
 import com.mazhj.felix.forum.common.event.PrivateMsgPushEvent;
 import com.mazhj.felix.forum.common.event.TopicMsgPushEvent;
 import com.mazhj.felix.forum.pojo.model.TopicRemark;
@@ -75,6 +78,14 @@ public class MessageController {
     @PostMapping("/group")
     public void msgForGroup(){
 
+    }
+
+    @Auth(AccountLevel.ADMINISTRATOR)
+    @PostMapping("/all")
+    public void msgForAll(String msg) {
+        SenderInfo sender = new SenderInfo().setUserId("Admin");
+        WSMsgInfo wsMsgInfo = new WSMsgInfo(MsgScope.ONLINE_USERS, sender, msg, "all-online-users");
+        publisher.publishEvent(new AdminMsgPushEvent(this,wsMsgInfo));
     }
 
 }

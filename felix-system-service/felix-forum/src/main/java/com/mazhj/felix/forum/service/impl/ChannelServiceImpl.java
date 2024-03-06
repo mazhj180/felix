@@ -40,6 +40,7 @@ public class ChannelServiceImpl implements ChannelService {
             case TOPIC, PRIVATE -> send(wsMsgInfo,receiver);
             case REMARK -> remark();
             case GROUP -> group();
+            case ONLINE_USERS -> onlineU(wsMsgInfo.json());
             default -> throw new IllegalStateException("Unexpected value: " + scope);
         }
     }
@@ -57,12 +58,18 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void read(ApplicationEvent event) {
-
+    public boolean isExited(String userId) {
+        Channel channel = channelContainer.get(userId);
+        return channel != null;
     }
 
     private void remark(){}
 
 
     private void group(){}
+
+    private void onlineU(final String message){
+        this.channelContainer.foreach()
+                .forEach((k,v) -> v.writeAndFlush(new TextWebSocketFrame(message)));
+    }
 }

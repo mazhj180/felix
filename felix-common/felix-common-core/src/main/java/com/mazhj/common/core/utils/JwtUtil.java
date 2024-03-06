@@ -37,6 +37,7 @@ public final class JwtUtil {
         if (claims.getExp() < System.currentTimeMillis()){
             throw new AuthException("token过期");
         }
+        System.out.println(System.currentTimeMillis());
         return claims;
     }
 

@@ -51,4 +51,11 @@ public interface BookService {
      */
     void listingBook(List<Book> books);
 
+    /**
+     * 根据分类获取图书信息
+     * @param categoryId 分类id
+     * @return 图书信息
+     */
+    List<Book> getBookByCategory(String categoryId);
+
 }

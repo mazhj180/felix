@@ -20,4 +20,7 @@ public class Bookshelf implements Serializable {
 
     /** 图书id*/
     private String bookId;
+
+    /** 创建日期*/
+    private String createTime;
 }

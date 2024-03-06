@@ -10,11 +10,7 @@ import com.mazhj.felix.book.pojo.model.Book;
 import com.mazhj.felix.book.pojo.model.BookCategory;
 import com.mazhj.felix.book.pojo.vo.BookVO;
 import com.mazhj.felix.book.service.BookService;
-import com.mazhj.felix.book.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -33,7 +29,7 @@ public class BookController extends BaseController {
         this.bookService = bookService;
     }
 
-    @Auth(AccountLevel.ADMINISTRATORS)
+    @Auth(AccountLevel.ADMINISTRATOR)
     @PostMapping("/listing")
     public AjaxResult listing(MultipartFile file){
 
@@ -52,24 +48,24 @@ public class BookController extends BaseController {
         BookVO vo = Convert.to(book, BookVO.class);
         List<BookCategory> categories = this.bookService.getCategoriesByBookId(bookId);
         List<com.mazhj.common.pojo.enums.BookCategory> enums = new ArrayList<>();
-        categories.forEach(category -> {
-            enums.add(category.getCategory());
-        });
+        categories.forEach(category -> enums.add(category.getCategory()));
         vo.setCategories(enums);
         return success(vo);
     }
 
+    @GetMapping("/get-book/{category}")
+    public AjaxResult getBookByCategory(@PathVariable String category) {
+        List<Book> books = this.bookService.getBookByCategory(category);
+        return success(books);
+    }
 
     @GetMapping("/feign/get-book")
     public BookDTO getBookInfo(String bookId){
         Book book = this.bookService.getBookInfoByBookId(bookId);
         BookDTO bookDTO = Convert.to(book, BookDTO.class);
         List<BookCategory> categories = this.bookService.getCategoriesByBookId(bookId);
-
         List<com.mazhj.common.pojo.enums.BookCategory> enums = new ArrayList<>();
-        categories.forEach(category -> {
-            enums.add(category.getCategory());
-        });
+        categories.forEach(category -> enums.add(category.getCategory()));
         bookDTO.setCategories(enums);
         return bookDTO;
     }
@@ -81,9 +77,7 @@ public class BookController extends BaseController {
         for (int i = 0; i < books.size(); i++) {
             List<BookCategory> categories = this.bookService.getCategoriesByBookId(books.get(i).getBookId());
             AtomicReference<List<com.mazhj.common.pojo.enums.BookCategory>> enums = new AtomicReference<>(new ArrayList<>());
-            categories.forEach(category -> {
-                enums.get().add(category.getCategory());
-            });
+            categories.forEach(category -> enums.get().add(category.getCategory()));
             bookDTOS.get(i).setCategories(enums.get());
         }
         return bookDTOS;
@@ -96,9 +90,7 @@ public class BookController extends BaseController {
         for (int i = 0; i < books.size(); i++) {
             List<BookCategory> categories = this.bookService.getCategoriesByBookId(books.get(i).getBookId());
             AtomicReference<List<com.mazhj.common.pojo.enums.BookCategory>> enums = new AtomicReference<>(new ArrayList<>());
-            categories.forEach(category -> {
-                enums.get().add(category.getCategory());
-            });
+            categories.forEach(category -> enums.get().add(category.getCategory()));
             bookDTOS.get(i).setCategories(enums.get());
         }
         return bookDTOS;
@@ -111,9 +103,7 @@ public class BookController extends BaseController {
         for (int i = 0; i < books.size(); i++) {
             List<BookCategory> categories = this.bookService.getCategoriesByBookId(books.get(i).getBookId());
             AtomicReference<List<com.mazhj.common.pojo.enums.BookCategory>> enums = new AtomicReference<>(new ArrayList<>());
-            categories.forEach(category -> {
-                enums.get().add(category.getCategory());
-            });
+            categories.forEach(category -> enums.get().add(category.getCategory()));
             bookDTOS.get(i).setCategories(enums.get());
         }
         return bookDTOS;
