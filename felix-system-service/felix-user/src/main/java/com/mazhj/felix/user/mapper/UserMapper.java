@@ -39,7 +39,7 @@ public interface UserMapper {
                 insert into user (user_id, user_pwd, nick_name, phone_number, email)
                 values (#{userId},#{userPwd,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR},#{email})
             """)
-    int insert(User user);
+    void insert(User user);
 
     /**
      * 根据参数查询用户信息
@@ -49,7 +49,7 @@ public interface UserMapper {
     @ResultMap("baseResultMap")
     @Select("""
                 select id,user_id,user_pwd,nick_name,phone_number,email,
-                       head_img_url,create_time,update_time
+                       head_img_url,level,create_time,update_time
                 from user
                 where user_id = #{userId}
             """)

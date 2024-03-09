@@ -19,7 +19,6 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("/user")
 public class UserController extends BaseController {
 
     private final UserService userService;

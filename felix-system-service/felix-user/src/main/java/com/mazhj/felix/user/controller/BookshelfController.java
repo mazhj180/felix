@@ -19,7 +19,7 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("/user/bookshelf")
+@RequestMapping("/bookshelf")
 public class BookshelfController extends BaseController {
 
     private final BookshelfService bookshelfService;
