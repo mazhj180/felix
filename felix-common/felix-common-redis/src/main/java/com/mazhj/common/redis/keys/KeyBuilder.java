@@ -51,8 +51,12 @@ public final class KeyBuilder {
         }
     }
 
-    public static class Homepage{
-        private static final String PREFIX = ServiceModel.HOMEPAGE.str();
+    public static class Control{
+        private static final String PREFIX = ServiceModel.CONTROL.str();
+
+        public static String getDynamicComponentKey(String componentId){
+            return String.format(PREFIX + "dynamic-components:key-%s",componentId);
+        }
 
     }
 

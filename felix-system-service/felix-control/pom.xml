@@ -28,10 +28,6 @@
         </dependency>
         <dependency>
             <groupId>com.mazhj</groupId>
-            <artifactId>felix-common-quartz</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.mazhj</groupId>
             <artifactId>felix-common-redis</artifactId>
         </dependency>
         <dependency>
