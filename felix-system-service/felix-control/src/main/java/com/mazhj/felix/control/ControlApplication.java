@@ -10,10 +10,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @author mazhj
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.mazhj.common","com.mazhj.felix.control"})
 @EnableFeignClients(clients = {UserClient.class,BookClient.class, SearchClient.class})
-public class CreatorCenterApplication {
+public class ControlApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CreatorCenterApplication.class,args);
+        SpringApplication.run(ControlApplication.class,args);
     }
 }
