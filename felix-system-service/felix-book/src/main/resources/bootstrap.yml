@@ -1,5 +1,7 @@
 server:
-  port: 10006
+  port: 10004
+  servlet:
+    context-path: /book
 spring:
   application:
     name: felix-book

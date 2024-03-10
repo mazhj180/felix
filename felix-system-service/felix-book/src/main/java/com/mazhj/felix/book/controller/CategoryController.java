@@ -14,7 +14,7 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("/book/category")
+@RequestMapping("/category")
 public class CategoryController extends BaseController {
 
     private final CategoryService categoryService;

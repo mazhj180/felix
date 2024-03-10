@@ -1,5 +1,7 @@
 server:
-  port: 10004
+  port: 10007
+  servlet:
+    context-path: /forum
 spring:
   application:
     name: felix-forum

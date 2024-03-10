@@ -14,7 +14,7 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("/book/rank")
+@RequestMapping("/rank")
 public class RankController extends BaseController {
 
     private final RankService rankService;

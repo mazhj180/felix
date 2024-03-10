@@ -49,7 +49,7 @@ com.mazhj.felix
 │       └── felix-book                                // 图书服务 [10004]
 │       └── felix-control                             // 管理服务 [10005]
 │       └── felix-search                              // 搜索服务 [10006]
-│       └── felix-forum                               // 论坛服务 [10007]
+│       └── felix-forum                               // 论坛服务 [10007、10008]
 ├── pom.xml                 // 公共依赖
 ```
 

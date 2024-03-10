@@ -1,8 +1,10 @@
 server:
-  port: 7003
+  port: 10005
+  servlet:
+    context-path: /control
 spring:
   application:
-    name: felix-homepage
+    name: felix-control
   profiles:
     active: dev
   cloud:

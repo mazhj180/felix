@@ -1,5 +1,7 @@
 server:
-  port: 7004
+  port: 10006
+  servlet:
+    context-path: /search
 spring:
   application:
     name: felix-search

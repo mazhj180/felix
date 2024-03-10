@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author mazhj
  */
 @RestController
-@RequestMapping("/book")
 public class BookController extends BaseController {
     private final BookService bookService;
 

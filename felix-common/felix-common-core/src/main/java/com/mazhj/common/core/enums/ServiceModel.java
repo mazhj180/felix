@@ -9,7 +9,7 @@ public enum ServiceModel {
     /** 图书模块*/
     BOOK("book-service-model"),
     /** 主页模块*/
-    HOMEPAGE("homepage-service-model"),
+    CONTROL("control-service-model"),
     /** 论坛模块*/
     FORUM("forum-service-model"),
     /** 搜索模块*/
