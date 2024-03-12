@@ -20,12 +20,7 @@ public final class ServletUtil {
     }
 
     private static ServletRequestAttributes getRequestAttributes() {
-        try {
-            RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
-            return (ServletRequestAttributes) attributes;
-        }
-        catch (Exception e) {
-            return null;
-        }
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        return (ServletRequestAttributes) attributes;
     }
 }
