@@ -7,8 +7,8 @@ import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.exception.SystemException;
 import com.mazhj.common.core.utils.SpringUtil;
 import com.mazhj.common.pojo.claims.Claims;
-import com.mazhj.common.web.response.AjaxResult;
 import com.mazhj.felix.gateway.config.properties.GatewayConfigProperties;
+import com.mazhj.felix.gateway.resp.AjaxResultForReactive;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -90,12 +91,15 @@ public class AuthFilter implements GlobalFilter, Ordered {
     }
 
     private Claims validate(String token) throws AuthException, ParseException, JOSEException, ExecutionException, InterruptedException {
+        if (Objects.equals(token, "") || token == null){
+            throw new AuthException("unauthorized exception");
+        }
         Mono<String> mono = this.webClient.get()
                 .uri("/valid?accessToken="+token)
                 .retrieve()
                 .bodyToMono(String.class);
         CompletableFuture<String> voidCompletableFuture = CompletableFuture.supplyAsync(mono::block);
-        AjaxResult result = JSON.parseObject(voidCompletableFuture.get(), AjaxResult.class);
+        AjaxResultForReactive result = JSON.parseObject(voidCompletableFuture.get(), AjaxResultForReactive.class);
         assert result != null;
         JSONObject data = result.getData();
         if (!data.getBoolean("access")){

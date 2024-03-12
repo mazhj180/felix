@@ -3,7 +3,7 @@ package com.mazhj.felix.gateway.handler;
 import com.alibaba.fastjson2.JSON;
 import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.exception.SystemException;
-import com.mazhj.common.web.response.AjaxResult;
+import com.mazhj.felix.gateway.resp.AjaxResultForReactive;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
@@ -30,15 +30,15 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
     @NonNull
     public Mono<Void> handle(@NonNull ServerWebExchange exchange,@NonNull Throwable ex) {
         HttpStatus httpStatus = null;
-        AjaxResult ajaxResult = null;
+        AjaxResultForReactive ajaxResult = null;
         if (ex instanceof SystemException){
-            ajaxResult = AjaxResult.Builder.error();
+            ajaxResult = AjaxResultForReactive.Builder.error();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         } else if (ex instanceof BusinessException) {
-            ajaxResult = AjaxResult.Builder.unAuthorized();
+            ajaxResult = AjaxResultForReactive.Builder.unAuthorized();
             httpStatus = HttpStatus.UNAUTHORIZED;
         } else if (ex instanceof Exception) {
-            ajaxResult = AjaxResult.Builder.error();
+            ajaxResult = AjaxResultForReactive.Builder.error();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             log.error("网关服务内部异常 {}",ex.getMessage(),ex);
         }
