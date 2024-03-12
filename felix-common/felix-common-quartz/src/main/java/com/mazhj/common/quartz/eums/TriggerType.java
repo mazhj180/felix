@@ -1,4 +1,4 @@
-package com.mazhj.felix.quartz.eums;
+package com.mazhj.common.quartz.eums;
 
 /**
  * quartz 触发器类型

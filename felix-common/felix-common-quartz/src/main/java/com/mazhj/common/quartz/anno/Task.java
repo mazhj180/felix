@@ -1,7 +1,6 @@
-package com.mazhj.felix.quartz.anno;
+package com.mazhj.common.quartz.anno;
 
-import com.mazhj.felix.quartz.trigger.TriggerProvider;
-import com.mazhj.felix.quartz.trigger.impl.NonTriggerProvider;
+import com.mazhj.common.quartz.trigger.TriggerProvider;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

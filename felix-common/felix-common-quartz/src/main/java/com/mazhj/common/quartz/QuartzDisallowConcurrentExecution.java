@@ -1,4 +1,4 @@
-package com.mazhj.felix.quartz;
+package com.mazhj.common.quartz;
 
 import com.mazhj.common.core.utils.SpringUtil;
 import org.quartz.DisallowConcurrentExecution;

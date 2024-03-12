@@ -1,8 +1,8 @@
-package com.mazhj.felix.quartz;
+package com.mazhj.common.quartz;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import com.mazhj.common.quartz.constant.ScheduleConstants;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,15 +10,20 @@ import java.lang.reflect.Method;
 /**
  * @author mazhj
  */
+@Slf4j
 public abstract class QuartzJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         try {
-            Class<?> clazz = (Class<?>) jobExecutionContext.getJobDetail().getJobDataMap().get("class");
-            Method method = (Method) jobExecutionContext.getJobDetail().getJobDataMap().get("method");
+            JobDetail jobDetail = jobExecutionContext.getJobDetail();
+            Trigger trigger = jobExecutionContext.getTrigger();
+            Class<?> clazz = (Class<?>) jobDetail.getJobDataMap().get("class");
+            Method method = (Method) jobDetail.getJobDataMap().get("method");
             execute(method,clazz);
-        } catch (InvocationTargetException | IllegalAccessException e) {
+            log.info("定时任务 [{}] 执行 , 触发器 [{}] , 当前线程 [{}]",
+                    jobDetail.getKey().getName(),trigger.getKey().getName(),Thread.currentThread().getName());
+        } catch (InvocationTargetException | IllegalAccessException  e) {
             throw new RuntimeException(e);
         }
 

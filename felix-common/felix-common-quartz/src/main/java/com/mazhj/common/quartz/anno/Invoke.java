@@ -1,8 +1,7 @@
-package com.mazhj.felix.quartz.anno;
+package com.mazhj.common.quartz.anno;
 
-import com.mazhj.felix.quartz.constant.ScheduleConstants;
-import com.mazhj.felix.quartz.eums.MisfireInstruction;
-import com.mazhj.felix.quartz.trigger.impl.NonTriggerProvider;
+import com.mazhj.common.quartz.constant.ScheduleConstants;
+import com.mazhj.common.quartz.eums.MisfireInstruction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,8 +13,9 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Task(name = ScheduleConstants.DEFAULT_TASK_NAME,triggerProvider = NonTriggerProvider.class)
-public @interface CronTask {
+public @interface Invoke {
+
+    boolean isAllowConcurrent() default false;
 
     MisfireInstruction misfirePolicy() default MisfireInstruction.MISFIRE_FIRE_AND_PROCEED;
 

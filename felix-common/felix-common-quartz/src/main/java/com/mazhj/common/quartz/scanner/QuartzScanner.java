@@ -1,13 +1,15 @@
-package com.mazhj.felix.quartz.scanner;
+package com.mazhj.common.quartz.scanner;
 
-import com.mazhj.felix.quartz.QuartzDisallowConcurrentExecution;
-import com.mazhj.felix.quartz.QuartzJobExecution;
-import com.mazhj.felix.quartz.anno.CronTask;
-import com.mazhj.felix.quartz.anno.Scheduled;
-import com.mazhj.felix.quartz.anno.Task;
-import com.mazhj.felix.quartz.constant.ScheduleConstants;
-import com.mazhj.felix.quartz.trigger.TriggerProvider;
-import com.mazhj.felix.quartz.trigger.impl.NonTriggerProvider;
+import com.mazhj.common.core.utils.UuidUtil;
+import com.mazhj.common.quartz.anno.CronTask;
+import com.mazhj.common.quartz.anno.Scheduled;
+import com.mazhj.common.quartz.anno.Task;
+import com.mazhj.common.quartz.constant.ScheduleConstants;
+import com.mazhj.common.quartz.eums.MisfireInstruction;
+import com.mazhj.common.quartz.trigger.TriggerProvider;
+import com.mazhj.common.quartz.trigger.impl.NonTriggerProvider;
+import com.mazhj.common.quartz.QuartzDisallowConcurrentExecution;
+import com.mazhj.common.quartz.QuartzJobExecution;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.BeansException;
@@ -84,7 +86,7 @@ public class QuartzScanner implements ApplicationRunner, ApplicationContextAware
                 CronTask cronTask = method.getAnnotation(CronTask.class);
                 Task task = cronTask.annotationType().getAnnotation(Task.class);
                 JobDetail jobDetail = generateJobDetail(task);
-                jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES,
+                jobDetail.getJobDataMap().putAll(
                         new HashMap<String,Object>(2){{
                             put("class",method.getDeclaringClass());
                             put("method",method);
@@ -96,7 +98,7 @@ public class QuartzScanner implements ApplicationRunner, ApplicationContextAware
                     default -> cronScheduleBuilder.withMisfireHandlingInstructionFireAndProceed();
                 };
 
-                CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(task.name())
+                CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(task.name() + UuidUtil.generateUuid())
                         .withSchedule(cronScheduleBuilder).build();
                 scheduler.scheduleJob(jobDetail,trigger);
             }
@@ -107,12 +109,17 @@ public class QuartzScanner implements ApplicationRunner, ApplicationContextAware
     }
 
     private JobDetail generateJobDetail(Task taskAnno){
+
         Class<? extends Job> taskClazz = taskAnno.isAllowConcurrent()?
                 QuartzDisallowConcurrentExecution.class:
                 QuartzJobExecution.class;
+        String taskName = taskAnno
+                .name()
+                .equals(ScheduleConstants.DEFAULT_TASK_NAME)
+                ?UuidUtil.generateUuid():taskAnno.name();
         return  JobBuilder
                 .newJob(taskClazz)
-                .withIdentity(taskAnno.name(), taskAnno.group())
+                .withIdentity(taskName, taskAnno.group())
                 .build();
     }
 }

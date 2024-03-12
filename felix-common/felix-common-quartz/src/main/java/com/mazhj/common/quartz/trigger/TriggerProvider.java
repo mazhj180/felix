@@ -1,4 +1,4 @@
-package com.mazhj.felix.quartz.trigger;
+package com.mazhj.common.quartz.trigger;
 
 import org.quartz.Trigger;
 

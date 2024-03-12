@@ -1,6 +1,6 @@
-package com.mazhj.felix.quartz.trigger.impl;
+package com.mazhj.common.quartz.trigger.impl;
 
-import com.mazhj.felix.quartz.trigger.TriggerProvider;
+import com.mazhj.common.quartz.trigger.TriggerProvider;
 import org.quartz.Trigger;
 
 /**

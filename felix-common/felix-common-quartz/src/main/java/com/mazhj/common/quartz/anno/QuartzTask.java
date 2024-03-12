@@ -1,4 +1,4 @@
-package com.mazhj.felix.quartz.anno;
+package com.mazhj.common.quartz.anno;
 
 import org.springframework.stereotype.Component;
 

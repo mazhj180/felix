@@ -1,4 +1,4 @@
-package com.mazhj.felix.quartz.constant;
+package com.mazhj.common.quartz.constant;
 
 /**
  * @author mazhj
