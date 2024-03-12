@@ -42,7 +42,7 @@ values ('zhaomin', 'honglou'),
        ('zhaomin', 'daomu');
 
 drop table if exists `author`;
-create table author
+create table `author`
 (
     `id`            int unsigned auto_increment comment '数据库主键',
     `author_id`     varchar(32) collate utf8mb3_unicode_ci        not null comment '作者id',
@@ -57,3 +57,19 @@ create table author
     unique key `idx_author_id` (`author_id`)
 )engine =InnoDB default charset =utf8mb4 collate =utf8mb4_unicode_ci row_format =dynamic comment '作者信息表';
 
+drop table if exists `work`
+create table work
+(
+    `author_id`    varchar(32)                            not null comment '作者id',
+    `author_name`  varchar(32)                            not null comment '作者名称',
+    `work_id`      varchar(32)                            not null comment '作品id'
+        primary key,
+    `work_name`    varchar(256)                           not null comment '作品名称',
+    `tag`          varchar(32)                            not null comment '作品标签分类',
+    `work_img`     varchar(256)                           null comment '作品封面',
+    `work_url`     varchar(256)                           not null comment '存放路径',
+    `introduction` text collate utf8mb3_unicode_ci        null comment '作品描述',
+    `status`       varchar(32) collate utf8mb3_unicode_ci null comment '作品状态 : 未审核、审核成功、退回',
+    `create_time`  timestamp default CURRENT_TIMESTAMP    null comment '创建时间'
+)
+    comment '作品信息表' row_format = DYNAMIC;
