@@ -36,6 +36,10 @@ public class AuthServiceImpl implements AuthService {
             if (!password.equals(user.getUserPwd())){
                 throw new BusinessException("密码错误");
             }
+            if (user.getIsBan()){
+                throw new BusinessException("用户被禁用");
+            }
+
             String accessToken = JwtUtil.generateToken(
                     new Claims()
                             .setUserId(userId)

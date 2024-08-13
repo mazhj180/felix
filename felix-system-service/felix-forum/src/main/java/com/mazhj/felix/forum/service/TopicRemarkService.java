@@ -16,7 +16,7 @@ public interface TopicRemarkService {
      * @param topicId 所属话题id
      * @return 所有评论
      */
-    List<TopicRemarkBO> getRootRemarksWith3Child(Long topicId);
+    List<TopicRemarkVO> getRootRemarksWith3Child(Long topicId);
 
     /**
      * 获取子评论

@@ -1,5 +1,7 @@
 package com.mazhj.felix.user.service.impl;
 
+import com.mazhj.common.core.utils.UuidUtil;
+import com.mazhj.common.minio.service.MinioService;
 import com.mazhj.felix.user.mapper.WorkMapper;
 import com.mazhj.felix.user.pojo.model.Work;
 import com.mazhj.felix.user.service.WorkService;
@@ -28,7 +30,16 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
+    public List<Work> getWorksByStatus(String status) {
+        List<Work> works = this.workMapper.selectWorksByStatus(status);
+        return works.stream()
+                .map(Work::toJsonArray)
+                .toList();
+    }
+
+    @Override
     public void createWork(Work work) {
+        work.setWorkId(UuidUtil.generateUuid());
         this.workMapper.insert(work);
     }
 }

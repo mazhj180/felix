@@ -24,6 +24,7 @@ public interface UserMapper {
             @Result(column = "phone_number",jdbcType = JdbcType.VARCHAR,property = "phoneNumber"),
             @Result(column = "head_img_url",jdbcType = JdbcType.VARCHAR,property = "headImgUrl"),
             @Result(column = "level",jdbcType = JdbcType.VARCHAR,property = "level"),
+            @Result(column = "is_ban",jdbcType = JdbcType.BOOLEAN,property = "isBan"),
             @Result(column = "create_time",jdbcType = JdbcType.TIMESTAMP,property = "createTime"),
             @Result(column = "update_time",jdbcType = JdbcType.TIMESTAMP,property = "updateTime")
     })
@@ -49,7 +50,7 @@ public interface UserMapper {
     @ResultMap("baseResultMap")
     @Select("""
                 select id,user_id,user_pwd,nick_name,phone_number,email,
-                       head_img_url,level,create_time,update_time
+                       head_img_url,level,is_ban,create_time,update_time
                 from user
                 where user_id = #{userId}
             """)

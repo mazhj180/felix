@@ -34,6 +34,9 @@ public class User {
     /** 账号等级*/
     private String level;
 
+    /** 是否被禁用*/
+    private Boolean isBan;
+
     /** 创建时间*/
     private Date createTime;
 

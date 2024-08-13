@@ -1,6 +1,7 @@
 package com.mazhj.felix.user.pojo.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -8,6 +9,7 @@ import java.util.Date;
  * @author mazhj
  */
 @Data
+@Accessors(chain = true)
 public class Author {
 
     /**

@@ -1,5 +1,6 @@
 package com.mazhj.felix.user.mapper;
 
+import com.github.pagehelper.Page;
 import com.mazhj.felix.user.pojo.model.User;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -24,6 +25,7 @@ public interface UserMapper {
             @Result(column = "phone_number",jdbcType = JdbcType.VARCHAR,property = "phoneNumber"),
             @Result(column = "head_img_url",jdbcType = JdbcType.VARCHAR,property = "headImgUrl"),
             @Result(column = "level",jdbcType = JdbcType.VARCHAR,property = "level"),
+            @Result(column = "is_ban",jdbcType = JdbcType.BOOLEAN,property = "isBan"),
             @Result(column = "create_time",jdbcType = JdbcType.TIMESTAMP,property = "createTime"),
             @Result(column = "update_time",jdbcType = JdbcType.TIMESTAMP,property = "updateTime")
     })
@@ -60,7 +62,7 @@ public interface UserMapper {
                 <script>
                     select * from user
                     <where>
-                        <if test = 'userId != null'>
+                        <if test = 'userId != null and userId != "" '>
                             user_id = #{userId}
                         </if>
                         <if test = 'userName != null'>
@@ -72,13 +74,20 @@ public interface UserMapper {
                     </where>
                 </script>
             """)
-    List<User> selectUserList(String userId,String userName,String isWriter);
+    Page<User> selectUserList(String userId, String userName, Boolean isWriter);
 
     @ResultMap("baseResultMap")
     @Update("""
                 update user
-                set state = #{state}
+                set is_ban = #{isBan}
                 where userId = #{userId}
             """)
-    int updateState(User user);
+    void updateState(User user);
+
+    @Update("""
+                update user
+                set level = #{level}
+                where userId = #{userId}
+            """)
+    void updateLevel(String userId,String level);
 }

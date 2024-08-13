@@ -45,7 +45,7 @@ public interface BookMapper {
     @ResultMap("baseResultMap")
     @Select(
             """
-                select * from book 
+                select * from book
                 where book_id = #{bookId}
             """
     )
@@ -95,6 +95,19 @@ public interface BookMapper {
     List<Book> selectBookSortedScore(Integer limit);
 
     /**
+     * 根据创建时间获取图书
+     * @param limit 限制条数
+     * @return 图书列表
+     */
+    @ResultMap("baseResultMap")
+    @Select("""
+                select * from book
+                order by create_time DESC
+                limit #{limit}
+            """)
+    List<Book> selectBookSortedTime(Integer limit);
+
+    /**
      * 根据support排名获取图书
      * @param limit 限制条数
      * @return 图书列表
@@ -109,7 +122,40 @@ public interface BookMapper {
     )
     List<Book> selectBookSortedSupport(Integer limit);
 
+    @ResultMap("baseResultMap")
+    @Select("""
+                <script>
+                    select * from book
+                    <where>
+                        <if test = 'bookName != null and bookName != ""'>
+                            book_name = #{bookName}
+                        </if>
+                    </where>
+                </script>
+            """)
+    List<Book> selectBookByName(String bookName);
+
     int insertBatch(List<Book> books);
+
+    @Delete("""
+                delete from book
+                where book_id = #{bookId}
+            """)
+    void delBook(String bookId);
+
+    @Update("""
+                update book
+                set score = #{score}
+                where book_id = #{bookId}
+            """)
+    void updateScore(String bookId,Integer score);
+
+    @Update("""
+                update book
+                set support_count = #{supports}
+                where book_id = #{bookId}
+            """)
+    void updateSupport(String bookId, Integer supports);
 
     /**
      * 获取图书的分类
@@ -140,5 +186,4 @@ public interface BookMapper {
             """
     )
     List<BookCategory> selectBookByCategory(String category);
-
 }

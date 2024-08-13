@@ -30,7 +30,7 @@ public class BookDTO implements Serializable {
     /**
      * 作者
      */
-    private Integer authorId;
+    private String authorId;
 
     /**
      * 作者名称
@@ -45,7 +45,7 @@ public class BookDTO implements Serializable {
     /**
      * 图书评分
      */
-    private Integer score;
+    private Byte score;
 
     /**
      * 关键词

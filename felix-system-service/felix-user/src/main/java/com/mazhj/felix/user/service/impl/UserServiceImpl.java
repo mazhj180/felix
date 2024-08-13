@@ -1,5 +1,6 @@
 package com.mazhj.felix.user.service.impl;
 
+import com.github.pagehelper.Page;
 import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.common.core.exception.BusinessException;
 import com.mazhj.common.core.utils.Convert;
@@ -76,13 +77,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers(String userId, String userName,Boolean isWriter) {
+    public Page<User> getUsers(String userId, String userName, Boolean isWriter) {
         isWriter = Optional.ofNullable(isWriter).orElse(false);
-        return this.userMapper.selectUserList(userId,userName,isWriter.toString());
+        return this.userMapper.selectUserList(userId,userName,isWriter);
     }
 
     @Override
     public void updateState(User user) {
         this.userMapper.updateState(user);
+    }
+
+    @Override
+    public User getUserInfo(String userId) {
+        return this.userMapper.selectByUserId(userId);
     }
 }

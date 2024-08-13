@@ -13,6 +13,8 @@ import java.util.List;
 @Mapper
 public interface TopicRemarkMapper {
 
+
+
     /**
      * 查询所有根评论
      * @param topicId 话题id
@@ -21,17 +23,17 @@ public interface TopicRemarkMapper {
     @Select("""
                 select * from topic_remark
                 where topic_id = #{topicId} and root_remark_id is null
-                order by support desc , create_time
+                order by support_count desc , create_time
             """)
     List<TopicRemark> selectRootRemarks(Long topicId);
 
     @Select("""
                 select tr.* from topic_remark tr
                 where topic_id = #{topicId} and
-                    remark_id = (
+                    remark_id in (
                         select remark_id from topic_remark tr1
                         where root_remark_id = tr.remark_id and reply_remark_id = tr.remark_id
-                        order by support desc , create_time
+                        order by support_count desc , create_time
                         limit 3
                     )
             """)
@@ -41,9 +43,9 @@ public interface TopicRemarkMapper {
             <script>
                 select * from topic_remark
                 where topic_id = #{topicId} and root_remark_id = #{rootRemarkId}
-                order by create_time, support desc
+                order by create_time, support_count desc
                 <if test='limits != null'>
-                    limit = #{limits}
+                    limit #{limits}
                 </if>
             </script>
             """)
@@ -54,6 +56,13 @@ public interface TopicRemarkMapper {
                 where remark_id = #{remarkId} and topic_id = #{topicId}
             """)
     TopicRemark selectRemarksById(Long topicId,Long remarkId);
+
+    @Select("""
+                select * from topic_remark
+                where topic_id = #{topicId} and reply_remark_id = #{replyRemarkId}
+                order by create_time ,support_count desc
+            """)
+    List<TopicRemark> selectReplies(Long topicId,Long replyRemarkId );
 
     @Insert("""
                 insert into topic_remark (

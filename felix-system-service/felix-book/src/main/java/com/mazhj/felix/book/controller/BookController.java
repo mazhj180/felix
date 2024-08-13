@@ -40,6 +40,11 @@ public class BookController extends BaseController {
     public AjaxResult upload(){
         return null;
     }
+//
+//    public AjaxResult getBooks(@RequestParam(required = false) String bookName){
+//        startPage();
+//
+//    }
 
     @GetMapping("/get/book-detail-info")
     public AjaxResult getBookDetailInfo(String bookId){
@@ -56,6 +61,42 @@ public class BookController extends BaseController {
     public AjaxResult getBookByCategory(@PathVariable String category) {
         List<Book> books = this.bookService.getBookByCategory(category);
         return success(books);
+    }
+
+    @GetMapping("/get-book/{method}/{limit}")
+    public AjaxResult getBooks(@PathVariable Integer limit, @PathVariable String method) {
+        List<Book> books = switch (method){
+            case "score" -> this.bookService.getBookSortedScore(limit);
+            case "time" -> this.bookService.getBookSortedTime(limit);
+            default -> {
+                yield new ArrayList<>();
+            }
+        };
+        return success(books);
+    }
+
+    @GetMapping("/get-book/ids/batch")
+    public AjaxResult getBookBatch(@RequestParam("ids[]") String[] ids){
+        List<Book> bookInfoBatch = this.bookService.getBookInfoBatch(ids);
+        return success(bookInfoBatch);
+    }
+
+    @DeleteMapping("/del")
+    public AjaxResult delBook(String bookId) {
+        this.bookService.delBook(bookId);
+        return success();
+    }
+
+    @PostMapping("/op-score")
+    public AjaxResult opScore(String bookId,Integer score) {
+        this.bookService.operate(BookService.Operator.SCORE,bookId,score);
+        return success();
+    }
+
+    @PostMapping("/op-supports")
+    public AjaxResult opSupports(String bookId,Integer supports) {
+        this.bookService.operate(BookService.Operator.SUPPORTS,bookId,supports);
+        return success();
     }
 
     @GetMapping("/feign/get-book")

@@ -6,13 +6,16 @@ import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.feign.book.clients.BookClient;
 import com.mazhj.felix.feign.search.clients.SearchClient;
-import com.mazhj.felix.quartz.anno.CronTask;
-import com.mazhj.felix.quartz.anno.Scheduled;
+import com.mazhj.common.quartz.anno.CronTask;
+import com.mazhj.common.quartz.anno.Scheduled;
+import com.mazhj.felix.user.common.event.ReasonEvent;
 import com.mazhj.felix.user.pojo.param.Reason;
 import com.mazhj.felix.user.pojo.vo.BookshelfVO;
 import com.mazhj.felix.user.service.BookshelfService;
 import com.mazhj.felix.user.service.GuessYouService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,14 +33,21 @@ public class GuessYouServiceImpl implements GuessYouService {
 
     private final GuessYouTask guessYouTask;
 
+    private BookClient bookClient;
+
     public GuessYouServiceImpl(
-            GuessYouTask guessYouTask
+            GuessYouTask guessYouTask,
+            BookClient bookClient
             ) {
         this.guessYouTask = guessYouTask;
+        this.bookClient = bookClient;
     }
 
     @Override
     public List<BookDTO> getPossibleLikes(String userId, Reason reason) {
+        if (userId == null) {
+            return this.bookClient.getBookSortedScore(10);
+        }
         String reasonKey = KeyBuilder.User.getReasonKey();
         String likeKey = KeyBuilder.User.getPossibleLikeKey();
         guessYouTask.redisService.setHashVal(reasonKey,userId,reason);
@@ -51,8 +61,6 @@ public class GuessYouServiceImpl implements GuessYouService {
 
     @Override
     public void collectReason(Reason reason) {
-        String reasonKey = KeyBuilder.User.getReasonKey();
-
     }
 
     @Scheduled
@@ -91,13 +99,16 @@ public class GuessYouServiceImpl implements GuessYouService {
             for (Map.Entry<String, Reason> entry : reasonMap.entrySet()) {
                 String userId = entry.getKey();
                 List<BookshelfVO> bookshelf = this.bookshelfService.getBookshelfList(userId);
-                //构建评委链
-                Judge bookshelfJudge = new BookshelfJudge(bookshelf);
-                Judge reasonJudge = new ReasonJudge(searchClient, bookClient);
-                bookshelfJudge.addJudge(reasonJudge);
 
+                //构建评委链
+                Judge reasonJudge = new ReasonJudge(searchClient, bookClient);
+
+                if (bookshelf == null || bookshelf.isEmpty()){
+                    Judge bookshelfJudge = new BookshelfJudge(bookshelf);
+                    reasonJudge.addJudge(bookshelfJudge);
+                }
                 //评委们开始打分
-                bookshelfJudge.scoring(entry,books);
+                reasonJudge.scoring(entry,books);
 
                 //根据每本书评分获取前10
                 List<String> bookIds = ranking(reasonJudge.scoreMap, rank);
@@ -131,6 +142,24 @@ public class GuessYouServiceImpl implements GuessYouService {
                 bookIds.add(entryList.get(i).getKey());
             }
             return bookIds;
+        }
+    }
+
+    @Component
+    public static class ReasonCollector{
+
+        private final RedisService redisService;
+
+        public ReasonCollector(RedisService redisService) {
+            this.redisService = redisService;
+        }
+
+        @EventListener(classes = ReasonEvent.class)
+        public void collect(ReasonEvent event) {
+            Reason reason = event.getReason();
+            String userId = event.getUserId();
+            String reasonKey = KeyBuilder.User.getReasonKey();
+            this.redisService.setHashVal(reasonKey,userId,reason);
         }
     }
 

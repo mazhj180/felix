@@ -169,12 +169,5 @@ public class Reason {
 ### 搜索模块 - felix-search
 > 依赖的通用模块 : felix-common-core、felix-common-pojo、felix-common-web
 
-#### 提供接口:
-- `SearchController:`根据关键词搜索图书、根据名字搜索图书
-  - `getBooksByKeyword:`_关键词搜索图书(外部)_
-    - `uri:`*/search/get-books/keyword*
-    - `method:`*GET*
-    - `param:` *{}*
-    - `return:`*{}*
 ### 论坛模块 - felix-forum
 todo

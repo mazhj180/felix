@@ -38,11 +38,11 @@ public interface AuthorMapper {
     /**
      * 插入作者信息
      * @param author 作者信息
-     * @return 操作行数
      */
     @Insert("""
-                insert into author ()
+                insert into author (author_id, identity_card, real_name, pseudonym, nationality, birthday, introduction)
+                values (#{authorId},#{identityCard},#{realName},#{pseudonym},#{nationality},#{birthday},#{introduction})
             """)
-    int insert(Author author);
+    void insert(Author author);
 
 }

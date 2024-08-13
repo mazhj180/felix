@@ -30,6 +30,10 @@ public class BaseController {
         HttpServletRequest request = ServletUtil.getRequest();
         int pageNum = request.getIntHeader("pageNum");
         int pageSize = request.getIntHeader("pageSize");
+        if (pageSize == -1 || pageNum == -1) {
+            pageSize = 1;
+            pageNum = 10;
+        }
         PageHelper.startPage(pageNum,pageSize);
     }
 

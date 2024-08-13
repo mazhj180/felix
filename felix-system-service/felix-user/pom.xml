@@ -44,6 +44,11 @@
 
         <dependency>
             <groupId>com.mazhj</groupId>
+            <artifactId>felix-common-minio</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mazhj</groupId>
             <artifactId>felix-feign-book-client</artifactId>
         </dependency>
 

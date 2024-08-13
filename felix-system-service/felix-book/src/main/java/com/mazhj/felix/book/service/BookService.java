@@ -39,6 +39,13 @@ public interface BookService {
     List<Book> getBookSortedScore(Integer limit);
 
     /**
+     * 安创建时间排名
+     * @param limit 限制条数
+     * @return 图书列表
+     */
+    List<Book> getBookSortedTime(Integer limit);
+
+    /**
      * 获取图书分类信息
      * @param bookId 图书id
      * @return 分类信息
@@ -52,10 +59,23 @@ public interface BookService {
     void listingBook(List<Book> books);
 
     /**
+     * 删除图书
+     * @param bookId 图书id
+     */
+    void delBook(String bookId);
+
+    void operate(Operator operator,String bookId,Integer score);
+
+    /**
      * 根据分类获取图书信息
      * @param categoryId 分类id
      * @return 图书信息
      */
     List<Book> getBookByCategory(String categoryId);
+
+    enum Operator {
+        SCORE,
+        SUPPORTS
+    }
 
 }

@@ -8,10 +8,7 @@ import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.pojo.param.BookshelfParam;
 import com.mazhj.felix.user.pojo.vo.BookshelfVO;
 import com.mazhj.felix.user.service.BookshelfService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class BookshelfController extends BaseController {
     }
 
     @PostMapping("/sync-bookshelf")
-    public AjaxResult sync(BookshelfParam bookshelfParam){
+    public AjaxResult sync(@RequestBody BookshelfParam bookshelfParam){
         Message message = this.bookshelfService.syncBookshelfInfo(bookshelfParam);
         return success().buildMsg(message.getMessage());
     }

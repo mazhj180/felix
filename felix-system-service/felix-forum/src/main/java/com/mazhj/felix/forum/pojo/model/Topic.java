@@ -2,8 +2,6 @@ package com.mazhj.felix.forum.pojo.model;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * @author mazhj
  */
@@ -29,7 +27,7 @@ public class Topic {
     private String creator;
 
     /** 创建时间*/
-    private Date createTime;
+    private String createTime;
 
 
 }

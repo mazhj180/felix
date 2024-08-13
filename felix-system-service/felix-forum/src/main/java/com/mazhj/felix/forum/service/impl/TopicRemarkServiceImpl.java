@@ -35,23 +35,18 @@ public class TopicRemarkServiceImpl implements TopicRemarkService {
 
 
     @Override
-    public List<TopicRemarkBO> getRootRemarksWith3Child(Long topicId) {
-        String key = KeyBuilder.Forum.getTopicRemarkKey(topicId.toString());
-        if (this.redisService.hasKey(key)){
-            this.redisService.expire(key,3600, TimeUnit.SECONDS);
-            return this.redisService.get(key);
-        }
+    public List<TopicRemarkVO> getRootRemarksWith3Child(Long topicId) {
         List<TopicRemark> rootRemarks = this.topicRemarkMapper.selectRootRemarks(topicId);
-        List<TopicRemarkBO> bos = new ArrayList<>();
-        for (TopicRemark rootRemark : rootRemarks) {
-            List<TopicRemark> childRemarks = this.topicRemarkMapper.selectChildRemarks(topicId, rootRemark.getRootRemarkId(), 3);
-            TopicRemarkBO bo = new TopicRemarkBO();
-            bo.setRootRemark(Convert.to(rootRemark,TopicRemarkVO.class));
-            bo.setChildRemark(Convert.to(childRemarks,TopicRemarkVO.class));
-            bos.add(bo);
+        List<TopicRemarkVO> rootVos = Convert.to(rootRemarks, TopicRemarkVO.class);
+        for (TopicRemarkVO vo : rootVos) {
+            List<TopicRemark> childRemarks = this.topicRemarkMapper.selectChildRemarks(topicId, vo.getRemarkId(), 3);
+            List<TopicRemarkVO> childVos = Convert.to(childRemarks,TopicRemarkVO.class)
+                    .stream()
+                    .map(TopicRemarkVO::replyUserHandler)
+                    .toList();
+            vo.setReplies(childVos);
         }
-        this.redisService.set(key,bos,3600);
-        return bos;
+        return rootVos;
     }
 
     @Override

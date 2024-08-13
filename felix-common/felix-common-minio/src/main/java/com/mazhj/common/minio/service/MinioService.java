@@ -1,11 +1,10 @@
 package com.mazhj.common.minio.service;
 
+import com.mazhj.common.core.utils.SpringUtil;
 import com.mazhj.common.core.utils.UuidUtil;
+import com.mazhj.common.minio.config.FelixMinioProperties;
 import io.micrometer.common.util.StringUtils;
-import io.minio.GetObjectArgs;
-import io.minio.GetObjectResponse;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,6 +23,10 @@ public class MinioService {
         this.minioClient = minioClient;
     }
 
+    public String getEndpoint() {
+        return SpringUtil.getBean(FelixMinioProperties.class).getEndpoint();
+    }
+
     public String upload(String bucket,MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
         if (StringUtils.isBlank(originalFilename)){
@@ -40,7 +43,7 @@ public class MinioService {
             e.printStackTrace();
             return null;
         }
-        return objectName;
+        return '/' + bucket + objectName;
     }
 
     public void download(String bucket,String fileName, HttpServletResponse res) {

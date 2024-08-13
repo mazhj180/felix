@@ -3,6 +3,7 @@ package com.mazhj.felix.book.service.impl;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.mazhj.common.core.utils.Convert;
+import com.mazhj.common.minio.service.MinioService;
 import com.mazhj.common.redis.keys.KeyBuilder;
 import com.mazhj.common.redis.service.RedisService;
 import com.mazhj.felix.book.mapper.BookMapper;
@@ -30,9 +31,12 @@ public class RankServiceImpl implements RankService {
 
     private final BookMapper bookMapper;
 
-    public RankServiceImpl(RedisService redisService, BookMapper bookMapper) {
+    private final MinioService minioService;
+
+    public RankServiceImpl(RedisService redisService, BookMapper bookMapper, MinioService minioService) {
         this.redisService = redisService;
         this.bookMapper = bookMapper;
+        this.minioService = minioService;
     }
 
     @Override
@@ -45,6 +49,7 @@ public class RankServiceImpl implements RankService {
             RankVO vo = Objects.requireNonNull(typedTuple.getValue()).to(RankVO.class);
             if (vo != null) {
                 vo.setHot(hot);
+                vo.setImgUrl(this.minioService.getEndpoint() + vo.getImgUrl());
             }
             hotRank.add(vo);
         }
@@ -55,12 +60,14 @@ public class RankServiceImpl implements RankService {
     public List<RankVO> getLikeRankings() {
         int rank = 10;
         List<Book> books = this.bookMapper.selectBookSortedSupport(rank);
+        books.forEach(book -> book.setImgUrl(this.minioService.getEndpoint() + book.getImgUrl()));
         return Convert.to(books, RankVO.class);
     }
 
     @Override
     public List<RankVO> getScoreRankings() {
         List<Book> books = this.bookMapper.selectBookSortedScore(10);
+        books.forEach(book -> book.setImgUrl( this.minioService.getEndpoint() + book.getImgUrl()));
         return Convert.to(books,RankVO.class);
     }
 

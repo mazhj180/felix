@@ -2,7 +2,6 @@ package com.mazhj.felix.forum.controller;
 
 import com.mazhj.common.web.controller.BaseController;
 import com.mazhj.common.web.response.AjaxResult;
-import com.mazhj.felix.forum.pojo.bo.TopicRemarkBO;
 import com.mazhj.felix.forum.pojo.vo.TopicRemarkVO;
 import com.mazhj.felix.forum.service.TopicRemarkService;
 import com.mazhj.felix.forum.service.TopicService;
@@ -35,7 +34,7 @@ public class TopicController extends BaseController {
 
     @GetMapping("/remarks")
     public AjaxResult showRemarks(Long topicId){
-        List<TopicRemarkBO> remarks = this.topicRemarkService.getRootRemarksWith3Child(topicId);
+        List<TopicRemarkVO> remarks = this.topicRemarkService.getRootRemarksWith3Child(topicId);
         return success(remarks);
     }
 

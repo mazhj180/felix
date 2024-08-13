@@ -39,6 +39,9 @@ public class User implements Serializable {
     /** 账户等级 默认为reader*/
     private String level;
 
+    /** 是否被禁用*/
+    private Boolean isBan;
+
     /** 创建时间*/
     private Date createTime;
 

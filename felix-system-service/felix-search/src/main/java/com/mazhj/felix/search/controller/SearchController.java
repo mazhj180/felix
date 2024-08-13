@@ -1,13 +1,12 @@
 package com.mazhj.felix.search.controller;
 
-import com.mazhj.common.core.utils.Convert;
 import com.mazhj.common.pojo.dto.BookDTO;
 import com.mazhj.common.web.controller.BaseController;
 import com.mazhj.common.web.response.AjaxResult;
-import com.mazhj.felix.search.pojo.Book;
 import com.mazhj.felix.search.service.SearchService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * @author mazhj
  */
 @RestController
-@RequestMapping("search")
 public class SearchController extends BaseController {
 
     private final SearchService searchService;
@@ -25,27 +23,31 @@ public class SearchController extends BaseController {
         this.searchService = searchService;
     }
 
+    @GetMapping("/{key}")
+    public AjaxResult search(@PathVariable String key) {
+        List<BookDTO> books = this.searchService.search(key);
+        return success(books);
+    }
+
     @GetMapping("/get-books/keyword")
-    public AjaxResult getBooksByKeyword(String keyword){
-        List<Book> bookList = this.searchService.searchBooksByKeyword(keyword);
-        return success(Convert.to(bookList, BookDTO.class));
+    public AjaxResult getBooksByKeyword(@RequestParam(required = false) String keyword){
+        List<BookDTO> bookList = this.searchService.searchBooksByKeyword(keyword);
+        return success(bookList);
     }
 
     @GetMapping("/get-books/name")
-    public AjaxResult getBooksByName(String name){
-        List<Book> bookList = this.searchService.searchBooksByName(name);
-        return success(Convert.to(bookList, BookDTO.class));
+    public AjaxResult getBooksByName(@RequestParam(required = false) String bookName){
+        List<BookDTO> bookList = this.searchService.searchBooksByName(bookName);
+        return success(bookList);
     }
     //todo 内部借口 隔离外部请求
     @GetMapping("/feign/get-books/keyword")
     public List<BookDTO> getBooksByKeywordFeign(String keyword){
-        List<Book> bookList = this.searchService.searchBooksByKeyword(keyword);
-        return Convert.to(bookList, BookDTO.class);
+        return this.searchService.searchBooksByKeyword(keyword);
     }
     //todo 内部借口 隔离外部请求
     @GetMapping("/feign/get-books/name")
     public List<BookDTO> getBooksByNameFeign(String name){
-        List<Book> bookList = this.searchService.searchBooksByName(name);
-        return Convert.to(bookList, BookDTO.class);
+        return this.searchService.searchBooksByName(name);
     }
 }

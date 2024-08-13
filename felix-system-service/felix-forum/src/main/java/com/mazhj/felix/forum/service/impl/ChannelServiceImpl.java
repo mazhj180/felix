@@ -7,7 +7,6 @@ import com.mazhj.felix.forum.service.ChannelService;
 import com.mazhj.felix.forum.websocket.container.CaffeineChannelContainer;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.stereotype.Service;
 
 /**

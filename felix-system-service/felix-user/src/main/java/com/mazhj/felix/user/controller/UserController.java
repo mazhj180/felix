@@ -1,15 +1,21 @@
 package com.mazhj.felix.user.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.mazhj.common.auth.anno.Auth;
 import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.common.core.utils.Convert;
+import com.mazhj.common.pojo.dto.BookDTO;
 import com.mazhj.common.web.controller.BaseController;
+import com.mazhj.common.web.holder.UserContextHolder;
 import com.mazhj.common.web.request.Params;
 import com.mazhj.common.web.response.AjaxResult;
 import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.pojo.model.User;
+import com.mazhj.felix.user.pojo.param.Reason;
 import com.mazhj.felix.user.pojo.param.UserParam;
 import com.mazhj.felix.user.pojo.vo.LoginVO;
+import com.mazhj.felix.user.service.GuessYouService;
 import com.mazhj.felix.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +29,11 @@ public class UserController extends BaseController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final GuessYouService guessYouService;
+
+    public UserController(UserService userService, GuessYouService guessYouService) {
         this.userService = userService;
+        this.guessYouService = guessYouService;
     }
 
     @PostMapping("/login")
@@ -60,8 +69,9 @@ public class UserController extends BaseController {
                               @RequestParam(required = false) Boolean isWriter
                               ){
         startPage();
-        List<User> users = this.userService.getUsers(userId, userName, isWriter);
-        return success(users);
+        Page<User> users = this.userService.getUsers(userId, userName, isWriter);
+        PageInfo<User> userPage = new PageInfo<>(users);
+        return success(userPage);
     }
 
     @Auth(AccountLevel.ADMINISTRATOR)
@@ -70,5 +80,19 @@ public class UserController extends BaseController {
         this.userService.updateState(user);
         return success();
     }
+
+    @GetMapping("/guess-you")
+    public AjaxResult guess(String userId){
+        List<BookDTO> possibleLikes = this.guessYouService.getPossibleLikes(userId, new Reason());
+        return success(possibleLikes);
+    }
+
+    @GetMapping("/get-user-info")
+    public AjaxResult getUserInfo(@RequestParam String userId) {
+        User user = this.userService.getUserInfo(userId);
+        return success(user);
+    }
+
+
 
 }

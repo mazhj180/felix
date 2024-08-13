@@ -56,6 +56,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> getBookSortedTime(Integer limit) {
+        return this.bookMapper.selectBookSortedTime(limit);
+    }
+
+    @Override
     public List<BookCategory> getCategoriesByBookId(String bookId) {
         String key = KeyBuilder.Book.getBookCategoriesKey(bookId);
         List<BookCategory> categories = this.redisService.get(key);
@@ -70,6 +75,19 @@ public class BookServiceImpl implements BookService {
     @Override
     public void listingBook(List<Book> books) {
 
+    }
+
+    @Override
+    public void delBook(String bookId) {
+        this.bookMapper.delBook(bookId);
+    }
+
+    @Override
+    public void operate(Operator operator,String bookId,Integer target) {
+        switch (operator){
+            case SCORE -> this.bookMapper.updateScore(bookId,target);
+            case SUPPORTS -> this.bookMapper.updateSupport(bookId,target);
+        }
     }
 
     @Override

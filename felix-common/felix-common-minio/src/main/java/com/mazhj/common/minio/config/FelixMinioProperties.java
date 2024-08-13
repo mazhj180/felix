@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "minio")
-public class MinioProperties {
+public class FelixMinioProperties {
 
     private String endpoint;
 

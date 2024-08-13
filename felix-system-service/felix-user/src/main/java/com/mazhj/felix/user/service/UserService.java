@@ -1,5 +1,6 @@
 package com.mazhj.felix.user.service;
 
+import com.github.pagehelper.Page;
 import com.mazhj.common.auth.enums.AccountLevel;
 import com.mazhj.common.web.response.Message;
 import com.mazhj.felix.user.pojo.model.User;
@@ -47,12 +48,19 @@ public interface UserService {
      * @param isWriter 是否是作者
      * @return 用户列表
      */
-    List<User> getUsers(String userId,String userName,Boolean isWriter);
+    Page<User> getUsers(String userId, String userName, Boolean isWriter);
 
     /**
      * 修改用户状态
      * @param user 用户
      */
     void updateState(User user);
+
+    /**
+     * 获取用户详细信息
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    User getUserInfo(String userId);
 
 }

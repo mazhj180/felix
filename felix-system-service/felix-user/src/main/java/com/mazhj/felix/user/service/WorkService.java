@@ -17,6 +17,13 @@ public interface WorkService {
     List<Work> getWorks(String authorId);
 
     /**
+     * 根据status获取作品信息
+     * @param status 状态
+     * @return 作品信息
+     */
+    List<Work> getWorksByStatus(String status);
+
+    /**
      * 创建作品
      * @param work 作品信息
      */

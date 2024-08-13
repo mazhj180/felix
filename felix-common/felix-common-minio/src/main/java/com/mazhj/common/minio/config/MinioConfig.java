@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author mazhj
  */
-@EnableConfigurationProperties(MinioProperties.class)
+@EnableConfigurationProperties(FelixMinioProperties.class)
 public class MinioConfig {
 
     @Bean
-    public MinioClient minioClient(MinioProperties properties){
+    public MinioClient minioClient(FelixMinioProperties properties){
         return MinioClient.builder()
                 .endpoint(properties.getEndpoint())
                 .credentials(properties.getAccessKey(), properties.getSecretKey())

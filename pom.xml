@@ -31,7 +31,7 @@
         <spring-cloud-alibaba.version>2022.0.0.0-RC1</spring-cloud-alibaba.version>
         <mybatis-starter.version>3.0.2</mybatis-starter.version>
         <druid-stater.version>1.2.16</druid-stater.version>
-        <pagehelper-start.version>1.4.6</pagehelper-start.version>
+        <pagehelper-start.version>2.1.0</pagehelper-start.version>
         <netty-all.version>4.1.76.Final</netty-all.version>
         <fastjson2.version>2.0.39</fastjson2.version>
         <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
@@ -105,6 +105,12 @@
                 <groupId>com.mazhj</groupId>
                 <artifactId>felix-common-auth</artifactId>
                 <version>${felix-common-auth.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mazhj</groupId>
+                <artifactId>felix-common-minio</artifactId>
+                <version>${felix-common-minio.version}</version>
             </dependency>
 
             <dependency>

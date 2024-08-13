@@ -34,7 +34,7 @@ public interface BookClient {
      * @return 图书信息
      */
     @GetMapping("/book/feign/get-book-batch")
-    List<BookDTO> getBookBatch(String[] bookIds);
+    List<BookDTO> getBookBatch(@RequestParam String[] bookIds);
 
     /**
      * 按评分排名获取图书
@@ -42,6 +42,6 @@ public interface BookClient {
      * @return 图书列表
      */
     @GetMapping("/book/feign/get-book-ss")
-    List<BookDTO> getBookSortedScore(Integer limit);
+    List<BookDTO> getBookSortedScore(@RequestParam Integer limit);
 
 }
